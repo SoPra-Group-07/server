@@ -2,12 +2,17 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 
+import java.time.LocalDate;
+
 public class UserGetDTO {
 
     private Long id;
-    private String name;
+    private String password;
     private String username;
     private UserStatus status;
+    private LocalDate date;
+    private String birth;
+    private String token;
 
     public Long getId() {
         return id;
@@ -17,12 +22,12 @@ public class UserGetDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getPassword() {
+        return password;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {
@@ -40,4 +45,29 @@ public class UserGetDTO {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+
 }

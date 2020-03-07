@@ -6,9 +6,13 @@ import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class UserServiceIntegrationTest {
 
+    @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
 
@@ -38,7 +43,7 @@ public class UserServiceIntegrationTest {
         assertNull(userRepository.findByUsername("testUsername"));
 
         User testUser = new User();
-        testUser.setName("testName");
+        testUser.setPassword("testPassword");
         testUser.setUsername("testUsername");
 
         // when
@@ -46,18 +51,18 @@ public class UserServiceIntegrationTest {
 
         // then
         assertEquals(testUser.getId(), createdUser.getId());
-        assertEquals(testUser.getName(), createdUser.getName());
+        assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getUsername(), createdUser.getUsername());
-        assertNotNull(createdUser.getToken());
-        assertEquals(UserStatus.ONLINE, createdUser.getStatus());
+        assertNull(createdUser.getToken());                                //
+        assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
     }
 
     @Test
-    public void createUser_duplicateUsername_throwsException() {
+    public void createUser_duplicateUsername_throwsException() {          //----------------------------------------------> Status code 409 test - "Username already exists!"
         assertNull(userRepository.findByUsername("testUsername"));
 
         User testUser = new User();
-        testUser.setName("testName");
+        testUser.setPassword("abc123");
         testUser.setUsername("testUsername");
         User createdUser = userService.createUser(testUser);
 
@@ -65,12 +70,51 @@ public class UserServiceIntegrationTest {
         User testUser2 = new User();
 
         // change the name but forget about the username
-        testUser2.setName("testName2");
+        testUser2.setPassword("123abc");
         testUser2.setUsername("testUsername");
 
         // check that an error is thrown
-        String exceptionMessage = "The username provided is not unique. Therefore, the user could not be created!";
-        SopraServiceException exception = assertThrows(SopraServiceException.class, () -> userService.createUser(testUser2), exceptionMessage);
-        assertEquals(exceptionMessage, exception.getMessage());
+        String exceptionMessage = "Username already exists!";
+        //String exceptionMessage = "The username provided is not unique. Therefore, the user could not be created!";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason()); //-->getReason for ResponseStatusException instead of getMessage
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
+
+
+
+    @Test
+    public void UserDoesNotExist_soYouCannotViewProfile_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
+        assertNull(userRepository.findByUsername("testUsername"));
+
+        User testUser = null;
+
+        // check that an error is thrown
+        String exceptionMessage = "User not found";
+        //String exceptionMessage = "The username provided is not unique. Therefore, the user could not be created!";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(testUser), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+
+
+    @Test
+    public void UserDoesNotExist_soYouCannotEdit_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
+        assertNull(userRepository.findByUsername("testUsername"));
+
+        User testUser = null;
+
+        // check that an error is thrown
+        String exceptionMessage = "User not found";
+        //String exceptionMessage = "The username provided is not unique. Therefore, the user could not be created!";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(testUser), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+
+
+
+
 }

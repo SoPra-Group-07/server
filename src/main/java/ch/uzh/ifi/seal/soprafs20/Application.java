@@ -11,11 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @RestController
-@SpringBootApplication
+@SpringBootApplication        //Tells SpringBoot that this is the starting point of our application
 public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);   //Static method (run) for starting springboot
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -27,10 +27,10 @@ public class Application {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
+        return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
+                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
             }
         };
     }
