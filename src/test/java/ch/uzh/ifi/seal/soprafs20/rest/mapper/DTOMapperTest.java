@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class DTOMapperTest {
     @Test
-    public void testCreateUser_fromUserPostDTO_toUser_success() {
+    public void testCreateUser_fromUserPostDTO_toUser_success() {                      //--------> Conversion from UserPostDTO to User is tested
         // create UserPostDTO
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("name");
@@ -30,7 +30,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void testGetUser_fromUser_toUserGetDTO_success() {
+    public void testConversionFromUserToUserGetDTO_success() {                         //--------> Conversion from User to UserGetDTO is tested
         // create User
         User user = new User();
         user.setPassword("Firstname Lastname");
@@ -49,7 +49,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void testEditUser_fromUserEditDTO_toUser_success() {
+    public void testConversionFromUserEditDTO_toUser_success() {                       //--------> Conversion from UserEditDTO to User is tested
         // create UserPostDTO
         UserEditDTO userEditDTO = new UserEditDTO();
         userEditDTO.setBirth("18. 01. 1999");

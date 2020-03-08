@@ -33,7 +33,7 @@ public class UserRepositoryIntegrationTest {
         user.setUsername("firstname@lastname");
         user.setStatus(UserStatus.OFFLINE);
         user.setToken("1");
-        //user.setDate(LocalDate.now());       //Need to set local date
+
 
         entityManager.persist(user);
         entityManager.flush();

@@ -45,7 +45,7 @@ public class UserServiceTest {
         User createdUser = userService.createUser(testUser);
 
         // then
-       // Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());                              <--- Qui funziona anche senza
+       // Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());                              <--- Works also without
 
         assertEquals(testUser.getId(), createdUser.getId());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
@@ -58,7 +58,7 @@ public class UserServiceTest {
 
 
 /*
-    @Test                                                                              //Commented out because duplicate passwords are allowed
+    @Test                                                                                                      //Commented out because duplicate passwords are allowed
     public void createUser_duplicatePassword_throwsException() {
         // given -> a first user has already been created
         userService.createUser(testUser);
@@ -83,7 +83,7 @@ public class UserServiceTest {
         userService.createUser(testUser);
 
         // when -> setup additional mocks for UserRepository
-        //Mockito.when(userRepository.findByPassword(Mockito.any())).thenReturn(testUser);         Duplicate passwords are allowed
+        //Mockito.when(userRepository.findByPassword(Mockito.any())).thenReturn(testUser);         <---  Duplicate passwords are allowed!!!
         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
         // then -> attempt to create second user with same user -> check that an error is thrown

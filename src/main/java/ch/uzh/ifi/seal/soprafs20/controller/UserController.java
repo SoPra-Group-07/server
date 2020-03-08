@@ -34,11 +34,11 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    @ResponseStatus(HttpStatus.OK)           // Status code 200 ->  if everything went well
+    @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
     @ResponseBody
     public List<UserGetDTO> getAllUsers() {
         // fetch all users in the internal representation
-        List<User> users = userService.getUsers();         //creates list with all users in internal representation
+        List<User> users = userService.getUsers();                                  //creates list with all users in internal representation
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
         // convert each user to the API representation
@@ -49,63 +49,63 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)           //It is the status code 201
+    @ResponseStatus(HttpStatus.CREATED)                                               //It is the status code 201
     @ResponseBody
-    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {            //DTO is a Data Transfer Object. It carries Data between processes -> Encapsulation
+    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {              //DTO is a Data Transfer Object. It carries Data between processes -> Encapsulation
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // create user
-        User createdUser = userService.createUser(userInput);
-
-        // convert internal representation of user back to API
+        User createdUser = userService.createUser(userInput);                         //User status is set to OFFLINE, the birth date is set to "00-00-0000" and the creation date
+                                                                                      //is set corresponding to the local date. Everything is saved in the database and the created user
+        // convert internal representation of user back to API                        //is returned.
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
     @PutMapping("/login")
-    @ResponseStatus(HttpStatus.OK)                                    // Status code 200 ->  if everything went well
+    @ResponseStatus(HttpStatus.OK)                                                                 // Status code 200 ->  if everything went well
     @ResponseBody
-    public UserGetDTO login(@RequestBody UserPostDTO userPostDTO) {           //RequestBody converts from JSON-body from request into UserPostDTO instance
+    public UserGetDTO login(@RequestBody UserPostDTO userPostDTO) {                                //RequestBody converts from JSON-body from request into UserPostDTO instance
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        if (userService.checkUsername(userInput)) {         //Checks if a user with that username exists
-            if (userService.acceptLogin(userInput.getUsername(), userInput.getPassword())) {     //checks if the password is correct
-                if(userService.isAlreadyLoggedIn(userInput.getUsername())){    //Checks if the user is already ONLINE (maybe from another device) and if so
-                    throw new ResponseStatusException(HttpStatus.NO_CONTENT); // it sends back the status code 204
+        if (userService.checkUsername(userInput)) {                                                //Checks if a user with that username exists
+            if (userService.acceptLogin(userInput.getUsername(), userInput.getPassword())) {       //checks if the password is correct
+                if(userService.isAlreadyLoggedIn(userInput.getUsername())){                        //Checks if the user is already ONLINE (maybe from another device) and if so
+                    throw new ResponseStatusException(HttpStatus.NO_CONTENT);                      // it sends back the status code 204
                 } else {
-                    User updatedUser = userService.login(userInput);    //updates user-object, e.g., UserStatus is set to ONLINE, etc...
+                    User updatedUser = userService.login(userInput);                               //updates user-object, e.g., UserStatus is set to ONLINE, etc...
                     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
                 }
 
             } else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");     //Status Code 401 -> wrong password
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");//Status Code 401 -> wrong password
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");     //Status Code 401 -> wrong username
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");    //Status Code 401 -> wrong username
         }
     }
 
     @GetMapping("users/{userId}")
-    @ResponseStatus(HttpStatus.OK)                  // Status code 200 ->  if everything went well
+    @ResponseStatus(HttpStatus.OK)                                                         //Status code 200 ->  if everything went well
     @ResponseBody
     public UserGetDTO getUser(@PathVariable String userId) {
         long id;
-        id = Long.parseLong(userId);       //From string to long(= 64bit integer)
-        User user = userService.getUserById(id); //Should return User-Object
-        if (!userService.userEqualsNull(user)) {            //if (user != null) {
+        id = Long.parseLong(userId);                                                       //From string to long(= 64bit integer)
+        User user = userService.getUserById(id);                                           //Should return User-Object
+        if (!userService.userEqualsNull(user)) {                                           //is the same as 'if (user != null)'
             return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");   //status code 404
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");     //status code 404
         }
     }
 
     @PutMapping("/users/{userId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)                                              //status code 204
+    @ResponseStatus(HttpStatus.NO_CONTENT)                                                 //status code 204
     public UserGetDTO editUser(@RequestBody UserEditDTO editUser) {
         User userToEdit = DTOMapper.INSTANCE.convertUserEditDTOtoEntity(editUser);
 
-        User editedUser = userService.edit(userToEdit);      //edit(...) returns edited user
+        User editedUser = userService.edit(userToEdit);                                    //edit(...) returns edited user
 
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(editedUser);
     }
@@ -117,7 +117,7 @@ public class UserController {
     public UserGetDTO logout(@RequestBody UserTokenDTO tokenDTO){
         User userInput = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(tokenDTO);
 
-        User loggedOutUser = userService.logout(userInput);         //Finds user thanks to token, sets his status to OFFLINE and sets the token equal null
+        User loggedOutUser = userService.logout(userInput);                         //Finds user thanks to the token, sets his status to OFFLINE and sets the token equal null
 
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loggedOutUser);
     }

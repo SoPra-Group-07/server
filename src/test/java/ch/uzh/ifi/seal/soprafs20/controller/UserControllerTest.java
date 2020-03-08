@@ -64,12 +64,12 @@ public class UserControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
-                .andExpect(jsonPath("$[0].password", is(user.getPassword())))     // is("testPassword") would work as well
+                .andExpect(jsonPath("$[0].password", is(user.getPassword())))         // is("testPassword") would work as well
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$[0].birth", is(user.getBirth())))
                 .andExpect(jsonPath("$[0].token", is(user.getToken())))
-                .andExpect(jsonPath("$[0].id", is(user.getId().intValue())))        // or is(1) works as well
+                .andExpect(jsonPath("$[0].id", is(user.getId().intValue())))          // or is(1) works as well
                 .andExpect(jsonPath("$[0].date", is(user.getDate().toString())));
     }
 
@@ -89,7 +89,7 @@ public class UserControllerTest {
         userPostDTO.setPassword("Test User");
         userPostDTO.setUsername("testUsername");
 
-        given(userService.createUser(Mockito.any())).willReturn(user);         //with given you can mock (=imitate) the createUser() method.
+        given(userService.createUser(Mockito.any())).willReturn(user);         //with 'given' you can mock (=imitate) the createUser() method. It then returns the user
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users")
@@ -110,7 +110,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void loginUser_validInput_userLoggedIn() throws Exception {             //  --------------------------------------------------->   PUT "/users" test
+    public void loginUser_validInput_userLoggedIn() throws Exception {             //  --------------------------------------------------->   PUT "/login" test
         // given
         User user = new User();
         user.setId(1L);
@@ -126,22 +126,22 @@ public class UserControllerTest {
         userPostDTO.setUsername("testUsername");
 
 
-        given(userService.checkUsername(Mockito.any())).willReturn(true);
-        given(userService.acceptLogin(Mockito.any(),Mockito.any())).willReturn(true);
-        given(userService.isAlreadyLoggedIn(Mockito.any())).willReturn(false);
-        given(userService.login(Mockito.any())).willReturn(user);
-
+        given(userService.checkUsername(Mockito.any())).willReturn(true);                     //Mocking the 'checkUsername(..)' method with return-value true.
+        given(userService.acceptLogin(Mockito.any(),Mockito.any())).willReturn(true);         //Mocking the 'acceptLogin(..)' method with return-value true.
+        given(userService.isAlreadyLoggedIn(Mockito.any())).willReturn(false);                //Mocking the 'isAlreadyLoggedIn(..)' method with return-value true.
+        given(userService.login(Mockito.any())).willReturn(user);                               //Mocking the 'login(..)' method in order to have as the returned value the user
+                                                                                                //created above.
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+                .content(asJsonString(userPostDTO));                       // When we perform the PUT request the body (userPostDto) gets converted to Json and sent to the '/login' url
 
         // then
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(user.getId().intValue())))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.password", is(user.getPassword())))
+                .andExpect(jsonPath("$.password", is(user.getPassword())))           //E.g., '$.password' is an expression to select the wanted information from a Json object
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$.birth", is("00-00-0000")))
@@ -223,7 +223,7 @@ public class UserControllerTest {
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.id", is(edited_user.getId().intValue())))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))                           //We need it to check whether the content-type is 'APPLICATION_JSON'
                 .andExpect(jsonPath("$.password", is(edited_user.getPassword())))
                 .andExpect(jsonPath("$.username", is(edited_user.getUsername())))
                 .andExpect(jsonPath("$.status", is(edited_user.getStatus().toString())))

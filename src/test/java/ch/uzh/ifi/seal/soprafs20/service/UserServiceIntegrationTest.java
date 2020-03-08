@@ -38,7 +38,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void createUser_validInputs_success() {
+    public void createUser_validInputs_success() {                        //----------------->User registers with success
         // given
         assertNull(userRepository.findByUsername("testUsername"));
 
@@ -53,13 +53,13 @@ public class UserServiceIntegrationTest {
         assertEquals(testUser.getId(), createdUser.getId());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getUsername(), createdUser.getUsername());
-        assertNull(createdUser.getToken());                                //
+        assertNull(createdUser.getToken());
         assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
     }
 
     @Test
     public void createUser_duplicateUsername_throwsException() {          //----------------------------------------------> Status code 409 test - "Username already exists!"
-        assertNull(userRepository.findByUsername("testUsername"));
+        assertNull(userRepository.findByUsername("testUsername"));        //                                                when you want to register with an already existing username
 
         User testUser = new User();
         testUser.setPassword("abc123");
@@ -75,9 +75,9 @@ public class UserServiceIntegrationTest {
 
         // check that an error is thrown
         String exceptionMessage = "Username already exists!";
-        //String exceptionMessage = "The username provided is not unique. Therefore, the user could not be created!";
+
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2), exceptionMessage);
-        assertEquals(exceptionMessage, exception.getReason()); //-->getReason for ResponseStatusException instead of getMessage
+        assertEquals(exceptionMessage, exception.getReason());       // --> getReason for ResponseStatusException instead of getMessage
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
 
@@ -85,13 +85,13 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void UserDoesNotExist_soYouCannotViewProfile_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
-        assertNull(userRepository.findByUsername("testUsername"));
-
+        assertNull(userRepository.findByUsername("testUsername"));                   //                                                When you want to view the users profile
+                                                                                     //                                                but it does not exist
         User testUser = null;
 
         // check that an error is thrown
         String exceptionMessage = "User not found";
-        //String exceptionMessage = "The username provided is not unique. Therefore, the user could not be created!";
+
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(testUser), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
@@ -101,20 +101,17 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void UserDoesNotExist_soYouCannotEdit_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
-        assertNull(userRepository.findByUsername("testUsername"));
-
+        assertNull(userRepository.findByUsername("testUsername"));            //                                                when you want to edit the user
+                                                                              //                                                but it does not exist
         User testUser = null;
 
         // check that an error is thrown
         String exceptionMessage = "User not found";
-        //String exceptionMessage = "The username provided is not unique. Therefore, the user could not be created!";
+
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(testUser), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
     }
-
-
-
 
 
 }
