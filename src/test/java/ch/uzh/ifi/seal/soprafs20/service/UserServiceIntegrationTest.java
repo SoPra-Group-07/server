@@ -86,7 +86,7 @@ public class UserServiceIntegrationTest {
     @Test
     public void UserDoesNotExist_soYouCannotViewProfile_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
         assertNull(userRepository.findByUsername("testUsername"));                   //                                                When you want to view the users profile
-                                                                                     //                                                but it does not exist.
+                                                                                     //                                                but it does not exist
         User testUser = null;
 
         // check that an error is thrown
