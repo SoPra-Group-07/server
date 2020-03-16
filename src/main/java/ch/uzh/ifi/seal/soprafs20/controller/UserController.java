@@ -74,7 +74,7 @@ public class UserController {
                 if(userService.isAlreadyLoggedIn(userInput.getUsername())){                        //Checks if the user is already ONLINE (maybe from another device) and if so
                     throw new ResponseStatusException(HttpStatus.NO_CONTENT);                      // it sends back the status code 204
                 } else {
-                    User updatedUser = userService.login(userInput);                               //updates user-object, e.g., UserStatus is set to ONLINE, etc...
+                    User updatedUser = userService.login(userInput);                               //updates user-object, e.g., UserStatus is set to ONLINE,  etc...
                     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
                 }
 
