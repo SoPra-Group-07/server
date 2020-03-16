@@ -105,7 +105,7 @@ public class UserController {
     public UserGetDTO editUser(@RequestBody UserEditDTO editUser) {
         User userToEdit = DTOMapper.INSTANCE.convertUserEditDTOtoEntity(editUser);
 
-        User editedUser = userService.edit(userToEdit);                                    //edit(...) returns edited user
+        User editedUser = userService.edit(userToEdit);                                    //edit(...) returns edited user!!!
 
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(editedUser);
     }
