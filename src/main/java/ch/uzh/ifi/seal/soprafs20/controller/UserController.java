@@ -117,7 +117,7 @@ public class UserController {
     public UserGetDTO logout(@RequestBody UserTokenDTO tokenDTO){
         User userInput = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(tokenDTO);
 
-        User loggedOutUser = userService.logout(userInput);                         //Finds user thanks to the token, sets his status to OFFLINE and sets the token equal null
+        User loggedOutUser = userService.logout(userInput);                         //Finds user thanks to the token, sets his status to OFFLINE and sets the token equal null!
 
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loggedOutUser);
     }
