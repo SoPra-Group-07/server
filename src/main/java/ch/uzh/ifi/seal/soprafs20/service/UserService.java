@@ -154,5 +154,5 @@ public class UserService {
         userByToken.setToken(null);
 
         return userByToken;
-    } //
+    } ////
 }
