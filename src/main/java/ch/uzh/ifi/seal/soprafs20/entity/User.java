@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+//testee
 /**
  * Internal User Representation
  * This class composes the internal representation of the user and defines how the user is stored in the database.
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+//hallo
 	@Id
 	@GeneratedValue
 	private Long id;
