@@ -13,6 +13,7 @@ public class UserGetDTO {
     private LocalDate date;
     private String birth;
     private String token;
+    private double highScore;
 
     public Long getId() {
         return id;
@@ -69,5 +70,11 @@ public class UserGetDTO {
         this.birth = birth;
     }
 
+    public double getHighScore() {
+        return highScore;
+    }
 
+    public void setHighScore(double highScore) {
+        this.highScore = highScore;
+    }
 }

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.Leaderboard;
@@ -27,7 +28,7 @@ public class LeaderboardController {
     @GetMapping("/leaderboards")
     @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
     @ResponseBody
-    public ArrayList<UserGetDTO> getAllUsersFromLeaderboard() {
+    public ArrayList<LeaderboardDTO> getAllUsersFromLeaderboard() {
 
 
         leaderboardService.fillUsers();
@@ -36,13 +37,13 @@ public class LeaderboardController {
         // fetch all users in the internal representation
 
         ArrayList<User> users = leaderboardService.getUsers();                                  //creates list with all users in internal representation
-        ArrayList<UserGetDTO> userGetDTOs = new ArrayList<>();
+        ArrayList<LeaderboardDTO> leaderboardDTOS = new ArrayList<>();
 
         // convert each user to the API representation
         for (User user : users) {
-            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+            leaderboardDTOS.add(DTOMapper.INSTANCE.convertEntityToLeaderboardDTO(user));
         }
-        return userGetDTOs;
+        return leaderboardDTOS;
     }
 
 }
