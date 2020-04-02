@@ -15,8 +15,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.time.LocalDate;
@@ -45,7 +49,7 @@ public class LeaderboardControllerTest {
     private LeaderboardService leaderboardService;
 
     @Test
-    public void xy() throws Exception {        //  --------------------------------------------------->   GET "/users" test
+    public void givenUsers_whenGetLeaderboard_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
         // given
         User user1 = new User();
         user1.setPassword("testPassword");
@@ -77,18 +81,30 @@ public class LeaderboardControllerTest {
         user3.setBirth("00-00-0000");
         user3.setHighScore(3.1);
 
-        //List<User> allUsers = Arrays.asList(user1, user2, user3);
-        List<User> allUsers = Collections.singletonList(user1);
+        ArrayList<User> allUsers = new ArrayList<User>();
+        allUsers.add(user1);
+        allUsers.add(user2);
+        allUsers.add(user3);
 
-        // this mocks the UserService -> we define above what the userService should return when getUsers() is called
-        given(leaderboardService.getUsers()).willReturn((ArrayList<User>) allUsers);
+
+        // this mocks the LeaderboardService -> we define above what the userService should return when getUsers() is called
+        given(leaderboardService.getUsers()).willReturn(allUsers);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/leaderboards").contentType(MediaType.APPLICATION_JSON);    //=give it to me as JSON
 
+        /*
+        MvcResult result = mockMvc.perform(getRequest).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        //assertEquals(HttpStatus.OK.value(), response.getStatus());
+        response.getErrorMessage();
+        System.out.println(response.getContentAsString());
+        System.out.println(result);
+         */
+
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
                 .andExpect(jsonPath("$[0].username", is(user1.getUsername())))         // is("testPassword") would work as well
                 .andExpect(jsonPath("$[0].highScore", is(user1.getHighScore())))
@@ -98,6 +114,7 @@ public class LeaderboardControllerTest {
                 .andExpect(jsonPath("$[2].highScore", is(user3.getHighScore())))
               ;
     }
+
 
 
 
