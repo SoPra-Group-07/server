@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Comparator;
 
 //testee
 /**
@@ -16,9 +17,9 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "USER")
-public class User implements Serializable {
+public class User implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 //hallo
 	@Id
 	@GeneratedValue
@@ -43,7 +44,7 @@ public class User implements Serializable {
     private String dateOfBirth;
 
     @Column
-    private float highScore;
+    private double highScore;
 
     @Column
     private Player player;
@@ -72,11 +73,11 @@ public class User implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public float getHighScore() {
+    public double getHighScore() {
         return highScore;
     }
 
-    public void setHighScore(float highScore) {
+    public void setHighScore(double highScore) {
         this.highScore = highScore;
     }
 
@@ -143,4 +144,18 @@ public class User implements Serializable {
     public void setBirth(String birth) {
         this.dateOfBirth = birth;
     }
+
+
+    public static Comparator<User> userHighscoreComparator = new Comparator<User>() {
+        @Override
+        public int compare(User userOne, User userTwo) {
+            if (userOne.getHighScore() > userTwo.getHighScore()){
+                return 1; }
+            else if (userOne.getHighScore() < userTwo.getHighScore()){
+                return -1;}
+            return 0; }
+    };
+
+
+
 }

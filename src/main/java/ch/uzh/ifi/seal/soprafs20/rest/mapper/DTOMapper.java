@@ -1,10 +1,11 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
 import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserEditDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserTokenDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -45,4 +46,9 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "birth", target = "birth")
     User convertUserEditDTOtoEntity(UserEditDTO userEditDTO);
+
+    //LEADERBOARD!!!
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "highScore", target = "highScore")
+    LeaderboardDTO convertEntityToLeaderboardDTO(User user);
 }
