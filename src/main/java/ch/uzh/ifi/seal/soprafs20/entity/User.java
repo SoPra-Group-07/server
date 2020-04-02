@@ -22,7 +22,7 @@ public class User implements Serializable {
 //hallo
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long userId;
 	
 	@Column(nullable = false) 
 	private String password;
@@ -37,18 +37,63 @@ public class User implements Serializable {
     private UserStatus status;
 
     @Column
-    private LocalDate date;
+    private LocalDate creationDate;
 
     @Column
-    private String birth;
+    private String dateOfBirth;
 
+    @Column
+    private float highScore;
+
+    @Column
+    private Player player;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public float getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(float highScore) {
+        this.highScore = highScore;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     public Long getId() {
-		return id;
+		return userId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.userId = id;
 	}
 
 	public String getPassword() {
@@ -84,18 +129,18 @@ public class User implements Serializable {
     }
 
     public LocalDate getDate() {
-        return date;
+        return creationDate;
     }
 
     public void setDate(LocalDate date) {
-        this.date = date;
+        this.creationDate = date;
     }
 
     public String getBirth() {
-        return birth;
+        return dateOfBirth;
     }
 
     public void setBirth(String birth) {
-        this.birth = birth;
+        this.dateOfBirth = birth;
     }
 }
