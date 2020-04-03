@@ -46,8 +46,20 @@ public class User implements Serializable{
     @Column
     private double highScore;
 
+    // Todo: check relations
     @OneToOne
     private Player player;
+
+    @Column
+    private int numberOfGamesPlayed;
+
+    public int getNumberOfGamesPlayed() {
+        return numberOfGamesPlayed;
+    }
+
+    public void setNumberOfGamesPlayed(int numberOfGamesPlayed) {
+        this.numberOfGamesPlayed = numberOfGamesPlayed;
+    }
 
     public Long getUserId() {
         return userId;

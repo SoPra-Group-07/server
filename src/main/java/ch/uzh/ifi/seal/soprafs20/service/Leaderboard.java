@@ -12,7 +12,7 @@ public class Leaderboard {
 
     private Long leaderboardId;
 
-    //only users that played a game!!
+    // Todo: only users that played a game!!
     private ArrayList<User> users;
 
 

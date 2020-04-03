@@ -31,6 +31,8 @@ public class LeaderboardServiceTest {
     @InjectMocks
     User user3;
     @InjectMocks
+    User user4;
+    @InjectMocks
     Leaderboard leaderboard;
     @InjectMocks
     LeaderboardService leaderboardService;
@@ -51,6 +53,7 @@ public class LeaderboardServiceTest {
         user1.setDate(LocalDate.now());
         user1.setBirth("00-00-0000");
         user1.setHighScore(5.3);
+        user1.setNumberOfGamesPlayed(1);
 
 
         user2.setPassword("testPassword");
@@ -61,6 +64,7 @@ public class LeaderboardServiceTest {
         user2.setDate(LocalDate.now());
         user2.setBirth("00-00-0000");
         user2.setHighScore(8.1);
+        user2.setNumberOfGamesPlayed(10);
 
         user3.setPassword("testPassword");
         user3.setUsername("User3");
@@ -70,30 +74,72 @@ public class LeaderboardServiceTest {
         user3.setDate(LocalDate.now());
         user3.setBirth("00-00-0000");
         user3.setHighScore(3.1);
+        user3.setNumberOfGamesPlayed(5);
 
-        List<User> allUsers = new LinkedList<User>();
+        user4.setPassword("testPassword");
+        user4.setUsername("User4");
+        user4.setStatus(UserStatus.OFFLINE);
+        user4.setId(1L);
+        user4.setToken("2dfc-g59k");
+        user4.setDate(LocalDate.now());
+        user4.setBirth("00-00-0000");
+
+        LinkedList<User> allUsers = new LinkedList<User>();
         allUsers.add(user1);
         allUsers.add(user2);
         allUsers.add(user3);
+        allUsers.add(user4);
 
         // when -> any object is being save in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.findAll()).thenReturn(allUsers);
     }
 
     @Test
+    /***
+     * this test makes sure the SortByHighsore method sorts the users array in the Leaderboard class in DESCENDING order
+     *
+     */
     public void testSortByHighscore(){
         leaderboardService.fillUsers();
         leaderboardService.sortByHighScore();
 
         ArrayList<User> users = leaderboard.getUsers();
-        assertEquals(users.get(0), user2);
-        assertEquals(users.get(1), user1);
-        assertEquals(users.get(2), user3);
+        assertEquals(user2, users.get(0));
+        assertEquals(user1, users.get(1));
+
+        assertEquals(3, users.size());
+        assertFalse(users.contains(user4));
 
         assertTrue(users.get(0).getHighScore() >= users.get(1).getHighScore());
         assertTrue(users.get(0).getHighScore() >= users.get(2).getHighScore());
         assertTrue(users.get(1).getHighScore() >= users.get(2).getHighScore());
-
     }
 
+    @Test
+    /***
+     * this makes sure the method fillUsers only adds Users with attribute numberOfGamesPlayed > 0 to the
+     * users ArrayList in the Leaderboard class
+     */
+    public void TestfillUsers(){
+        leaderboardService.fillUsers();
+
+        ArrayList<User> users = leaderboard.getUsers();
+        assertEquals(3, users.size());
+        assertFalse(users.contains(user4));
+    }
+
+    @Test
+    /***
+     *  Test getUsers()
+     */
+    public void testGetUsers() {
+        List<User> allUsers = new ArrayList<>();
+        allUsers.add(user1);
+        allUsers.add(user2);
+        allUsers.add(user3);
+
+        leaderboardService.fillUsers();
+
+        assertEquals(allUsers, leaderboardService.getUsers());
+    }
 }

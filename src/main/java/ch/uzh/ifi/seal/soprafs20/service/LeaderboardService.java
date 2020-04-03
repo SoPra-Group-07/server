@@ -32,8 +32,8 @@ public class LeaderboardService {
         this.userRepository = userRepository;
     }
 
-
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    // Todo: delete logger
+    //private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private static Leaderboard leaderboard = Leaderboard.getInstance();
 
@@ -47,8 +47,17 @@ public class LeaderboardService {
 
     public void fillUsers(){
         List<User> linkedList = userRepository.findAll();
-        ArrayList<User> list = new ArrayList<User>(linkedList);
+        ArrayList<User> list = new ArrayList<>();
+
+        // add only users who played a game
+        for (User user : linkedList) {
+            if (user.getNumberOfGamesPlayed() > 0){
+                list.add(user);
+            }
+        }
+        
         leaderboard.setUsers(list);
+
     }
 
 }
