@@ -96,7 +96,8 @@ public class LeaderboardServiceTest {
 
     @Test
     /***
-     * this test makes sure the SortByHighsore method sorts the users array in the Leaderboard class in DESCENDING order
+     * this test makes sure the SortByHighsore method sorts the users array in the
+     * Leaderboard class in DESCENDING order
      *
      */
     public void testSortByHighscore(){
@@ -117,8 +118,8 @@ public class LeaderboardServiceTest {
 
     @Test
     /***
-     * this makes sure the method fillUsers only adds Users with attribute numberOfGamesPlayed > 0 to the
-     * users ArrayList in the Leaderboard class
+     * this makes sure the method fillUsers only adds Users with attribute
+     * numberOfGamesPlayed > 0 to the users ArrayList in the Leaderboard class
      */
     public void TestfillUsers(){
         leaderboardService.fillUsers();
