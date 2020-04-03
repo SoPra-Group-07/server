@@ -111,14 +111,8 @@ public class LeaderboardControllerTest {
                 .andExpect(jsonPath("$[1].username", is(user2.getUsername())))         // is("testPassword") would work as well
                 .andExpect(jsonPath("$[1].highScore", is(user2.getHighScore())))
                 .andExpect(jsonPath("$[2].username", is(user3.getUsername())))         // is("testPassword") would work as well
-                .andExpect(jsonPath("$[2].highScore", is(user3.getHighScore())))
-              ;
+                .andExpect(jsonPath("$[2].highScore", is(user3.getHighScore())));
     }
-
-
-
-
-
 
 
 

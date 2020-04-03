@@ -46,7 +46,7 @@ public class User implements Serializable{
     @Column
     private double highScore;
 
-    @Column
+    @OneToOne
     private Player player;
 
     public Long getUserId() {
@@ -150,9 +150,9 @@ public class User implements Serializable{
         @Override
         public int compare(User userOne, User userTwo) {
             if (userOne.getHighScore() > userTwo.getHighScore()){
-                return 1; }
+                return -1; }
             else if (userOne.getHighScore() < userTwo.getHighScore()){
-                return -1;}
+                return 1;}
             return 0; }
     };
 

@@ -1,22 +1,25 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
-import org.mapstruct.BeanMapping;
-import org.springframework.context.annotation.Bean;
-
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
+import java.util.UUID;
+
 
 
 public class Leaderboard {
     private static Leaderboard leaderboard;
     //private static LeaderboardService leaderboardService = new LeaderboardService(UserRepository);
 
-    private Leaderboard() { }
+    private Long leaderboardId;
+
+    //only users that played a game!!
+    private ArrayList<User> users;
+
+
+    private Leaderboard() {
+        this.leaderboardId = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        users = new ArrayList<User>();
+    }
 
     public static Leaderboard getInstance(){
         if (leaderboard == null){
@@ -33,11 +36,6 @@ public class Leaderboard {
         return leaderboard;
     }
 
-
-    private Long leaderboardId;
-
-    //only users that played a game!!
-    private ArrayList<User> users;
 
 
     public Long getLeaderboardId() {

@@ -14,10 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * User Service
@@ -49,7 +46,8 @@ public class LeaderboardService {
     }
 
     public void fillUsers(){
-        ArrayList<User> list = ((ArrayList<User>)userRepository.findAll());
+        List<User> linkedList = userRepository.findAll();
+        ArrayList<User> list = new ArrayList<User>(linkedList);
         leaderboard.setUsers(list);
     }
 
