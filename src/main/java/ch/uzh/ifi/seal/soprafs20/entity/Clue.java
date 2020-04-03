@@ -109,4 +109,7 @@ public class Clue implements Serializable {
     public void setClue(String clue) {
         this.clue = clue;
     }
+
+
+
 }
