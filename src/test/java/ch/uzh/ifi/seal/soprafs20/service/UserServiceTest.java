@@ -217,18 +217,14 @@ public class UserServiceTest {
         notExistingUser.setPassword("notHere");
         notExistingUser.setUsername("NoName");
 
-
-
         // throw an exception if an user is not found in the userRepository
-        // Todo: does not work, gives NullPointerException instead of ResponseStatusException, why??
-        /*Mockito.when(userRepository.getOne(notExistingUser.getId())).thenReturn(null);
+        Mockito.when(userRepository.getOne(notExistingUser.getId())).thenReturn(null);
 
 
         String exceptionMessage = "User not found";
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.edit(notExistingUser), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        */
     }
 
 
@@ -253,8 +249,8 @@ public class UserServiceTest {
         assertEquals(exceptionMessage, exception.getReason());
     }
 
-*/
 
+*/
 
     /**
      * tests that the method createUser() throws an Responsestatusexcepition if one tries to
