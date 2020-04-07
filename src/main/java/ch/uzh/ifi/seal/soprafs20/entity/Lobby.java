@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,10 +23,10 @@ public class Lobby implements Serializable {
     @GeneratedValue
     private Long lobbyId;
 
-    @Column()
-    private ArrayList<Player> players;
+    @OneToMany
+    private List<Player> players;
 
-    @Column()
+    @OneToOne
     private Player adminplayer;
 
 
@@ -37,11 +38,11 @@ public class Lobby implements Serializable {
         this.lobbyId = lobbyId;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 

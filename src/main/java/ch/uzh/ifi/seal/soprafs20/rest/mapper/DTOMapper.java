@@ -1,6 +1,8 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
+import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
@@ -52,4 +54,11 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "highScore", target = "highScore")
     LeaderboardDTO convertEntityToLeaderboardDTO(User user);
+
+    //GAME!!!
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "gameName", target = "gameName")
+    @Mapping(source = "numberOfPlayers", target = "numberOfPlayers")
+    GameGetOpenDTO convertEntityToGameGetOpenDTO(Game game);
+
 }
