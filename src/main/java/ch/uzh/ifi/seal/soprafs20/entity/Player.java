@@ -1,47 +1,38 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
+import org.mapstruct.BeanMapping;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Internal Player Representation
- * This class composes the internal representation of the player and defines how the game is stored in the database.
- * Every variable will be mapped into a database field with the @Column annotation
- * - nullable = false -> this cannot be left empty
- * - unique = true -> this value must be unqiue across the database -> composes the primary key
+ *
  */
 @Entity
-@Table(name = "Player")
-public class Player implements Serializable {
+public abstract class Player {
+    public Player(){
+        this.playerId = id;
+        id++;
+        this.currentScore = 0;
+    }
 
-    private static final long serialVersionUID = 1L;
-
+    private static long id = 1;
     @Id
-    @GeneratedValue
     private Long playerId;
-
-    @Column(nullable = false, unique = true)
     private String playerName;
-
-    @Column
     private boolean isGuessingPlayer;
-
-    @ManyToOne
-    private Game game;
-
-    @Column
     private float currentScore;
 
-    @OneToOne
-    private User user;
-
-
+    // Todo: return void
+    public abstract Clue giveClue(String word);
 
     public Long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(Long gameId) {
+    public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 
@@ -49,39 +40,23 @@ public class Player implements Serializable {
         return playerName;
     }
 
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
     public boolean isGuessingPlayer() {
         return isGuessingPlayer;
     }
 
-    public Game getGame() {
-        return game;
+    public void setIsGuessingPlayer(boolean guessingPlayer) {
+        isGuessingPlayer = guessingPlayer;
     }
 
     public float getCurrentScore() {
         return currentScore;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
-    public void setGuessingPlayer(boolean guessingPlayer) {
-        isGuessingPlayer = guessingPlayer;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     public void setCurrentScore(float currentScore) {
         this.currentScore = currentScore;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
+import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
@@ -27,12 +28,12 @@ public class GameController {
     }
 
     // Todo: check path
-    @GetMapping("/games/CREATED")
+    @GetMapping("/games")
     @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
     @ResponseBody
-    public List<GameGetOpenDTO> getOpenGames() {
+    public List<GameGetOpenDTO> getGames(@RequestParam GameStatus gameStatus) {
         // fetch all games in the internal representation
-        List<Game> games = gameService.getOpenGames();                                  //creates list with all games in internal representation
+        List<Game> games = gameService.getGameByGameStatus(gameStatus);                                  //creates list with all games in internal representation
         List<GameGetOpenDTO> userGetDTOs = new ArrayList<>();
 
         // convert each game to the API representation
@@ -46,7 +47,7 @@ public class GameController {
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public GameDTO createNewGame(@ResponseBody GamePostDTO gamePostDTO){
+    public GameDTO createNewGame(@RequestBody GamePostDTO gamePostDTO){
         Game gameInput = DTOMapper.INSTANCE.convertGamePostDTOToEntity(gamePostDTO);
         Game newGame = gameService.createNewGame(gameInput);
         return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);

@@ -2,11 +2,9 @@ package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
-import ch.uzh.ifi.seal.soprafs20.entity.Card;
-import ch.uzh.ifi.seal.soprafs20.entity.Game;
-import ch.uzh.ifi.seal.soprafs20.entity.Player;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
+import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.slf4j.Logger;
@@ -33,14 +31,19 @@ public class GameService {
     private final Logger log = LoggerFactory.getLogger(GameService.class);
 
     private final GameRepository gameRepository;
+    private final UserRepository userRepository;
+    private final CardRepository cardRepository;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository) {
         this.gameRepository = gameRepository;
-
+        this.userRepository = userRepository;
+        this.cardRepository = cardRepository;
     }
 
-    public List<Game> getOpenGames() { return this.gameRepository.findAllByGameStatus(GameStatus.CREATED);}
+    public List<Game> getGameByGameStatus(GameStatus gameStatus) {
+        return this.gameRepository.findAllByGameStatus(gameStatus);
+    }
 
     public Game createNewGame(Game gameInput) {
         Player adminPlayer = createPlayerByUserId(gameInput.getAdminPlayerId());
@@ -52,23 +55,24 @@ public class GameService {
         game.setGameStatus(GameStatus.CREATED);
         game.setActualGameRoundIndex(0);
         game.setCards(getThirteenUniqueCards());
-        addPlayerToGame(adminPlayer, game.getGameId());
+        game.setPlayers(new ArrayList<>());
+        GameService.addPlayerToGame(adminPlayer, game);
 
         if (game.getHasBot()){
-            game.setNumberOfPlayers(2);
-            // Todo: abstractPlayer
-            AbstractPlayer bot = new Bot();
-            addPlayerToGame(bot, game.getGameId());
+            Player bot = createBot();
+
+            addPlayerToGame(bot, game);
         }
-        else { game.setNumberOfPlayers(1); }
+        game.setNumberOfPlayers(game.getPlayers().size());
 
-
+        // Todo: foreign Key problem -> gameId starts at 2...
+        //gameRepository.save(game);
+        //gameRepository.flush();
+        //return gameRepository.findByGameName(game.getGameName());
         return game;
     }
 
-    private void addPlayerToGame(Player playerToAdd, long gameId){
-        Game game = this.gameRepository.findByGameId(gameId);
-
+    private static void addPlayerToGame(Player playerToAdd, Game game){
         List<Player> playerList = game.getPlayers();
         playerList.add(playerToAdd);
         game.setPlayers(playerList);
@@ -78,7 +82,8 @@ public class GameService {
         List<Card> cards = new ArrayList<>();
 
         for (int nr : getRandomUniqueCardIds()) {
-            Card card = cardRepository.getById(nr);
+            Card card = cardRepository.findByCardId((long) nr);
+            // Todo: exception if card == null
             cards.add(card);
         }
         return cards;
@@ -96,5 +101,32 @@ public class GameService {
             generated.add(next);
         }
         return generated;
+    }
+
+    private Player createPlayerByUserId(long userId){
+        User user = userRepository.findByUserId(userId);
+        Player player = new PhysicalPlayer(user);
+        player.setPlayerName(user.getUsername());
+        return player;
+    }
+
+    private Player createBot() {
+        List<String> fancyNames = new ArrayList<>(Arrays.asList("Jenny","Roy","Aquaman","JanTheNeck","Bernie","Hansi","Lars","Elaine","Alex","Renato","Chat","Christiane","Patrick","Andy","Thomas","Egon","Burkhard","Michael","Alberto","Ralph"));
+        Random random = new Random();
+        int idx = random.nextInt(fancyNames.size()-1);
+        boolean friendly = random.nextBoolean();
+        if (friendly) {
+            Player bot = new FriendlyBot();
+            bot.setPlayerName(fancyNames.get(idx));
+            bot.setIsGuessingPlayer(false);
+            return bot;
+
+        }
+        else {
+            Player bot = new MaliciousBot();
+            bot.setPlayerName(fancyNames.get(idx));
+            bot.setIsGuessingPlayer(false);
+            return bot;
+        }
     }
 }

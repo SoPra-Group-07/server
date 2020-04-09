@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,7 +32,8 @@ public class Game implements Serializable {
     @Column
     private GameStatus gameStatus;
 
-    @OneToMany(mappedBy = "game")
+    @Column
+    @ElementCollection(targetClass = Player.class)
     private List<Player> players;
 
     @Column

@@ -23,11 +23,12 @@ public class Lobby implements Serializable {
     @GeneratedValue
     private Long lobbyId;
 
-    @OneToMany
+    @Column
+    @ElementCollection(targetClass = Player.class)
     private List<Player> players;
 
-    @OneToOne
-    private Player adminplayer;
+    @Column
+    private long adminPlayerId;
 
 
     public Long getLobbyId() {
@@ -46,11 +47,11 @@ public class Lobby implements Serializable {
         this.players = players;
     }
 
-    public Player getAdminplayer() {
-        return adminplayer;
+    public long getAdminPlayerId() {
+        return adminPlayerId;
     }
 
-    public void setAdminplayer(Player adminplayer) {
-        this.adminplayer = adminplayer;
+    public void setAdminPlayerId(long adminPlayerId) {
+        this.adminPlayerId = adminPlayerId;
     }
 }

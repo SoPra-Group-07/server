@@ -20,7 +20,7 @@ import java.util.Comparator;
 public class User implements Serializable{
 
     private static final long serialVersionUID = 1L;
-//hallo
+
 	@Id
 	@GeneratedValue
 	private Long userId;
@@ -45,10 +45,6 @@ public class User implements Serializable{
 
     @Column
     private double highScore;
-
-    // Todo: check relations
-    @OneToOne
-    private Player player;
 
     @Column
     private int numberOfGamesPlayed;
@@ -91,14 +87,6 @@ public class User implements Serializable{
 
     public void setHighScore(double highScore) {
         this.highScore = highScore;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public Long getId() {

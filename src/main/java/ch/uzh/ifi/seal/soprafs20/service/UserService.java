@@ -115,8 +115,7 @@ public class UserService {
 
 
     public User getUserById(long id) {                       // <-- returns user found through its Id.
-        User userById = userRepository.findById(id);
-        return userById;
+        return userRepository.findByUserId(id);
     }
 
     public Boolean userEqualsNull(User user){                                             // <-- Used in both cases, when you want to get a user and when you want

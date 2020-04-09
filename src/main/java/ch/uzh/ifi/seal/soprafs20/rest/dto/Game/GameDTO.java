@@ -17,7 +17,7 @@ public class GameDTO {
     private int actualGameRoundIndex;
     private List<Card> cards;
     private boolean hasBot;
-    private long adminPlayer;
+    private long adminPlayerId;
 
     public Long getGameId() {
         return gameId;
@@ -83,11 +83,11 @@ public class GameDTO {
         this.hasBot = hasBot;
     }
 
-    public long getAdminPlayer() {
-        return adminPlayer;
+    public long getAdminPlayerId() {
+        return adminPlayerId;
     }
 
-    public void setAdminPlayer(long adminPlayer) {
-        this.adminPlayer = adminPlayer;
+    public void setAdminPlayerId(long adminPlayerId) {
+        this.adminPlayerId = adminPlayerId;
     }
 }
