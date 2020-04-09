@@ -1,50 +1,23 @@
-package ch.uzh.ifi.seal.soprafs20.entity;
+package ch.uzh.ifi.seal.soprafs20.rest.dto.Game;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Card;
+import ch.uzh.ifi.seal.soprafs20.entity.Player;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
 import java.util.List;
 
-
-/**
- * Internal Game Representation
- * This class composes the internal representation of the game and defines how the game is stored in the database.
- * Every variable will be mapped into a database field with the @Column annotation
- * - nullable = false -> this cannot be left empty
- * - unique = true -> this value must be unqiue across the database -> composes the primary key
- */
-@Entity
-@Table(name = "GAME")
-public class Game implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
+public class GameDTO {
     private Long gameId;
-
-    @Column(nullable = false)
     private String gameName;
-
-    @Column
     private GameStatus gameStatus;
-
-    @OneToMany(mappedBy = "game")
     private List<Player> players;
-
-    @Column
     private int numberOfPlayers;
-
-    @Column
     private int actualGameRoundIndex;
-
-    @OneToMany
     private List<Card> cards;
-
     private boolean hasBot;
-    private long adminPlayerId;
+    private long adminPlayer;
 
     public Long getGameId() {
         return gameId;
@@ -102,7 +75,7 @@ public class Game implements Serializable {
         this.cards = cards;
     }
 
-    public boolean getHasBot() {
+    public boolean isHasBot() {
         return hasBot;
     }
 
@@ -110,11 +83,11 @@ public class Game implements Serializable {
         this.hasBot = hasBot;
     }
 
-    public long getAdminPlayerId() {
-        return adminPlayerId;
+    public long getAdminPlayer() {
+        return adminPlayer;
     }
 
-    public void setAdminPlayerId(long adminPlayerId) {
-        this.adminPlayerId = adminPlayerId;
+    public void setAdminPlayer(long adminPlayer) {
+        this.adminPlayer = adminPlayer;
     }
 }

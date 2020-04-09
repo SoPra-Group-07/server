@@ -1,8 +1,13 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
+import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Card;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
+import ch.uzh.ifi.seal.soprafs20.entity.Player;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
@@ -10,6 +15,8 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 /**
  * DTOMapper
@@ -61,4 +68,20 @@ public interface DTOMapper {
     @Mapping(source = "numberOfPlayers", target = "numberOfPlayers")
     GameGetOpenDTO convertEntityToGameGetOpenDTO(Game game);
 
+    @Mapping(source = "hasBot", target = "hasBot")
+    @Mapping(source = "gameName", target = "gameName")
+    @Mapping(source = "adminPlayerId", target = "adminPlayerId")
+    Game convertGamePostDTOToEntity(GamePostDTO gamePostDTO);
+
+    @Mapping(source = "hasBot", target = "hasBot")
+    @Mapping(source = "gameName", target = "gameName")
+    @Mapping(source = "adminPlayerId", target = "adminPlayerId")
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "gameStatus", target = "gameStatus")
+    @Mapping(source = "players", target = "players")
+    @Mapping(source = "numberOfPlayers", target = "numberOfPlayers")
+    @Mapping(source = "actualGameRoundIndex", target = "actualGameRoundIndex")
+    @Mapping(source = "cards", target = "cards")
+    @Mapping(source = "cards", target = "cards")
+    GameDTO convertEntityToGameDTO(Game game);
 }

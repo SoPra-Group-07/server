@@ -21,7 +21,8 @@ public class Card implements Serializable {
     @GeneratedValue
     private Long cardId;
 
-    @Column()
+    // Todo: save arrayList as attribute?
+    @Column
     private ArrayList<String> words;
 
 

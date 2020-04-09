@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
@@ -40,10 +42,14 @@ public class GameController {
         return userGetDTOs;
     }
 
-    @PostMapping("games")
+
+    @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public List<GamePostDTO> createNewGame(){
-        gameService.createNewGame();
+    public GameDTO createNewGame(@ResponseBody GamePostDTO gamePostDTO){
+        Game gameInput = DTOMapper.INSTANCE.convertGamePostDTOToEntity(gamePostDTO);
+        Game newGame = gameService.createNewGame(gameInput);
+        return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
     }
+
 }

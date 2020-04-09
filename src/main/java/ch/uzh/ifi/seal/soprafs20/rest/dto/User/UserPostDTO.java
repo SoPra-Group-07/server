@@ -3,7 +3,6 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto.User;
 public class UserPostDTO {
 
     private String password;
-
     private String username;
 
     public String getPassword() {

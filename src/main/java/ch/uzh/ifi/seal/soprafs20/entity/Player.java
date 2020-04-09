@@ -23,16 +23,16 @@ public class Player implements Serializable {
     @Column(nullable = false, unique = true)
     private String playerName;
 
-    @Column()
+    @Column
     private boolean isGuessingPlayer;
 
-    @Column()
+    @ManyToOne
     private Game game;
 
-    @Column()
+    @Column
     private float currentScore;
 
-    @Column
+    @OneToOne
     private User user;
 
 
