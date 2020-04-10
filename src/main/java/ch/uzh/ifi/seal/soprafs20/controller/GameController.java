@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    // Todo: check path
+    // Todo: check path   -> i think its workin :D
     @GetMapping("/games")
     @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
     @ResponseBody
@@ -51,6 +52,16 @@ public class GameController {
         Game gameInput = DTOMapper.INSTANCE.convertGamePostDTOToEntity(gamePostDTO);
         Game newGame = gameService.createNewGame(gameInput);
         return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
+    }
+
+    @PutMapping("/games")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameDTO joinAGame(@RequestBody GamePutDTO gamePutDTO){
+        Game gameInput = DTOMapper.INSTANCE.convertGamePutDTOToEntity(gamePutDTO);
+        Game joinedGame = gameService.joinGame(gameInput.getGameId(), gameInput.getAdminPlayerId());
+        return DTOMapper.INSTANCE.convertEntityToGameDTO(joinedGame);
+
     }
 
 }

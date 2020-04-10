@@ -24,8 +24,7 @@ public class Lobby implements Serializable {
     private Long lobbyId;
 
     @Column
-    @ElementCollection(targetClass = Player.class)
-    private List<Player> players;
+    private ArrayList<Player> players;
 
     @Column
     private long adminPlayerId;
@@ -39,11 +38,11 @@ public class Lobby implements Serializable {
         this.lobbyId = lobbyId;
     }
 
-    public List<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 

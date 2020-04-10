@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
@@ -73,6 +74,11 @@ public interface DTOMapper {
     @Mapping(source = "adminPlayerId", target = "adminPlayerId")
     Game convertGamePostDTOToEntity(GamePostDTO gamePostDTO);
 
+
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "userId", target = "adminPlayerId")
+    Game convertGamePutDTOToEntity(GamePutDTO gamePutDTO);
+
     @Mapping(source = "hasBot", target = "hasBot")
     @Mapping(source = "gameName", target = "gameName")
     @Mapping(source = "adminPlayerId", target = "adminPlayerId")
@@ -83,4 +89,6 @@ public interface DTOMapper {
     @Mapping(source = "actualGameRoundIndex", target = "actualGameRoundIndex")
     @Mapping(source = "cards", target = "cards")
     GameDTO convertEntityToGameDTO(Game game);
+
+
 }

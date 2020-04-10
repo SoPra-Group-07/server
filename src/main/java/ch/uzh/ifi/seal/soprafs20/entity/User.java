@@ -23,6 +23,7 @@ public class User implements Serializable{
 
 	@Id
 	@GeneratedValue
+    @Column(name = "user_id")
 	private Long userId;
 	
 	@Column(nullable = false) 
@@ -48,6 +49,7 @@ public class User implements Serializable{
 
     @Column
     private int numberOfGamesPlayed;
+
 
     public int getNumberOfGamesPlayed() {
         return numberOfGamesPlayed;

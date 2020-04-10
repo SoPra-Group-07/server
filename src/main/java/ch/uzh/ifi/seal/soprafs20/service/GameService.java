@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
 import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -33,12 +35,15 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
+    private final PlayerRepository playerRepository;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
+                       @Qualifier("playerRepository") PlayerRepository playerRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
+        this.playerRepository = playerRepository;
     }
 
     public List<Game> getGameByGameStatus(GameStatus gameStatus) {
@@ -46,7 +51,6 @@ public class GameService {
     }
 
     public Game createNewGame(Game gameInput) {
-        Player adminPlayer = createPlayerByUserId(gameInput.getAdminPlayerId());
 
         Game game = new Game();
         game.setGameName(gameInput.getGameName());
@@ -55,35 +59,40 @@ public class GameService {
         game.setGameStatus(GameStatus.CREATED);
         game.setActualGameRoundIndex(0);
         game.setCards(getThirteenUniqueCards());
-        game.setPlayers(new ArrayList<>());
-        GameService.addPlayerToGame(adminPlayer, game);
+
+        game = gameRepository.save(game);
+        gameRepository.flush();
+
+        Player adminPlayer = createPlayerByUserId(gameInput.getAdminPlayerId(), game);
+        addPlayerToGame(adminPlayer, game);
 
         if (game.getHasBot()){
-            Player bot = createBot();
-
+            Player bot = createBot(game);
+            bot = playerRepository.save(bot);
+            playerRepository.flush();
             addPlayerToGame(bot, game);
         }
         game.setNumberOfPlayers(game.getPlayers().size());
-
-        // Todo: foreign Key problem -> gameId starts at 2...
-        //gameRepository.save(game);
-        //gameRepository.flush();
-        //return gameRepository.findByGameName(game.getGameName());
         return game;
+
     }
 
-    private static void addPlayerToGame(Player playerToAdd, Game game){
-        List<Player> playerList = game.getPlayers();
-        playerList.add(playerToAdd);
-        game.setPlayers(playerList);
+    private void addPlayerToGame(Player playerToAdd, Game game){
+        if (game.getNumberOfPlayers() < 8){
+            game.addPlayerToGame(playerToAdd); }
+
+        else{
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already full! Join another game."); }
     }
 
     private List<Card> getThirteenUniqueCards(){
         List<Card> cards = new ArrayList<>();
 
         for (int nr : getRandomUniqueCardIds()) {
+            //
             Card card = cardRepository.findByCardId((long) nr);
             // Todo: exception if card == null
+            //Card card = new Card();
             cards.add(card);
         }
         return cards;
@@ -103,30 +112,47 @@ public class GameService {
         return generated;
     }
 
-    private Player createPlayerByUserId(long userId){
+    private Player createPlayerByUserId(long userId, Game game){
         User user = userRepository.findByUserId(userId);
-        Player player = new PhysicalPlayer(user);
-        player.setPlayerName(user.getUsername());
+        Player player = new PhysicalPlayer();
+        player.setUser(user);
+        player.setGameId(game.getGameId());
+        player = playerRepository.save(player);
+        playerRepository.flush();
         return player;
     }
 
-    private Player createBot() {
+    private Player createBot(Game game) {
         List<String> fancyNames = new ArrayList<>(Arrays.asList("Jenny","Roy","Aquaman","JanTheNeck","Bernie","Hansi","Lars","Elaine","Alex","Renato","Chat","Christiane","Patrick","Andy","Thomas","Egon","Burkhard","Michael","Alberto","Ralph"));
         Random random = new Random();
         int idx = random.nextInt(fancyNames.size()-1);
         boolean friendly = random.nextBoolean();
         if (friendly) {
             Player bot = new FriendlyBot();
+            bot.setGameId(game.getGameId());
             bot.setPlayerName(fancyNames.get(idx));
             bot.setIsGuessingPlayer(false);
+            bot = playerRepository.save(bot);
+            playerRepository.flush();
             return bot;
 
         }
         else {
             Player bot = new MaliciousBot();
             bot.setPlayerName(fancyNames.get(idx));
+            bot.setGameId(game.getGameId());
             bot.setIsGuessingPlayer(false);
+            bot = playerRepository.save(bot);
+            playerRepository.flush();
             return bot;
         }
     }
+    public Game joinGame(long gameId, long userId){
+        Game game = gameRepository.findByGameId(gameId);
+        Player player = createPlayerByUserId(userId, game);
+        addPlayerToGame(player, game);
+        game.setNumberOfPlayers(game.getNumberOfPlayers()+1);
+        return game;
+    }
+
 }

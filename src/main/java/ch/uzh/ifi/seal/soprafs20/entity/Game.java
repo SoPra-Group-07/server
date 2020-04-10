@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,6 +26,7 @@ public class Game implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(name = "game_id")
     private Long gameId;
 
     @Column(nullable = false)
@@ -32,9 +35,10 @@ public class Game implements Serializable {
     @Column
     private GameStatus gameStatus;
 
-    @Column
-    @ElementCollection(targetClass = Player.class)
-    private List<Player> players;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "game_id", referencedColumnName = "game_id" )
+    private List<Player> players = new ArrayList<>();
 
     @Column
     private int numberOfPlayers;
@@ -45,7 +49,10 @@ public class Game implements Serializable {
     @OneToMany
     private List<Card> cards;
 
+    @Column
     private boolean hasBot;
+
+    @Column
     private long adminPlayerId;
 
     public Long getGameId() {
@@ -82,6 +89,10 @@ public class Game implements Serializable {
 
     public int getNumberOfPlayers() {
         return numberOfPlayers;
+    }
+
+    public void addPlayerToGame(Player player){
+        this.players.add(player);
     }
 
     public void setNumberOfPlayers(int numberOfPlayers) {
