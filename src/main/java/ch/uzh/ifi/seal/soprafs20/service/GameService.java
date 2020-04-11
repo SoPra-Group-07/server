@@ -155,4 +155,8 @@ public class GameService {
         return game;
     }
 
+    public Game getGameByGameId(long gameId){
+        return gameRepository.findByGameId(gameId);
+    }
+
 }

@@ -18,7 +18,7 @@ public class GameRound implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long gameRoundId;
 
     @Column(nullable = false, unique = true)

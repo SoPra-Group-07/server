@@ -8,11 +8,7 @@ public class MaliciousBot extends Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public MaliciousBot() {
-
-
-        // this.setPlayerId(user.getUserId());
-    }
+    public MaliciousBot() {}
     @Override
     public Clue giveClue(String word) {
         return null;

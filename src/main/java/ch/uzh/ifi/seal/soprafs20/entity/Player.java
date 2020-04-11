@@ -20,9 +20,8 @@ public abstract class Player implements Serializable{
 
     public Player(){}
 
-    //strategy = GenerationType.IDENTITY
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long playerId;
 
 

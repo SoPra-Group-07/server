@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
+import ch.uzh.ifi.seal.soprafs20.entity.Player;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePostDTO;
@@ -28,11 +29,11 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    // Todo: check path   -> i think its workin :D
-    @GetMapping("/games")
+    // Todo: check path
+    @GetMapping("/games/{gameStatus}")
     @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
     @ResponseBody
-    public List<GameGetOpenDTO> getGames(@RequestParam GameStatus gameStatus) {
+    public List<GameGetOpenDTO> getGames(@PathVariable GameStatus gameStatus) {
         // fetch all games in the internal representation
         List<Game> games = gameService.getGameByGameStatus(gameStatus);                                  //creates list with all games in internal representation
         List<GameGetOpenDTO> userGetDTOs = new ArrayList<>();
@@ -64,4 +65,13 @@ public class GameController {
 
     }
 
+    @GetMapping("/games/{gameId}/players")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<Player> getPlayersFromGame(@PathVariable long gameId){
+        Game game = gameService.getGameByGameId(gameId);
+        List<Player> players = game.getPlayers();
+        return players;
+
+    }
 }

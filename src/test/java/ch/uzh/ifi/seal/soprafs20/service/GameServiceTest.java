@@ -58,16 +58,16 @@ public class GameServiceTest {
         testUser1.setPassword("testPassword1");
         testUser1.setUsername("tesUsername1");
 
-        testGame.setGameId(2L);
+        testGame.setGameId(1L);
         testGame.setActualGameRoundIndex(0);
         testGame.setAdminPlayerId(1);
         testGame.setGameStatus(GameStatus.CREATED);
         testGame.setHasBot(true);
 
-        testPlayer.setPlayerId(4L);
+        testPlayer.setPlayerId(1L);
 
-        testFriedlyBot.setGameId(2);
-        testFriedlyBot.setPlayerId(3L);
+        testFriedlyBot.setGameId(1);
+        testFriedlyBot.setPlayerId(1L);
 
 
     }
@@ -117,6 +117,7 @@ public class GameServiceTest {
         assertEquals(3, createdGame.getNumberOfPlayers());
         assertEquals(3, createdGame.getPlayers().size());
         assertTrue(createdGame.getHasBot());
+
 
 
     }

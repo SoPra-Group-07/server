@@ -19,7 +19,7 @@ public class Card implements Serializable {
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long cardId;
 
     // Todo: save arrayList as attribute?
