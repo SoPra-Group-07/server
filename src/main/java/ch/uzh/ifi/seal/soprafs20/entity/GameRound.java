@@ -1,8 +1,11 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Internal GameRound Representation
@@ -18,7 +21,8 @@ public class GameRound implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    @Column(name="gameRound_id")
     private Long gameRoundId;
 
     @Column(nullable = false, unique = true)
@@ -28,21 +32,22 @@ public class GameRound implements Serializable {
     private long guessingPlayerId;
 
     @Column()
-    private int currentCardIndex;
-
-    @Column()
     private String mysteryWord;
 
-    @Column()
-    private ArrayList<Clue> clues;
+    @OneToOne
+    private Card card;
 
-    @Column()
-    private ArrayList<Player> players;
+    /*@OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "gameRound_id", referencedColumnName = "gameRound_id" )
+    private List<Submission> submissions = new ArrayList<>();
+*/
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "gameRound_id", referencedColumnName = "gameRound_id" )
+    private List<PlayerStatistic> playerStatistic = new ArrayList<>();
 
-    @Column()
-    private ArrayList<PlayerStatistic> playerStatistic;
-
-
+    //private List<Player> players;
 
     public Long getGameRoundId() {
         return gameRoundId;
@@ -68,14 +73,6 @@ public class GameRound implements Serializable {
         this.guessingPlayerId = guessingPlayerId;
     }
 
-    public int getCurrentCardIndex() {
-        return currentCardIndex;
-    }
-
-    public void setCurrentCardIndex(int currentCardIndex) {
-        this.currentCardIndex = currentCardIndex;
-    }
-
     public String getMysteryWord() {
         return mysteryWord;
     }
@@ -84,27 +81,20 @@ public class GameRound implements Serializable {
         this.mysteryWord = mysteryWord;
     }
 
-    public ArrayList<Clue> getClues() {
-        return clues;
+    public Card getCard() {
+        return card;
     }
 
-    public void setClues(ArrayList<Clue> clues) {
-        this.clues = clues;
+    public void setCard(Card card) {
+        this.card = card;
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
 
-    public void setPlayers(ArrayList<Player> players){
-        this.players = players;
-    }
-
-    public ArrayList<PlayerStatistic> getPlayerStatistic() {
+    public List<PlayerStatistic> getPlayerStatistic() {
         return playerStatistic;
     }
 
-    public void setPlayerStatistic(ArrayList<PlayerStatistic> playerStatistic) {
+    public void setPlayerStatistic(List<PlayerStatistic> playerStatistic) {
         this.playerStatistic = playerStatistic;
     }
 }

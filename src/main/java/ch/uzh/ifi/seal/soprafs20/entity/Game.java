@@ -1,12 +1,17 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.source.doctree.SeeTree;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -23,7 +28,8 @@ public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    @Column(name = "game_id")
     private Long gameId;
 
     @Column(nullable = false)
@@ -32,9 +38,10 @@ public class Game implements Serializable {
     @Column
     private GameStatus gameStatus;
 
-    @Column
-    @ElementCollection(targetClass = Player.class)
-    private List<Player> players;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "game_id", referencedColumnName = "game_id" )
+    private List<Player> players = new ArrayList<>();
 
     @Column
     private int numberOfPlayers;
@@ -42,11 +49,17 @@ public class Game implements Serializable {
     @Column
     private int actualGameRoundIndex;
 
-    @OneToMany
-    private List<Card> cards;
+    @ElementCollection
+    private Set<Integer> cardIds = new LinkedHashSet<Integer>();
 
+    @Column
     private boolean hasBot;
+
+    @Column
     private long adminPlayerId;
+
+    @Column
+    private int randomStartPosition;
 
     public Long getGameId() {
         return gameId;
@@ -84,6 +97,10 @@ public class Game implements Serializable {
         return numberOfPlayers;
     }
 
+    public void addPlayerToGame(Player player){
+        this.players.add(player);
+    }
+
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
@@ -96,12 +113,12 @@ public class Game implements Serializable {
         this.actualGameRoundIndex = actualGameRoundIndex;
     }
 
-    public List<Card> getCards() {
-        return cards;
+    public Set<Integer> getCardIds() {
+        return cardIds;
     }
 
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
+    public void setCardIds(Set<Integer> cardIds) {
+        this.cardIds = cardIds;
     }
 
     public boolean getHasBot() {
@@ -118,5 +135,13 @@ public class Game implements Serializable {
 
     public void setAdminPlayerId(long adminPlayerId) {
         this.adminPlayerId = adminPlayerId;
+    }
+
+    public int getRandomStartPosition() {
+        return randomStartPosition;
+    }
+
+    public void setRandomStartPosition(int randomStartPosition) {
+        this.randomStartPosition = randomStartPosition;
     }
 }

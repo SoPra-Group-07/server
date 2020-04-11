@@ -2,9 +2,9 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePostDTO;
+import ch.uzh.ifi.seal.soprafs20.entity.GameRound;
+import ch.uzh.ifi.seal.soprafs20.entity.Player;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.*;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
@@ -27,23 +27,23 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    // Todo: check path
-    @GetMapping("/games")
+    // Todo: check path -> works like this but i think not so beautiful
+    @GetMapping("/games/{gameStatus}")
     @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
     @ResponseBody
-    public List<GameGetOpenDTO> getGames(@RequestParam GameStatus gameStatus) {
+    public List<GameGetOpenDTO> getGames(@PathVariable GameStatus gameStatus) {
         // fetch all games in the internal representation
         List<Game> games = gameService.getGameByGameStatus(gameStatus);                                  //creates list with all games in internal representation
-        List<GameGetOpenDTO> userGetDTOs = new ArrayList<>();
+        List<GameGetOpenDTO> gameGetDTOS = new ArrayList<>();
 
         // convert each game to the API representation
         for (Game game : games) {
-            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToGameGetOpenDTO(game));
+            gameGetDTOS.add(DTOMapper.INSTANCE.convertEntityToGameGetOpenDTO(game));
         }
-        return userGetDTOs;
+        return gameGetDTOS;
     }
 
-
+    // create a new game
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -52,5 +52,54 @@ public class GameController {
         Game newGame = gameService.createNewGame(gameInput);
         return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
     }
+
+    // join a game
+    @PutMapping("/games")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameDTO joinAGame(@RequestBody GamePutDTO gamePutDTO){
+        Game gameInput = DTOMapper.INSTANCE.convertGamePutDTOToEntity(gamePutDTO);
+        Game joinedGame = gameService.joinGame(gameInput.getGameId(), gameInput.getAdminPlayerId());
+        return DTOMapper.INSTANCE.convertEntityToGameDTO(joinedGame);
+
+    }
+
+    // get all players from a game   -> do we really need this?
+    @GetMapping("/games/{gameId}/players")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<Player> getPlayersFromGame(@PathVariable String gameId){
+        long id;
+        id = Long.parseLong(gameId);
+
+        Game game = gameService.getGameByGameId(id);
+        List<Player> players = game.getPlayers();
+        return players;
+
+    }
+
+    // return a game object with only the attributes needed in the lobby (place where you wait until a game starts)
+    // will be requested every xx seconds from front-end
+    @GetMapping("games/{gameId}/lobby")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyDTO getGameLobby(@PathVariable String gameId){
+        long id;
+        id = Long.parseLong(gameId);
+
+        Game game = gameService.getGameByGameId(id);
+        return DTOMapper.INSTANCE.convertEntityToLobbyDTO(game);
+    }
+
+    // start the game and return first gameround
+    @PutMapping("games/lobby")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameRoundDTO startGame(@RequestBody GameStartPutDTO gameStartPutDTO) {
+        Game gameInput = DTOMapper.INSTANCE.convertGameStartDTOToEntity(gameStartPutDTO);
+        GameRound gameRound = gameService.startGame(gameInput.getGameId());
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRound);
+    }
+
 
 }

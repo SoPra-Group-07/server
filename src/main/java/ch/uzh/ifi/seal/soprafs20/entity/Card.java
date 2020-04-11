@@ -17,8 +17,9 @@ public class Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long cardId;
 
     // Todo: save arrayList as attribute?

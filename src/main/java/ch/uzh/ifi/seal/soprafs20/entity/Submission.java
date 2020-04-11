@@ -1,11 +1,25 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 
-public abstract class Submission {
+public abstract class Submission implements Serializable {
+
+    public Submission(){}
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long submissionId;
-    private Long playerId;
+
+    @Column(name = "gameRound_id")
     private Long gameRoundId;
+
+
+    private Long playerId;
     private String word;
     private long duration;
     private long startTime;

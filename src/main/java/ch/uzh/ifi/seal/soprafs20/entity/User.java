@@ -22,7 +22,8 @@ public class User implements Serializable{
     private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy =GenerationType.IDENTITY)
+    @Column(name = "user_id")
 	private Long userId;
 	
 	@Column(nullable = false) 
@@ -48,6 +49,7 @@ public class User implements Serializable{
 
     @Column
     private int numberOfGamesPlayed;
+
 
     public int getNumberOfGamesPlayed() {
         return numberOfGamesPlayed;
