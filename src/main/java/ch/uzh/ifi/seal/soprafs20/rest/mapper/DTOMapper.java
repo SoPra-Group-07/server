@@ -1,14 +1,8 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs20.entity.Card;
-import ch.uzh.ifi.seal.soprafs20.entity.Game;
-import ch.uzh.ifi.seal.soprafs20.entity.Player;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePostDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GamePutDTO;
+import ch.uzh.ifi.seal.soprafs20.entity.*;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.*;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
@@ -87,8 +81,23 @@ public interface DTOMapper {
     @Mapping(source = "players", target = "players")
     @Mapping(source = "numberOfPlayers", target = "numberOfPlayers")
     @Mapping(source = "actualGameRoundIndex", target = "actualGameRoundIndex")
-    @Mapping(source = "cards", target = "cards")
+    @Mapping(source = "cardIds", target = "cardIds")
     GameDTO convertEntityToGameDTO(Game game);
 
 
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "gameName", target = "gameName")
+    @Mapping(source = "numberOfPlayers", target = "numberOfPlayers")
+    @Mapping(source = "players", target = "players")
+    LobbyDTO convertEntityToLobbyDTO(Game game);
+
+    @Mapping(source = "gameRoundId", target = "gameRoundId")
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "guessingPlayerId", target = "guessingPlayerId")
+    @Mapping(source = "mysteryWord", target = "mysteryWord")
+    @Mapping(source = "card", target = "card")
+    GameRoundDTO convertEntityToGameRoundDTO(GameRound gameRound);
+
+    @Mapping(source = "gameId", target = "gameId")
+    Game convertGameStartDTOToEntity(GameStartPutDTO gameStartPutDTO);
 }

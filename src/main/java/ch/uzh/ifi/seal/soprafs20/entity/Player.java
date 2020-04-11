@@ -37,9 +37,8 @@ public abstract class Player implements Serializable{
     @Column
     private float currentScore;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id" )
-    private User user;
+    @Column(name = "user_id")
+    private long userId;
 
     // Todo: return void
     public abstract Clue giveClue(String word);
@@ -60,12 +59,12 @@ public abstract class Player implements Serializable{
         isGuessingPlayer = guessingPlayer;
     }
 
-    public User getUser() {
-        return user;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public long getGameId() {

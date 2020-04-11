@@ -2,13 +2,16 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.source.doctree.SeeTree;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -46,14 +49,17 @@ public class Game implements Serializable {
     @Column
     private int actualGameRoundIndex;
 
-    @OneToMany
-    private List<Card> cards;
+    @ElementCollection
+    private Set<Integer> cardIds = new LinkedHashSet<Integer>();
 
     @Column
     private boolean hasBot;
 
     @Column
     private long adminPlayerId;
+
+    @Column
+    private int randomStartPosition;
 
     public Long getGameId() {
         return gameId;
@@ -107,12 +113,12 @@ public class Game implements Serializable {
         this.actualGameRoundIndex = actualGameRoundIndex;
     }
 
-    public List<Card> getCards() {
-        return cards;
+    public Set<Integer> getCardIds() {
+        return cardIds;
     }
 
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
+    public void setCardIds(Set<Integer> cardIds) {
+        this.cardIds = cardIds;
     }
 
     public boolean getHasBot() {
@@ -129,5 +135,13 @@ public class Game implements Serializable {
 
     public void setAdminPlayerId(long adminPlayerId) {
         this.adminPlayerId = adminPlayerId;
+    }
+
+    public int getRandomStartPosition() {
+        return randomStartPosition;
+    }
+
+    public void setRandomStartPosition(int randomStartPosition) {
+        this.randomStartPosition = randomStartPosition;
     }
 }

@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.Player;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 
 public class GameDTO {
     private Long gameId;
@@ -15,7 +16,7 @@ public class GameDTO {
     private List<Player> players;
     private int numberOfPlayers;
     private int actualGameRoundIndex;
-    private List<Card> cards;
+    private Set<Integer> cardIds;
     private boolean hasBot;
     private long adminPlayerId;
 
@@ -67,12 +68,12 @@ public class GameDTO {
         this.actualGameRoundIndex = actualGameRoundIndex;
     }
 
-    public List<Card> getCards() {
-        return cards;
+    public Set<Integer> getCardIds() {
+        return cardIds;
     }
 
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
+    public void setCardIds(Set<Integer> cardIds) {
+        this.cardIds = cardIds;
     }
 
     public boolean isHasBot() {

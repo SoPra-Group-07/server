@@ -4,10 +4,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
-import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
-import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
-import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs20.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +33,20 @@ public class GameService {
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
     private final PlayerRepository playerRepository;
+    private final GameRoundRepository gameRoundRepository;
+
+    private final GameRoundService gameRoundService;
+
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
-                       @Qualifier("playerRepository") PlayerRepository playerRepository) {
+                       @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
         this.playerRepository = playerRepository;
+        this.gameRoundRepository = gameRoundRepository;
+        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository);
     }
 
     public List<Game> getGameByGameStatus(GameStatus gameStatus) {
@@ -58,12 +61,12 @@ public class GameService {
         game.setHasBot(gameInput.getHasBot());
         game.setGameStatus(GameStatus.CREATED);
         game.setActualGameRoundIndex(0);
-        game.setCards(getThirteenUniqueCards());
+        game.setCardIds(getRandomUniqueCardIds());
 
         game = gameRepository.save(game);
         gameRepository.flush();
 
-        Player adminPlayer = createPlayerByUserId(gameInput.getAdminPlayerId(), game);
+        Player adminPlayer = createPlayerByUserIdAndGame(gameInput.getAdminPlayerId(), game);
         addPlayerToGame(adminPlayer, game);
 
         if (game.getHasBot()){
@@ -85,18 +88,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already full! Join another game."); }
     }
 
-    private List<Card> getThirteenUniqueCards(){
-        List<Card> cards = new ArrayList<>();
 
-        for (int nr : getRandomUniqueCardIds()) {
-            //
-            Card card = cardRepository.findByCardId((long) nr);
-            // Todo: exception if card == null
-            //Card card = new Card();
-            cards.add(card);
-        }
-        return cards;
-    }
 
     private Set<Integer> getRandomUniqueCardIds() {
         Random rng = new Random(); // Ideally just create one instance globally
@@ -112,10 +104,11 @@ public class GameService {
         return generated;
     }
 
-    private Player createPlayerByUserId(long userId, Game game){
+    private Player createPlayerByUserIdAndGame(long userId, Game game){
         User user = userRepository.findByUserId(userId);
         Player player = new PhysicalPlayer();
-        player.setUser(user);
+        player.setUserId(user.getUserId());
+        player.setPlayerName(user.getUsername());
         player.setGameId(game.getGameId());
         player = playerRepository.save(player);
         playerRepository.flush();
@@ -149,14 +142,25 @@ public class GameService {
     }
     public Game joinGame(long gameId, long userId){
         Game game = gameRepository.findByGameId(gameId);
-        Player player = createPlayerByUserId(userId, game);
+        Player player = createPlayerByUserIdAndGame(userId, game);
         addPlayerToGame(player, game);
         game.setNumberOfPlayers(game.getNumberOfPlayers()+1);
+        if (game.getNumberOfPlayers() == 7){
+            startGame(game.getGameId());
+        }
         return game;
     }
 
     public Game getGameByGameId(long gameId){
         return gameRepository.findByGameId(gameId);
     }
+
+    public GameRound startGame(long gameId){
+        Game game = getGameByGameId(gameId);
+        game.setGameStatus(GameStatus.RUNNING);
+        return gameRoundService.startNewGameRound(game);
+    }
+
+
 
 }

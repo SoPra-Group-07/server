@@ -34,7 +34,7 @@ public class LeaderboardController {
 
         // fetch all users in the internal representation
 
-        ArrayList<User> users = leaderboardService.getUsers();                                  //creates list with all users in internal representation
+        ArrayList<User> users = leaderboardService.getUsers();
         ArrayList<LeaderboardDTO> leaderboardDTOS = new ArrayList<>();
 
         // convert each user to the API representation
