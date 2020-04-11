@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
 import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +34,14 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
+    private final PlayerRepository playerRepository;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository, @Qualifier("playerRepository") PlayerRepository playerRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
+        this.playerRepository = playerRepository;
     }
 
     public List<Game> getGameByGameStatus(GameStatus gameStatus) {
@@ -66,10 +69,8 @@ public class GameService {
         game.setNumberOfPlayers(game.getPlayers().size());
 
         // Todo: foreign Key problem -> gameId starts at 2...
-        //gameRepository.save(game);
-        //gameRepository.flush();
-        //return gameRepository.findByGameName(game.getGameName());
-        return game;
+        gameRepository.saveAndFlush(game);
+        return gameRepository.findByGameName(game.getGameName());
     }
 
     private static void addPlayerToGame(Player playerToAdd, Game game){
@@ -105,8 +106,10 @@ public class GameService {
 
     private Player createPlayerByUserId(long userId){
         User user = userRepository.findByUserId(userId);
-        Player player = new PhysicalPlayer(user);
+        PhysicalPlayer player = new PhysicalPlayer();
+        player.setUser(user);
         player.setPlayerName(user.getUsername());
+        playerRepository.saveAndFlush(player);
         return player;
     }
 
@@ -119,13 +122,14 @@ public class GameService {
             Player bot = new FriendlyBot();
             bot.setPlayerName(fancyNames.get(idx));
             bot.setIsGuessingPlayer(false);
+            playerRepository.saveAndFlush(bot);
             return bot;
-
         }
         else {
             Player bot = new MaliciousBot();
             bot.setPlayerName(fancyNames.get(idx));
             bot.setIsGuessingPlayer(false);
+            playerRepository.saveAndFlush(bot);
             return bot;
         }
     }

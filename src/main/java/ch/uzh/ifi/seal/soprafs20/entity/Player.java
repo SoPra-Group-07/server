@@ -17,7 +17,6 @@ public abstract class Player {
         id++;
         this.currentScore = 0;
     }
-
     private static long id = 1;
     @Id
     private Long playerId;
