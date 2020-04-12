@@ -107,7 +107,7 @@ public class GameService {
         while (generated.size() < 13)
         {
             // Todo: check bound -> number of cards available
-            Integer next = rng.nextInt(56) + 1;
+            Integer next = rng.nextInt(55) + 1;
             // As we're adding to a set, this will automatically do a containment check
             generated.add(next);
         }

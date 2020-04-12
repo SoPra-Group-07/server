@@ -75,33 +75,33 @@ public class UserController {
                 }
 
             } else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");//Status Code 401 -> wrong password
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");    //Status Code 401 -> wrong username
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");
         }
     }
 
     @GetMapping("users/{userId}")
-    @ResponseStatus(HttpStatus.OK)                                                         //Status code 200 ->  if everything went well
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO getUser(@PathVariable String userId) {
         long id;
-        id = Long.parseLong(userId);                                                       //From string to long(= 64bit integer)
-        User user = userService.getUserById(id);                                           //Should return User-Object
-        if (!userService.userEqualsNull(user)) {                                           //is the same as 'if (user != null)'
+        id = Long.parseLong(userId);
+        User user = userService.getUserById(id);
+        if (!userService.userEqualsNull(user)) {
             return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");     //status code 404
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
     }
 
     @PutMapping("/users/{userId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)                                                 //status code 204
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserGetDTO editUser(@RequestBody UserEditDTO editUser) {
         User userToEdit = DTOMapper.INSTANCE.convertUserEditDTOtoEntity(editUser);
 
-        User editedUser = userService.edit(userToEdit);                                    //edit(...) returns edited user!!!
+        User editedUser = userService.edit(userToEdit);
 
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(editedUser);
     }
@@ -113,8 +113,7 @@ public class UserController {
     public UserGetDTO logout(@RequestBody UserTokenDTO tokenDTO){
         User userInput = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(tokenDTO);
 
-        User loggedOutUser = userService.logout(userInput);                         //F user thanks to the token, sets his status to OFFLINE and sets the token equal null!
-
+        User loggedOutUser = userService.logout(userInput);
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loggedOutUser);
     }
 }

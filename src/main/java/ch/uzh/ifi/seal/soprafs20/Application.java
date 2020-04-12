@@ -1,5 +1,10 @@
 package ch.uzh.ifi.seal.soprafs20;
 
+import ch.uzh.ifi.seal.soprafs20.controller.CardController;
+import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
+import ch.uzh.ifi.seal.soprafs20.service.CardService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

@@ -36,9 +36,10 @@ public class GameRoundService {
     public GameRound createNewGameRound(Game game){
         GameRound gameRound = new GameRound();
         gameRound.setGameId(game.getGameId());
+        List<Integer> list = new ArrayList<>(game.getCardIds());
+        gameRound.setCard(getActualCard(list.get(game.getActualGameRoundIndex()-1)));
         gameRoundRepository.save(gameRound);
         gameRoundRepository.flush();
-        gameRound.setCard(getActualCard(game.getActualGameRoundIndex()));
 
         return gameRound;
     }
@@ -54,7 +55,7 @@ public class GameRoundService {
 
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
             GameRound actualGameRound = createNewGameRound(game);
-            int nextGuessingPlayerIdx = computeGuessingPlayerId(game);
+            long nextGuessingPlayerIdx = computeGuessingPlayerId(game);
             actualGameRound.setGuessingPlayerId(nextGuessingPlayerIdx);
             return actualGameRound;
         }
@@ -63,16 +64,17 @@ public class GameRoundService {
         }
     }
 
-    private int computeGuessingPlayerId(Game game){
+    private long computeGuessingPlayerId(Game game){
         int numberOfPlayers = game.getPlayers().size();
         int actualGameRoundIdx = game.getActualGameRoundIndex();
         int randomStartPosition = game.getRandomStartPosition();
 
+        // Todo: decrease randomStartPosition
         int nextGuessingPlayerIdx = (randomStartPosition + actualGameRoundIdx) % numberOfPlayers;
         if (game.getPlayers().get(nextGuessingPlayerIdx) instanceof PhysicalPlayer) {
-            return nextGuessingPlayerIdx;
+            return game.getPlayers().get(nextGuessingPlayerIdx).getPlayerId();
         }
-        else { return nextGuessingPlayerIdx + 1; }
+        else { return game.getPlayers().get((nextGuessingPlayerIdx + 1) % numberOfPlayers).getPlayerId(); }
     }
 
     private Card getActualCard(int cardId){
@@ -80,15 +82,8 @@ public class GameRoundService {
         if (!(card == null)) {
             return card;
         }
-        return card;
-        // Todo: uncomment as soon as cards are in system
-        /*else{
+        else {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "CardId not found in CardRepo");
-        } */
-
+        }
     }
-
-
-
-
 }

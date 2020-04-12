@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,36 +39,31 @@ public class CardService {
 
     private final CardRepository cardRepository;
 
-
     @Autowired
     public CardService(@Qualifier("cardRepository") CardRepository cardRepository) {
 
         this.cardRepository = cardRepository;
 
     }
-/* Todo: Load cards in system, does not work, does not find file :D
 
-    public List<String> loadCards(){
-        BufferedReader reader;
-        try{
-            reader = new BufferedReader(new FileReader("cards-EN.txt"));
-            String line = reader.readLine();
-            List<String> words = new ArrayList<>();
-            while (line != null){
-                words.add(line);
-                line = reader.readLine();
+    public void fillCardTable(){
+        try {
+            FileReader fr = new FileReader(System.getProperty("user.dir")+"/src/main/java/ch/uzh/ifi/seal/soprafs20/cards-EN.txt");   //reads the file
+            BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream
+            String word1;
+            while((word1 = br.readLine())!=null) {
+                Card card = new Card();
+                card.setWord1(word1);
+                card.setWord2(br.readLine());
+                card.setWord3(br.readLine());
+                card.setWord4(br.readLine());
+                card.setWord5(br.readLine());
+                br.readLine();
+                cardRepository.save(card);
             }
-            return words;
-        }
-        catch (IOException e) {
+            fr.close();    //closes the stream and release the resources
+        } catch (IOException e){
             e.printStackTrace();
-            System.out.println("123");
         }
-       return new ArrayList<>();
-
     }
-
- */
-
-
 }
