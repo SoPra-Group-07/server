@@ -3,7 +3,7 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto.User;
 public class UserEditDTO {
 
     private Long id;
-    private String username;
+    private String password;
     private String birth;
 
     public Long getId() {
@@ -13,11 +13,11 @@ public class UserEditDTO {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPassword() {
+        return password;
     }
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getBirth() { return birth; }

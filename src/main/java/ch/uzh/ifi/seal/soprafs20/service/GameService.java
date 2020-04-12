@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Array;
@@ -81,8 +82,12 @@ public class GameService {
     }
 
     private void addPlayerToGame(Player playerToAdd, Game game){
-        if (game.getNumberOfPlayers() < 8){
-            game.addPlayerToGame(playerToAdd); }
+        if (game.getNumberOfPlayers() < 7){
+            List<Player> players = game.getPlayers();
+            players.add(playerToAdd);
+            game.setPlayers(players);
+            game.setNumberOfPlayers(game.getNumberOfPlayers()+1);
+        }
 
         else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already full! Join another game."); }
@@ -110,6 +115,7 @@ public class GameService {
         player.setUserId(user.getUserId());
         player.setPlayerName(user.getUsername());
         player.setGameId(game.getGameId());
+        player.setIsGuessingPlayer(false);
         player = playerRepository.save(player);
         playerRepository.flush();
         return player;
@@ -142,13 +148,15 @@ public class GameService {
     }
     public Game joinGame(long gameId, long userId){
         Game game = gameRepository.findByGameId(gameId);
-        Player player = createPlayerByUserIdAndGame(userId, game);
-        addPlayerToGame(player, game);
-        game.setNumberOfPlayers(game.getNumberOfPlayers()+1);
-        if (game.getNumberOfPlayers() == 7){
-            startGame(game.getGameId());
-        }
-        return game;
+        // user logged in
+        if (userRepository.findByUserId(userId).getStatus() == UserStatus.ONLINE){
+            //not already in the game
+            if (!game.getPlayers().contains(playerRepository.findByUserId(userId))) {
+                Player player = createPlayerByUserIdAndGame(userId, game);
+                addPlayerToGame(player, game);
+                return game;
+            } else { throw new ResponseStatusException(HttpStatus.NO_CONTENT, "The user is already in the game!"); }
+        } else { throw new ResponseStatusException(HttpStatus.CONFLICT, "User is not logged in, cannot join a game!"); }
     }
 
     public Game getGameByGameId(long gameId){

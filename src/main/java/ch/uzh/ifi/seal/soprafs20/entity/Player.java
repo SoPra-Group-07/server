@@ -27,13 +27,10 @@ public abstract class Player implements Serializable{
 
     @Column(name = "game_id")
     private long gameId;
-
     @Column
     private String playerName;
-
     @Column
     private boolean isGuessingPlayer;
-
     @Column
     private float currentScore;
 
@@ -43,34 +40,17 @@ public abstract class Player implements Serializable{
     // Todo: return void
     public abstract Clue giveClue(String word);
 
+
     public Long getPlayerId() {
         return playerId;
     }
-
     public void setPlayerId(Long playerId) {
         this.playerId = playerId;
-    }
-
-    public boolean isGuessingPlayer() {
-        return isGuessingPlayer;
-    }
-
-    public void setGuessingPlayer(boolean guessingPlayer) {
-        isGuessingPlayer = guessingPlayer;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
     }
 
     public long getGameId() {
         return gameId;
     }
-
     public void setGameId(long gameId) {
         this.gameId = gameId;
     }
@@ -78,7 +58,6 @@ public abstract class Player implements Serializable{
     public String getPlayerName() {
         return playerName;
     }
-
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
@@ -86,7 +65,6 @@ public abstract class Player implements Serializable{
     public boolean getIsGuessingPlayer() {
         return isGuessingPlayer;
     }
-
     public void setIsGuessingPlayer(boolean guessingPlayer) {
         isGuessingPlayer = guessingPlayer;
     }
@@ -94,8 +72,14 @@ public abstract class Player implements Serializable{
     public float getCurrentScore() {
         return currentScore;
     }
-
     public void setCurrentScore(float currentScore) {
         this.currentScore = currentScore;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

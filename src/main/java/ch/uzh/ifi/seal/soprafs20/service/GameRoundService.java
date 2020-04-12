@@ -54,7 +54,7 @@ public class GameRoundService {
 
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
             GameRound actualGameRound = createNewGameRound(game);
-            // this does not work because we will have to do + 1 gameRounds (actualGameRoundIndex rises..) if a player is guessing false
+            // this does not work because we will have to do + 1 gameRounds (actualGameRoundIndex rises..) if a player is guessing false and check if player is a Bot
             actualGameRound.setGuessingPlayerId(game.getPlayers().get((game.getActualGameRoundIndex() + game.getRandomStartPosition()) % game.getNumberOfPlayers()).getPlayerId());
             return actualGameRound;
 

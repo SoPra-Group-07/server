@@ -135,8 +135,8 @@ public class UserService {
         }
 
         else if (!userEqualsNull(userToEdit)){
-            if(userToEdit.getUsername() != null) {
-                userById.setUsername(userToEdit.getUsername());
+            if(userToEdit.getPassword() != null) {
+                userById.setPassword(userToEdit.getPassword());
             }
             if(userToEdit.getBirth() != null) {
                 userById.setBirth(userToEdit.getBirth());

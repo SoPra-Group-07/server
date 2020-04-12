@@ -58,8 +58,8 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameDTO joinAGame(@RequestBody GamePutDTO gamePutDTO){
-        Game gameInput = DTOMapper.INSTANCE.convertGamePutDTOToEntity(gamePutDTO);
-        Game joinedGame = gameService.joinGame(gameInput.getGameId(), gameInput.getAdminPlayerId());
+        //Game gameInput = DTOMapper.INSTANCE.convertGamePutDTOToEntity(gamePutDTO);
+        Game joinedGame = gameService.joinGame(gamePutDTO.getGameId(), gamePutDTO.getUserId());
         return DTOMapper.INSTANCE.convertEntityToGameDTO(joinedGame);
 
     }

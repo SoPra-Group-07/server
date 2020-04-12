@@ -19,11 +19,8 @@ public class PhysicalPlayer extends Player implements Serializable{
        // this.setPlayerId(user.getUserId());
     }
 
-
     @Override
     public Clue giveClue(String word) {
         return null;
     }
-
-
 }

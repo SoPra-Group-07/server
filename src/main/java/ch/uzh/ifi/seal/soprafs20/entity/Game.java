@@ -97,10 +97,6 @@ public class Game implements Serializable {
         return numberOfPlayers;
     }
 
-    public void addPlayerToGame(Player player){
-        this.players.add(player);
-    }
-
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
