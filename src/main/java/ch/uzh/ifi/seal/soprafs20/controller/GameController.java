@@ -27,20 +27,27 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    // Todo: check path -> works like this but i think not so beautiful
-    @GetMapping("/games/{gameStatus}")
-    @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
+    @GetMapping("/games")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<GameGetOpenDTO> getGames(@PathVariable GameStatus gameStatus) {
-        // fetch all games in the internal representation
-        List<Game> games = gameService.getGameByGameStatus(gameStatus);                                  //creates list with all games in internal representation
-        List<GameGetOpenDTO> gameGetDTOS = new ArrayList<>();
-
-        // convert each game to the API representation
-        for (Game game : games) {
-            gameGetDTOS.add(DTOMapper.INSTANCE.convertEntityToGameGetOpenDTO(game));
+    public List<GameGetOpenDTO> getGamesByGameStatus(@RequestParam(required = false) GameStatus gameStatus) {
+        if (gameStatus != null){
+            List<Game> games = gameService.getGameByGameStatus(gameStatus);
+            List<GameGetOpenDTO> gameGetDTOS = new ArrayList<>();
+            // convert each game to the API representation
+            for (Game game : games) {
+                gameGetDTOS.add(DTOMapper.INSTANCE.convertEntityToGameGetOpenDTO(game));
+            }
+            return gameGetDTOS;
+        } else {
+            List<Game> games = gameService.getAllGames();
+            List<GameGetOpenDTO> gameGetDTOS = new ArrayList<>();
+            // convert each game to the API representation
+            for (Game game : games) {
+                gameGetDTOS.add(DTOMapper.INSTANCE.convertEntityToGameGetOpenDTO(game));
+            }
+            return gameGetDTOS;
         }
-        return gameGetDTOS;
     }
 
     // create a new game

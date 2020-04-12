@@ -50,6 +50,10 @@ public class GameService {
         this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository);
     }
 
+    public List<Game> getAllGames(){
+        return this.gameRepository.findAll();
+    }
+
     public List<Game> getGameByGameStatus(GameStatus gameStatus) {
         return this.gameRepository.findAllByGameStatus(gameStatus);
     }
@@ -63,6 +67,7 @@ public class GameService {
         game.setGameStatus(GameStatus.CREATED);
         game.setActualGameRoundIndex(0);
         game.setCardIds(getRandomUniqueCardIds());
+        game.setRandomStartPosition(new Random().nextInt(7));
 
         game = gameRepository.save(game);
         gameRepository.flush();

@@ -54,14 +54,25 @@ public class GameRoundService {
 
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
             GameRound actualGameRound = createNewGameRound(game);
-            // this does not work because we will have to do + 1 gameRounds (actualGameRoundIndex rises..) if a player is guessing false and check if player is a Bot
-            actualGameRound.setGuessingPlayerId(game.getPlayers().get((game.getActualGameRoundIndex() + game.getRandomStartPosition()) % game.getNumberOfPlayers()).getPlayerId());
+            int nextGuessingPlayerIdx = computeGuessingPlayerId(game);
+            actualGameRound.setGuessingPlayerId(nextGuessingPlayerIdx);
             return actualGameRound;
-
         }
         else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
         }
+    }
+
+    private int computeGuessingPlayerId(Game game){
+        int numberOfPlayers = game.getPlayers().size();
+        int actualGameRoundIdx = game.getActualGameRoundIndex();
+        int randomStartPosition = game.getRandomStartPosition();
+
+        int nextGuessingPlayerIdx = (randomStartPosition + actualGameRoundIdx) % numberOfPlayers;
+        if (game.getPlayers().get(nextGuessingPlayerIdx) instanceof PhysicalPlayer) {
+            return nextGuessingPlayerIdx;
+        }
+        else { return nextGuessingPlayerIdx + 1; }
     }
 
     private Card getActualCard(int cardId){
