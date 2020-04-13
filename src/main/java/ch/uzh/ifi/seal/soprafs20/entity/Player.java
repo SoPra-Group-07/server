@@ -30,8 +30,6 @@ public abstract class Player implements Serializable{
     @Column
     private String playerName;
     @Column
-    private boolean isGuessingPlayer;
-    @Column
     private float currentScore;
 
     @Column(name = "user_id")
@@ -60,13 +58,6 @@ public abstract class Player implements Serializable{
     }
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
-    }
-
-    public boolean getIsGuessingPlayer() {
-        return isGuessingPlayer;
-    }
-    public void setIsGuessingPlayer(boolean guessingPlayer) {
-        isGuessingPlayer = guessingPlayer;
     }
 
     public float getCurrentScore() {
