@@ -177,8 +177,8 @@ public class UserServiceTest {
 
         // edit testUser when edituser has a username and a birth
         userService.edit(editUser);
-        assertEquals(editUser.getUsername(), testUser.getUsername());
-        assertNotEquals(editUser.getPassword(), testUser.getPassword());
+        assertNotEquals(editUser.getUsername(), testUser.getUsername());
+        assertEquals(editUser.getPassword(), testUser.getPassword());
         assertEquals(editUser.getBirth(), testUser.getBirth());
 
     }

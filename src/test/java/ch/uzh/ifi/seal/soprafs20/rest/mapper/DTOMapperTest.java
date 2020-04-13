@@ -53,7 +53,7 @@ public class DTOMapperTest {
         // create UserPostDTO
         UserEditDTO userEditDTO = new UserEditDTO();
         userEditDTO.setBirth("18. 01. 1999");
-        userEditDTO.setUsername("username");
+
         userEditDTO.setId(1L);
 
         // MAP -> Create user
@@ -61,7 +61,7 @@ public class DTOMapperTest {
 
         // check content
         assertEquals(userEditDTO.getBirth(), user.getBirth());
-        assertEquals(userEditDTO.getUsername(), user.getUsername());
+
         assertEquals(userEditDTO.getId(), user.getId());
     }
 

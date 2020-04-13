@@ -199,7 +199,7 @@ public class UserControllerTest {
         User edited_user = new User();
         edited_user.setId(0L);
         edited_user.setPassword("123");
-        edited_user.setUsername("pieroNeri");
+
         edited_user.setToken("1");
         edited_user.setStatus(UserStatus.ONLINE);
         edited_user.setDate(LocalDate.now());
@@ -208,7 +208,7 @@ public class UserControllerTest {
 
         UserEditDTO userEditDTO = new UserEditDTO();
         userEditDTO.setId(0L);
-        userEditDTO.setUsername("pieroNeri");
+
         userEditDTO.setBirth("18-01-1999");
 
 
