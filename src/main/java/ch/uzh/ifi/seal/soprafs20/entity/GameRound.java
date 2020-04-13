@@ -22,7 +22,7 @@ public class GameRound implements Serializable {
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
-    @Column(name="gameRound_id")
+    @Column(name="game_round_id")
     private Long gameRoundId;
 
     @Column(nullable = false, unique = true)
@@ -37,14 +37,14 @@ public class GameRound implements Serializable {
     @OneToOne
     private Card card;
 
-    /*@OneToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "gameRound_id", referencedColumnName = "gameRound_id" )
-    private List<Submission> submissions = new ArrayList<>();
-*/
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "gameRound_id", referencedColumnName = "gameRound_id" )
+    @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
+    private List<Submission> submissions = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
     private List<PlayerStatistic> playerStatistic = new ArrayList<>();
 
     //private List<Player> players;
@@ -96,6 +96,14 @@ public class GameRound implements Serializable {
 
     public void setPlayerStatistic(List<PlayerStatistic> playerStatistic) {
         this.playerStatistic = playerStatistic;
+    }
+
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+
+    public void setSubmissions(List<Submission> submissions) {
+        this.submissions = submissions;
     }
 }
 

@@ -34,6 +34,9 @@ public class GameRoundService {
     }
 
     public GameRound createNewGameRound(Game game){
+        if (game.getActualGameRoundIndex() >= 12 || game.getGameStatus() == GameStatus.FINISHED){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
+        }
         GameRound gameRound = new GameRound();
         gameRound.setGameId(game.getGameId());
         List<Integer> list = new ArrayList<>(game.getCardIds());
@@ -85,5 +88,9 @@ public class GameRoundService {
         else {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "CardId not found in CardRepo");
         }
+    }
+
+    public GameRound getGameRoundByRoundId(long roundId){
+        return gameRoundRepository.findByGameRoundId(roundId);
     }
 }

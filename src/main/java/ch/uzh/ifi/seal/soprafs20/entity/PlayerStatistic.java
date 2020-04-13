@@ -25,7 +25,7 @@ public abstract class PlayerStatistic implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long playerStatisticId;
 
-    @Column(name = "gameRound_Id")
+    @Column(name = "game_round_Id")
     private Long gameRoundId;
 
 
