@@ -12,255 +12,29 @@ INSERT INTO card (card_id, word1, word2, word3, word4, word5) VALUES
   (11,'Music', 'Neck', 'America', 'Coffee', 'Fever');
   (12,'Barbie', 'Chocolate', 'Snow', 'Tie', 'Wind');
   (13,'Thought', 'Frankenstein', 'Beam', 'Accent', 'Shower');
-
-Ladybird
-Mustard
-Sherlock
-Bottle
-Virus
-
-Poison
-Star
-Wolf
-Lena
-Birthday
-
-Baker
-Perfume
-Flame
-Zombie
-Joker
-
-Buffy
-Volcano
-Passion
-Cock
-Electricity
-
-Genius
-Dracula
-Lion
-Sock
-Friday
-
-Pirate
-Holidays
-Fairy
-Magnet
-Fork
-
-Syrup
-Forest
-Scale
-Zeus
-Cockroach
-
-Dinosaur
-Yellow
-Mushroom
-Pigeon
-Pikachu
-
-Asterix
-Robots
-Comedy
-Language
-Hairdresser
-
-Cocktail
-Mario
-Cork
-Violin
-Peach
-
-Fox
-Police
-Simpson
-Donut
-Newspaper
-
-Mountains
-Peanut
-Light bulb
-Jedi
-Chili
-
-Sombrero
-Cloverleaf
-Button
-Cheese
-Chewbacca
-
-Revolver
-Doctor
-Strawberry
-Nuclear power
-Lottery
-
-Cemetery
-Cupid
-Umbrella
-Jump
-Root
-
-Treasure
-Pilot
-Mickey
-Sewerage
-Galaxy
-
-Moustache
-Bubble
-Chain
-Strong
-Cookie
-
-Croissant
-Spirit
-Straw
-Nail
-Potter
-
-Darwin
-Tomato
-Parachute
-Cannon
-Binoculars
-
-Fata morgana
-Ramses
-Fire
-Intersection
-Princess
-
-Spaceship
-Bowling
-Churchill
-Aries
-Spy
-
-Olympics
-Climbing
-Lawyer
-Tolkien
-River
-
-Carpet
-Pony
-Crown
-New
-Tarantino
-
-Heino
-Ninja
-Duvet
-Hunter
-Vegetables
-
-Cave
-Hans
-Casino
-Candy
-Fountain
-
-Light
-Sofa
-Mozart
-Ring
-Pizza
-
-Picture
-Fire department
-Glass
-Meatball
-Greece
-
-Tradition
-Snake
-Trophy
-Picasso
-Clock
-
-Pyre
-Wizard
-Hockey
-Banana
-Helene
-
-Caesar
-Noodle
-Hat
-Dentist
-Wheat
-
-Mussel
-Shakespeare
-Giant
-Foam
-Cellar
-
-Knives
-Pillows
-Armstrong
-Sword
-Flight
-
-Ticket
-Penguin
-Cell
-Gandhi
-Oasis
-
-Crocodile
-Jewellery
-Subway
-Glasses
-Falco
-
-Jackson
-Cigarette
-Bracelet
-Weather forecast
-Tower
-
-Tattoo
-Spielberg
-Apple
-Mermaid
-Boxes
-
-Dwarf
-Circus
-Elvis
-Lawn mower
-Stone
-
-Train
-Sardine
-Piece
-Cleopatra
-Window
-
-Pomegranate
-Filling
-Brush
-Pig
-Avicii
-
-Slipper
-Sheet
-Puma
-Revolution
-Sahara
-
-Knight
-Peace
-Flower
-Switzerland
-Calendar
-
-Schnitzel
-Canada
-Zoo
-Whistle
-Book
+  (14,'Ladybird', 'Mustard', 'Sherlock', 'Bottle', 'Virus');
+  (15,'Poison', 'Star', 'Wolf', 'Lena', 'Birthday');
+  (16,'Baker', 'Perfume', 'Flame', 'Zombie', 'Joker');
+  (17,'Buffy', 'Volcano', 'Passion', 'Cock', 'Electricity');
+  (18,'Genius', 'Dracula', 'Lion', 'Sock', 'Friday');
+  (19,'Pirate', 'Holidays', 'Fairy', 'Magnet', 'Fork');
+  (20,'Syrup', 'Forest', 'Scale', 'Zeus', 'Cockroach');
+  (21,'Dinosaur', 'Yellow', 'Mushroom', 'Pigeon', 'Pikachu');
+  (22,'Asterix', 'Robots', 'Comedy', 'Language', 'Hairdresser');
+  (23,'Cocktail', 'Mario', 'Cork', 'Violin', 'Peach');
+  (24,'Fox', 'Police', 'Simpson', 'Donut', 'Newspaper');
+  (25,'Mountains', 'Peanut', 'Light bulb', 'Jedi', 'Chili');
+  (26,'Sombrero', 'Cloverleaf', 'Button', 'Cheese', 'Chewbacca');
+  (27,'Revolver', 'Doctor', 'Strawberry', 'Nuclear power', 'Lottery');
+  (28,'Cemetery', 'Cupid', 'Umbrella', 'Jump', 'Root');
+  (29,'Treasure', 'Pilot', 'Mickey', 'Sewerage', 'Galaxy');
+  (30,'Moustache', 'Bubble', 'Chain', 'Strong', 'Cookie');
+  (31,'Croissant', 'Spirit', 'Straw', 'Nail', 'Potter');
+  (32,'Darwin', 'Tomato', 'Parachute', 'Cannon', 'Binoculars');
+  (33,'Fata morgana', 'Ramses', 'Fire', 'Intersection', 'Princess');
+  (34,'Spaceship', 'Bowling', 'Churchill', 'Aries', 'Spy');
+  (35,'Olympics', 'Climbing', 'Lawyer', 'Tolkien', 'River');
+  (36,'Carpet', 'Pony', 'Crown', 'New', 'Tarantino');
+  (37,'Heino', 'Ninja', 'Duvet', 'Hunter', 'Vegetables');
+  (38,'Cave', 'Hans', 'Casino', 'Candy', 'Fountain');
+  (39,'Light', 'Sofa', 'Mozart', 'Ring', 'Pizza');
