@@ -117,7 +117,7 @@ public class GameService {
         player.setUserId(user.getUserId());
         player.setPlayerName(user.getUsername());
         player.setGameId(game.getGameId());
-        player.setIsGuessingPlayer(false);
+
         player = playerRepository.save(player);
         playerRepository.flush();
         return player;
@@ -132,7 +132,7 @@ public class GameService {
             Player bot = new FriendlyBot();
             bot.setGameId(game.getGameId());
             bot.setPlayerName(fancyNames.get(idx));
-            bot.setIsGuessingPlayer(false);
+
             bot = playerRepository.save(bot);
             playerRepository.flush();
             return bot;
@@ -142,7 +142,7 @@ public class GameService {
             Player bot = new MaliciousBot();
             bot.setPlayerName(fancyNames.get(idx));
             bot.setGameId(game.getGameId());
-            bot.setIsGuessingPlayer(false);
+
             bot = playerRepository.save(bot);
             playerRepository.flush();
             return bot;
