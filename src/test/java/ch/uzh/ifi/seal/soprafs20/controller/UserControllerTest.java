@@ -96,6 +96,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));
 
+
         // then
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())

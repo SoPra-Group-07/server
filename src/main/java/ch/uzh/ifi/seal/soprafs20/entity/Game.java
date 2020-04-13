@@ -56,7 +56,7 @@ public class Game implements Serializable {
     private boolean hasBot;
 
     @Column
-    private long adminPlayerId;
+    private Long adminPlayerId;
 
     @Column
     private int randomStartPosition;
@@ -125,11 +125,11 @@ public class Game implements Serializable {
         this.hasBot = hasBot;
     }
 
-    public long getAdminPlayerId() {
+    public Long getAdminPlayerId() {
         return adminPlayerId;
     }
 
-    public void setAdminPlayerId(long adminPlayerId) {
+    public void setAdminPlayerId(Long adminPlayerId) {
         this.adminPlayerId = adminPlayerId;
     }
 

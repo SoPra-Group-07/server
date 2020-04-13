@@ -97,7 +97,7 @@ public class GameService {
 
 
 
-    private Set<Integer> getRandomUniqueCardIds() {
+    public Set<Integer> getRandomUniqueCardIds() {
         Random rng = new Random(); // Ideally just create one instance globally
         // Note: use LinkedHashSet to maintain insertion order
         Set<Integer> generated = new LinkedHashSet<Integer>();

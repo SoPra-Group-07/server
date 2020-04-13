@@ -1,12 +1,15 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 
+import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
+import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,6 +35,9 @@ public class GameServiceTest {
     @Mock
     PlayerRepository playerRepository;
 
+    @Mock
+    CardRepository cardRepository;
+
     @InjectMocks
     private GameService gameService;
     @InjectMocks
@@ -50,6 +56,10 @@ public class GameServiceTest {
     private FriendlyBot testFriedlyBot;
     @InjectMocks
     private List<Player> players = new ArrayList<>();
+    @InjectMocks
+    private Card testCard;
+    @InjectMocks
+    private GameRound gameRound;
 
     @BeforeEach
     public void setup() {
@@ -75,18 +85,25 @@ public class GameServiceTest {
         players.add(testPlayer);
         players.add(testFriedlyBot);
 
+        testFriedlyBot.setGameId(1L);
+        testFriedlyBot.setPlayerId(1L);
 
 
         testGame.setGameName("superGame");
-        testGame.setAdminPlayerId(1);
+        testGame.setAdminPlayerId(1L);
         testGame.setHasBot(true);
         testGame.setGameId(1L);
         testGame.setNumberOfPlayers(2);
         testGame.setPlayers(players);
 
-        testPlayer.setPlayerId(1L);
-        testFriedlyBot.setGameId(1);
-        testFriedlyBot.setPlayerId(1L);
+
+
+        testCard.setCardId(1L);
+        testCard.setWord1("a");
+        testCard.setWord2("b");
+        testCard.setWord3("c");
+        testCard.setWord4("d");
+        testCard.setWord5("e");
 
 
     }
@@ -146,7 +163,7 @@ public class GameServiceTest {
         Mockito.when(userRepository.findByUserId(testUser1.getId())).thenReturn(testUser1);
         testGame.setNumberOfPlayers(7);
 
-        //GameRound gameRound = gameService.startGame(testGame.getGameId());
+
 
         String exceptionMessage = "Game already full! Join another game.";
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser1.getId()), exceptionMessage);
@@ -154,6 +171,9 @@ public class GameServiceTest {
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
 
+    /**
+     * test that joinGame(gameId, userId) throws an response status exception if this player is already in the game
+     */
     @Test
     public void test_joinGame_when_player_already_in_game(){
         testUser1.setStatus(UserStatus.ONLINE);
@@ -168,5 +188,36 @@ public class GameServiceTest {
         assertEquals(HttpStatus.NO_CONTENT, exception.getStatus());
 
     }
+
+    @Test
+    public void test_getGameByGameStatus(){
+        List<Game> game = new ArrayList<>();
+        game.add(testGame);
+        Mockito.when(gameRepository.findAllByGameStatus(GameStatus.CREATED)).thenReturn(game);
+        List<Game> games = gameService.getGameByGameStatus(GameStatus.CREATED);
+        assertEquals(game.get(0).getGameId(), games.get(0).getGameId());
+        assertEquals(game, games);
+    }
+//Todo: this is more likely a test for GameRoundService
+    /*
+    @Test
+    public void test_startGame(){
+        testUser1.setStatus(UserStatus.ONLINE);
+        testUser.setStatus(UserStatus.ONLINE);
+        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
+        Mockito.when(userRepository.findByUserId(testUser1.getId())).thenReturn(testUser1);
+        players.add(testPlayer1);
+        testGame.setPlayers(players);
+        testGame.setCardIds(gameService.getRandomUniqueCardIds());
+
+        Mockito.when(cardRepository.findByCardId(Mockito.anyLong())).thenReturn(testCard);
+
+        GameRound gameRound = gameService.startGame(testGame.getGameId());
+
+        System.out.println(gameRound);
+    }
+
+
+     */
 
 }

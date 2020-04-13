@@ -27,6 +27,7 @@ public abstract class Player implements Serializable{
 
     @Column(name = "game_id")
     private long gameId;
+
     @Column
     private String playerName;
 

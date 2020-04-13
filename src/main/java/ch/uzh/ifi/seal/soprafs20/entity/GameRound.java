@@ -26,10 +26,10 @@ public class GameRound implements Serializable {
     private Long gameRoundId;
 
     @Column(nullable = false, unique = true)
-    private long gameId;
+    private Long gameId;
 
     @Column()
-    private long guessingPlayerId;
+    private Long guessingPlayerId;
 
     @Column()
     private String mysteryWord;
@@ -57,19 +57,19 @@ public class GameRound implements Serializable {
         this.gameRoundId = gameRoundId;
     }
 
-    public long getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 
-    public void setGameId(long gameId) {
+    public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
 
-    public long getGuessingPlayerId() {
+    public Long getGuessingPlayerId() {
         return guessingPlayerId;
     }
 
-    public void setGuessingPlayerId(long guessingPlayerId) {
+    public void setGuessingPlayerId(Long guessingPlayerId) {
         this.guessingPlayerId = guessingPlayerId;
     }
 

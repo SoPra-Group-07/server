@@ -9,7 +9,7 @@ public class LobbyDTO {
     private String gameName;
     private List<Player> players;
     private int numberOfPlayers;
-    private long adminPlayerId;
+    private Long adminPlayerId;
     private GameStatus gameStatus;
 
     public Long getGameId() {
@@ -44,11 +44,11 @@ public class LobbyDTO {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public long getAdminPlayerId() {
+    public Long getAdminPlayerId() {
         return adminPlayerId;
     }
 
-    public void setAdminPlayerId(long adminPlayerId) {
+    public void setAdminPlayerId(Long adminPlayerId) {
         this.adminPlayerId = adminPlayerId;
     }
 
