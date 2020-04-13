@@ -27,6 +27,8 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Game(){}
+
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     @Column(name = "game_id")

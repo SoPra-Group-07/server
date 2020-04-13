@@ -15,6 +15,7 @@ import java.util.ArrayList;
 @Table(name = "CARD")
 public class Card implements Serializable {
 
+    public Card(){}
     private static final long serialVersionUID = 1L;
 
 

@@ -19,6 +19,7 @@ import java.util.List;
 public class GameRound implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    public GameRound(){}
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
@@ -35,6 +36,8 @@ public class GameRound implements Serializable {
     private String mysteryWord;
 
     @OneToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "game_round_id")
     private Card card;
 
     @Column
@@ -43,7 +46,7 @@ public class GameRound implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
-    private Submission guess = new Guess();
+    private Guess guess;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -138,6 +141,22 @@ public class GameRound implements Serializable {
 
     public void setDuplicates(List<Submission> duplicates) {
         this.duplicates = duplicates;
+    }
+
+    public Guess getGuess() {
+        return guess;
+    }
+
+    public void setGuess(Guess guess) {
+        this.guess = guess;
+    }
+
+    public List<Submission> getValidClues() {
+        return validClues;
+    }
+
+    public void setValidClues(List<Submission> validClues) {
+        this.validClues = validClues;
     }
 }
 

@@ -34,7 +34,8 @@ public class GameRoundService {
     }
 
     public GameRound createNewGameRound(Game game){
-        if (game.getActualGameRoundIndex() >= 12 || game.getGameStatus() == GameStatus.FINISHED){
+        //changed 12 to 13!
+        if (game.getActualGameRoundIndex() >= 13 || game.getGameStatus() == GameStatus.FINISHED){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
         }
         GameRound gameRound = new GameRound();

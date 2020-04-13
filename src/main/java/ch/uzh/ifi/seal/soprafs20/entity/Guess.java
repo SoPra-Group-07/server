@@ -6,12 +6,19 @@ import java.io.Serializable;
 /**
  *
  */
-
+@Entity
 public class Guess extends Submission {
 
     private static final long serialVersionUID = 1L;
 
+    public Guess(){ }
+
+    @Column(name="game_round_id")
+    private Long gameRoundId;
+
+    @Column
     private boolean correctGuess;
+    @Column
     private boolean didGuess;
 
     public boolean isCorrectGuess() {
@@ -26,5 +33,15 @@ public class Guess extends Submission {
     }
     public void setDidGuess(boolean didGuess) {
         this.didGuess = didGuess;
+    }
+
+    @Override
+    public Long getGameRoundId() {
+        return gameRoundId;
+    }
+
+    @Override
+    public void setGameRoundId(Long gameRoundId) {
+        this.gameRoundId = gameRoundId;
     }
 }
