@@ -12,6 +12,8 @@ public class GameRoundDTO {
     private String mysteryWord;
     private Card card;
 
+
+
     public long getGameRoundId() {
         return gameRoundId;
     }

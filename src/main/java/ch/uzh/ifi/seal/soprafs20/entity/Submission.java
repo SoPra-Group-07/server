@@ -1,11 +1,10 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "SUBMISSION")
 public abstract class Submission implements Serializable {
 
     public Submission(){}
@@ -15,7 +14,7 @@ public abstract class Submission implements Serializable {
     @Column
     private Long submissionId;
 
-    @Column(name = "gameRound_id")
+    @Column(name = "game_round_id")
     private Long gameRoundId;
 
 
