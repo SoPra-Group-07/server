@@ -37,6 +37,24 @@ public class GameRound implements Serializable {
     @OneToOne
     private Card card;
 
+    @Column
+    private boolean everyoneSubmitted;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
+    private Submission guess = new Guess();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
+    private List<Submission> duplicates = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
+    private List<Submission> validClues = new ArrayList<>();
+
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
@@ -104,6 +122,22 @@ public class GameRound implements Serializable {
 
     public void setSubmissions(List<Submission> submissions) {
         this.submissions = submissions;
+    }
+
+    public boolean isEveryoneSubmitted() {
+        return everyoneSubmitted;
+    }
+
+    public void setEveryoneSubmitted(boolean everyoneSubmitted) {
+        this.everyoneSubmitted = everyoneSubmitted;
+    }
+
+    public List<Submission> getDuplicates() {
+        return duplicates;
+    }
+
+    public void setDuplicates(List<Submission> duplicates) {
+        this.duplicates = duplicates;
     }
 }
 

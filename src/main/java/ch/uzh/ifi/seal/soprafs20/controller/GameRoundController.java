@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.GameRound;
+import ch.uzh.ifi.seal.soprafs20.entity.Player;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
@@ -33,12 +34,33 @@ public class GameRoundController {
     @GetMapping("/gameRounds/{roundId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundDTO getGameRoundByRoundId(@RequestBody long roundId){
+    public GameRoundDTO getGameRoundByRoundId(@PathVariable long roundId){
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(roundId);
         GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
         return gameRoundDTO;
     }
 
+    @PutMapping("/gameRounds")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameRoundDTO chooseMisteryWord(@RequestBody long roundId, int wordNumber){
+        GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(roundId);
+        gameRoundService.chooseMisteryWord(gameRoundByRoundId,wordNumber);
+        GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
+        return gameRoundDTO;
+    }
+
+    /*
+    @PutMapping("/gameRounds/clues")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameRoundDTO submitClue(@RequestBody long roundId, String clue, long playerId){
+        GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(roundId);
+        gameRoundService.submitClue(gameRoundByRoundId,playerId,clue);
+        GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
+        return gameRoundDTO;
+    }
+     */
 
 
 

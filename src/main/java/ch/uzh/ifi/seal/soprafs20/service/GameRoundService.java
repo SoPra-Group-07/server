@@ -93,4 +93,19 @@ public class GameRoundService {
     public GameRound getGameRoundByRoundId(long roundId){
         return gameRoundRepository.findByGameRoundId(roundId);
     }
+
+    public void chooseMisteryWord(GameRound gameRound, int wordNumber){
+        if (wordNumber==1) {
+            gameRound.setMysteryWord(gameRound.getCard().getWord1());
+        }else if (wordNumber==2) {
+            gameRound.setMysteryWord(gameRound.getCard().getWord2());
+        }else if (wordNumber==3) {
+            gameRound.setMysteryWord(gameRound.getCard().getWord3());
+        }else if (wordNumber==4) {
+            gameRound.setMysteryWord(gameRound.getCard().getWord4());
+        }else if (wordNumber==5) {
+            gameRound.setMysteryWord(gameRound.getCard().getWord5());
+        }
+        else { throw new ResponseStatusException(HttpStatus.CONFLICT, "Choose a number between 1-5");}
+    }
 }
