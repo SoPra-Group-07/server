@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto.Game;
 
+import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Player;
 import java.util.List;
 
@@ -8,6 +9,8 @@ public class LobbyDTO {
     private String gameName;
     private List<Player> players;
     private int numberOfPlayers;
+    private long adminPlayerId;
+    private GameStatus gameStatus;
 
     public Long getGameId() {
         return gameId;
@@ -39,5 +42,21 @@ public class LobbyDTO {
 
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+    }
+
+    public long getAdminPlayerId() {
+        return adminPlayerId;
+    }
+
+    public void setAdminPlayerId(long adminPlayerId) {
+        this.adminPlayerId = adminPlayerId;
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 }
