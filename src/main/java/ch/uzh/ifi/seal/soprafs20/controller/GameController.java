@@ -75,7 +75,7 @@ public class GameController {
     @GetMapping("/games/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<Player> getPlayersFromGame(@PathVariable String gameId){
+    public List<Player> getPlayersFromGameAndAdminPlayerId(@PathVariable String gameId){
         long id;
         id = Long.parseLong(gameId);
 
