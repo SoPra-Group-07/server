@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.time.ZonedDateTime;
+
 import java.util.*;
 
 /**
@@ -24,24 +27,27 @@ public class GameRoundService {
 
     private final GameRoundRepository gameRoundRepository;
     private final CardRepository cardRepository;
+    private final GameRepository gameRepository;
+    private final ClueRepository clueRepository;
 
 
     @Autowired
     public GameRoundService(@Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
-                            @Qualifier("cardRepository") CardRepository cardRepository) {
+                            @Qualifier("cardRepository") CardRepository cardRepository, @Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("clueRepository") ClueRepository clueRepository)  {
         this.gameRoundRepository = gameRoundRepository;
         this.cardRepository = cardRepository;
+        this.gameRepository = gameRepository;
+        this.clueRepository = clueRepository;
     }
 
     public GameRound createNewGameRound(Game game){
-        //changed 12 to 13!
-        if (game.getActualGameRoundIndex() >= 13 || game.getGameStatus() == GameStatus.FINISHED){
+        if (game.getActualGameRoundIndex() > 12 || game.getGameStatus() == GameStatus.FINISHED){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
         }
         GameRound gameRound = new GameRound();
         gameRound.setGameId(game.getGameId());
         List<Integer> list = new ArrayList<>(game.getCardIds());
-        gameRound.setCard(getActualCard(list.get(game.getActualGameRoundIndex()-1)));
+        gameRound.setCard(getActualCard(list.get(game.getActualGameRoundIndex())));
         gameRoundRepository.save(gameRound);
         gameRoundRepository.flush();
 
@@ -95,7 +101,7 @@ public class GameRoundService {
         return gameRoundRepository.findByGameRoundId(roundId);
     }
 
-    public void chooseMisteryWord(GameRound gameRound, int wordNumber){
+    public void chooseMisteryWord(GameRound gameRound, int wordNumber) throws IOException {
         if (wordNumber==1) {
             gameRound.setMysteryWord(gameRound.getCard().getWord1());
         }else if (wordNumber==2) {
@@ -108,5 +114,44 @@ public class GameRoundService {
             gameRound.setMysteryWord(gameRound.getCard().getWord5());
         }
         else { throw new ResponseStatusException(HttpStatus.CONFLICT, "Choose a number between 1-5");}
+
+        createClues(gameRound);
     }
+
+
+    public void createClues(GameRound gameRound) throws IOException {
+        Game game = gameRepository.findByGameId(gameRound.getGameId());
+        for (Player player: game.getPlayers()){
+            // check clue or guess
+            Clue clue = new Clue();
+            clue.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
+            clue.setPlayerId(player.getPlayerId());
+            clue.setGameRoundId(gameRound.getGameRoundId());
+
+            Clue clue1 = clueRepository.save(clue);
+            clueRepository.flush();
+            if (player instanceof FriendlyBot || player instanceof MaliciousBot){
+                String friendlyOrMaliciousClue = player.giveClue(gameRound.getMysteryWord());
+                clue1.setWord(friendlyOrMaliciousClue);
+                clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
+                clue1.setDuration(((clue.getEndTime()-clue.getStartTime())/1000));
+
+
+            }
+
+        }
+    }
+
+    public void submitClue(GameRound gameRound, String clue, Long playerId){
+        Clue clue1 = clueRepository.findByPlayerId(playerId);
+        clue1.setWord(clue);
+        clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
+        clue1.setDuration((clue1.getEndTime()-clue1.getStartTime())/1000);
+
+
+
+    }
+
+
+
 }

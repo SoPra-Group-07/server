@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.nio.MappedByteBuffer;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public abstract class Player implements Serializable{
     private long userId;
 
     // Todo: return void
-    public abstract Clue giveClue(String word);
+    public abstract String giveClue(String word) throws IOException;
 
 
     public Long getPlayerId() {

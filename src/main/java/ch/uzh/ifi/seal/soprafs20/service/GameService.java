@@ -32,19 +32,21 @@ public class GameService {
     private final CardRepository cardRepository;
     private final PlayerRepository playerRepository;
     private final GameRoundRepository gameRoundRepository;
+    private final ClueRepository clueRepository;
 
     private final GameRoundService gameRoundService;
 
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
-                       @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository) {
+                       @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository, @Qualifier("clueRepository") ClueRepository clueRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
         this.playerRepository = playerRepository;
         this.gameRoundRepository = gameRoundRepository;
-        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository);
+        this.clueRepository = clueRepository;
+        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository);
     }
 
     public List<Game> getAllGames(){

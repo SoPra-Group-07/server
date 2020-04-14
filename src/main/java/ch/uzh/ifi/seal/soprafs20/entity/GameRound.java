@@ -51,6 +51,8 @@ public class GameRound implements Serializable {
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
     private Guess guess;
 
+
+    /*
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
@@ -60,11 +62,12 @@ public class GameRound implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
     private List<Submission> validClues = new ArrayList<>();
+*/
 
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
-    private List<Submission> submissions = new ArrayList<>();
+    private List<Clue> submissions = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -122,11 +125,11 @@ public class GameRound implements Serializable {
         this.playerStatistic = playerStatistic;
     }
 
-    public List<Submission> getSubmissions() {
+    public List<Clue> getSubmissions() {
         return submissions;
     }
 
-    public void setSubmissions(List<Submission> submissions) {
+    public void setSubmissions(List<Clue> submissions) {
         this.submissions = submissions;
     }
 
@@ -138,13 +141,7 @@ public class GameRound implements Serializable {
         this.everyoneSubmitted = everyoneSubmitted;
     }
 
-    public List<Submission> getDuplicates() {
-        return duplicates;
-    }
 
-    public void setDuplicates(List<Submission> duplicates) {
-        this.duplicates = duplicates;
-    }
 
     public Guess getGuess() {
         return guess;
@@ -152,14 +149,6 @@ public class GameRound implements Serializable {
 
     public void setGuess(Guess guess) {
         this.guess = guess;
-    }
-
-    public List<Submission> getValidClues() {
-        return validClues;
-    }
-
-    public void setValidClues(List<Submission> validClues) {
-        this.validClues = validClues;
     }
 
     public int getWordNumber() {

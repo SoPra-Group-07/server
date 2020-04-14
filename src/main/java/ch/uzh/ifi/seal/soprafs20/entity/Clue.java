@@ -6,13 +6,13 @@ import java.io.Serializable;
 /**
  *
  */
-
+@Entity
 public class Clue extends Submission {
 
     //private static final long serialVersionUID = 1L;
     public Clue(){}
 
-    private boolean duplicateClue;
-
+    @Column()
+    private boolean isDuplicate;
 
 }

@@ -20,7 +20,7 @@ public class PhysicalPlayer extends Player implements Serializable{
     }
 
     @Override
-    public Clue giveClue(String word) {
-        return null;
+    public String giveClue(String myWord) {
+        return myWord;
     }
 }
