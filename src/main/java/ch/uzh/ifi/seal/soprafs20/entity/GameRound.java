@@ -40,7 +40,7 @@ public class GameRound implements Serializable {
 
     @OneToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "game_round_id")
+    @JoinColumn
     private Card card;
 
     @Column
