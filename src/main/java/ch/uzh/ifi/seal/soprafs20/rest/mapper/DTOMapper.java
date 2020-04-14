@@ -1,8 +1,9 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
-import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.*;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
@@ -10,8 +11,6 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 /**
  * DTOMapper
@@ -102,4 +101,9 @@ public interface DTOMapper {
 
     @Mapping(source = "gameId", target = "gameId")
     Game convertGameStartDTOToEntity(GameStartPutDTO gameStartPutDTO);
+
+
+    @Mapping(source = "gameRoundId", target = "gameRoundId")
+    @Mapping(source = "wordNumber", target = "wordNumber")
+    GameRound convertGameRoundPutDTOtoEntity(GameRoundPutDTO gameRoundPutDTO);
 }

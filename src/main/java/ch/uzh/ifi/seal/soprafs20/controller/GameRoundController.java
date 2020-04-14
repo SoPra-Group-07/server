@@ -2,8 +2,8 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.GameRound;
-import ch.uzh.ifi.seal.soprafs20.entity.Player;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
@@ -34,7 +34,7 @@ public class GameRoundController {
     @GetMapping("/gameRounds/{roundId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundDTO getGameRoundByRoundId(@PathVariable long roundId){
+    public GameRoundDTO getGameRoundByRoundId(@PathVariable Long roundId){
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(roundId);
         GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
         return gameRoundDTO;
@@ -43,9 +43,10 @@ public class GameRoundController {
     @PutMapping("/gameRounds")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundDTO chooseMisteryWord(@RequestBody long roundId, int wordNumber){
-        GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(roundId);
-        gameRoundService.chooseMisteryWord(gameRoundByRoundId,wordNumber);
+    public GameRoundDTO chooseMisteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO){
+        GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
+        GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
+        gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
         GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
         return gameRoundDTO;
     }

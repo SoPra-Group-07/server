@@ -35,6 +35,9 @@ public class GameRound implements Serializable {
     @Column()
     private String mysteryWord;
 
+    @Column()
+    private int wordNumber;
+
     @OneToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id")
@@ -157,6 +160,14 @@ public class GameRound implements Serializable {
 
     public void setValidClues(List<Submission> validClues) {
         this.validClues = validClues;
+    }
+
+    public int getWordNumber() {
+        return wordNumber;
+    }
+
+    public void setWordNumber(int wordNumber) {
+        this.wordNumber = wordNumber;
     }
 }
 

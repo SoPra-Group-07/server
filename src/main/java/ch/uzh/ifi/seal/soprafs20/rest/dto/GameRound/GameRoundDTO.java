@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.rest.dto.Game;
+package ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Card;
 import ch.uzh.ifi.seal.soprafs20.entity.Clue;
