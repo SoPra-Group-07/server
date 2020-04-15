@@ -1,25 +1,19 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
-import org.mapstruct.BeanMapping;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.nio.MappedByteBuffer;
-import java.util.List;
+
 
 /**
  *
  */
-//@MappedSuperclass
+
 @Entity
 public abstract class PlayerStatistic implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public PlayerStatistic() {
-    }
+    public PlayerStatistic() {/* empty constructor*/  }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +22,19 @@ public abstract class PlayerStatistic implements Serializable {
     @Column(name = "game_round_Id")
     private Long gameRoundId;
 
+    public Long getPlayerStatisticId() {
+        return playerStatisticId;
+    }
 
+    public void setPlayerStatisticId(Long playerStatisticId) {
+        this.playerStatisticId = playerStatisticId;
+    }
+
+    public Long getGameRoundId() {
+        return gameRoundId;
+    }
+
+    public void setGameRoundId(Long gameRoundId) {
+        this.gameRoundId = gameRoundId;
+    }
 }

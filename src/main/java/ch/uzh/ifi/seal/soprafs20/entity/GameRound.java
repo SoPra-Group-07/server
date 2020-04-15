@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
 public class GameRound implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    public GameRound(){}
+    public GameRound(){/* empty constructor */}
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
@@ -51,7 +50,6 @@ public class GameRound implements Serializable {
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
     private Guess guess;
 
-
     /*
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -73,8 +71,6 @@ public class GameRound implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
     private List<PlayerStatistic> playerStatistic = new ArrayList<>();
-
-    //private List<Player> players;
 
     public Long getGameRoundId() {
         return gameRoundId;
@@ -116,7 +112,6 @@ public class GameRound implements Serializable {
         this.card = card;
     }
 
-
     public List<PlayerStatistic> getPlayerStatistic() {
         return playerStatistic;
     }
@@ -140,8 +135,6 @@ public class GameRound implements Serializable {
     public void setEveryoneSubmitted(boolean everyoneSubmitted) {
         this.everyoneSubmitted = everyoneSubmitted;
     }
-
-
 
     public Guess getGuess() {
         return guess;

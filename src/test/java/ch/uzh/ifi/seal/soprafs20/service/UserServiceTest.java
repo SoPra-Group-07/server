@@ -40,12 +40,12 @@ public class UserServiceTest {
         MockitoAnnotations.initMocks(this);
 
         // given
-        testUser.setId(1L);
+        testUser.setUserId(1L);
         testUser.setPassword("testPassword");
         testUser.setUsername("testUsername");
 
 
-        testUser1.setId(2L);
+        testUser1.setUserId(2L);
         testUser1.setPassword("testPassword1");
         testUser1.setUsername("tesUsername1");
 
@@ -65,7 +65,7 @@ public class UserServiceTest {
         // then
        // Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());                              <--- Works also without
 
-        assertEquals(testUser.getId(), createdUser.getId());
+        assertEquals(testUser.getUserId(), createdUser.getUserId());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getUsername(), createdUser.getUsername());
         assertNull(createdUser.getToken());
@@ -160,20 +160,20 @@ public class UserServiceTest {
         notExistingUser.setPassword("notHere");
         notExistingUser.setUsername("NoName");
 
-        editUser.setId(1L);
+        editUser.setUserId(1L);
         editUser.setPassword("xy");
         editUser.setUsername("changedUsername");
         editUser.setBirth("06-08-1996");
 
-        editUser1.setId(2L);
+        editUser1.setUserId(2L);
         editUser1.setPassword("xy");
         editUser1.setUsername(null);
         editUser1.setBirth(null);
 
         testUser.setStatus(UserStatus.ONLINE);
         testUser1.setStatus(UserStatus.ONLINE);
-        Mockito.when(userRepository.getOne(editUser.getId())).thenReturn(testUser);
-        Mockito.when(userRepository.getOne(testUser1.getId())).thenReturn(testUser1);
+        Mockito.when(userRepository.getOne(editUser.getUserId())).thenReturn(testUser);
+        Mockito.when(userRepository.getOne(testUser1.getUserId())).thenReturn(testUser1);
 
         // edit testUser when edituser has a username and a birth
         userService.edit(editUser);
@@ -191,14 +191,14 @@ public class UserServiceTest {
 
         testUser1.setBirth("22-03-1997");
 
-        editUser1.setId(2L);
+        editUser1.setUserId(2L);
         editUser1.setPassword("xy");
         editUser1.setUsername(null);
         editUser1.setBirth(null);
 
 
         testUser1.setStatus(UserStatus.ONLINE);
-        Mockito.when(userRepository.getOne(testUser1.getId())).thenReturn(testUser1);
+        Mockito.when(userRepository.getOne(testUser1.getUserId())).thenReturn(testUser1);
 
         // do not edit testUser1 when edituser1's username and birth are null
         userService.edit(editUser1);
@@ -218,7 +218,7 @@ public class UserServiceTest {
         notExistingUser.setUsername("NoName");
 
         // throw an exception if an user is not found in the userRepository
-        Mockito.when(userRepository.getOne(notExistingUser.getId())).thenReturn(null);
+        Mockito.when(userRepository.getOne(notExistingUser.getUserId())).thenReturn(null);
 
 
         String exceptionMessage = "User not found";

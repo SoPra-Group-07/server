@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+
 
 /**
  * Internal Card Representation
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @Table(name = "CARD")
 public class Card implements Serializable {
 
-    public Card(){}
+    public Card(){ /* empty constructor */}
     private static final long serialVersionUID = 1L;
 
 

@@ -32,7 +32,7 @@ public interface DTOMapper {
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     // GET
-    @Mapping(source = "id", target = "id")
+    @Mapping(source = "userId", target = "id")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "status", target = "status")
@@ -47,7 +47,7 @@ public interface DTOMapper {
     User convertUserTokenDTOtoEntity(UserTokenDTO userTokenDTO);
 
     //Edit
-    @Mapping(source = "id", target = "id")
+    @Mapping(source = "id", target = "userId")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "birth", target = "birth")
     User convertUserEditDTOtoEntity(UserEditDTO userEditDTO);

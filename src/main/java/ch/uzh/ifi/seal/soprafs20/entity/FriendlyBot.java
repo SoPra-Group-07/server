@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 public class FriendlyBot extends Player {
 
-    public FriendlyBot() {}
+    public FriendlyBot() {/* empty constructor */}
 
     @Override
     public String giveClue(String word) throws IOException {

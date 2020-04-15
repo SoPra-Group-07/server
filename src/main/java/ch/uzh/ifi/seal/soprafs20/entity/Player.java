@@ -1,26 +1,20 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
-import org.mapstruct.BeanMapping;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.nio.MappedByteBuffer;
-import java.util.List;
+
 
 /**
  *
  */
-//@MappedSuperclass
+
 @Entity
 public abstract class Player implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-    public Player(){}
+    public Player(){/* empty constructor*/ }
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)

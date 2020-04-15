@@ -128,8 +128,8 @@ public class UserService {
 
 
     public User edit(User userToEdit) {                                            // <--  This method gets called in 'public UserGetDTO editUser(@RequestBody UserEditDTO editUser)'.
-        //System.out.println(userToEdit.getId());                                  //      If the user is found, the the username and birth can be edited. Finally the
-        User userById = userRepository.getOne(userToEdit.getId());                 //      edited user is returned.
+                                                                                    //      If the user is found, the the username and birth can be edited. Finally the
+        User userById = userRepository.getOne(userToEdit.getUserId());                 //      edited user is returned.
         if (userEqualsNull(userById)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");       //status code 404
         }

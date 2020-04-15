@@ -43,7 +43,7 @@ public class LeaderboardControllerTest {
         user1.setPassword("testPassword");
         user1.setUsername("User1");
         user1.setStatus(UserStatus.OFFLINE);
-        user1.setId(1L);
+        user1.setUserId(1L);
         user1.setToken("2dfc-g59k");
         user1.setDate(LocalDate.now());
         user1.setBirth("00-00-0000");
@@ -53,7 +53,7 @@ public class LeaderboardControllerTest {
         user2.setPassword("testPassword");
         user2.setUsername("User2");
         user2.setStatus(UserStatus.OFFLINE);
-        user2.setId(1L);
+        user2.setUserId(1L);
         user2.setToken("2dfc-g59k");
         user2.setDate(LocalDate.now());
         user2.setBirth("00-00-0000");
@@ -63,7 +63,7 @@ public class LeaderboardControllerTest {
         user3.setPassword("testPassword");
         user3.setUsername("User3");
         user3.setStatus(UserStatus.OFFLINE);
-        user3.setId(1L);
+        user3.setUserId(1L);
         user3.setToken("2dfc-g59k");
         user3.setDate(LocalDate.now());
         user3.setBirth("00-00-0000");

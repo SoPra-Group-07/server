@@ -47,7 +47,7 @@ public class UserControllerTest {
         user.setPassword("testPassword");
         user.setUsername("firstname@lastname");
         user.setStatus(UserStatus.OFFLINE);
-        user.setId(1L);
+        user.setUserId(1L);
         user.setToken("2dfc-g59k");
         user.setDate(LocalDate.now());
         user.setBirth("00-00-0000");
@@ -69,7 +69,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$[0].birth", is(user.getBirth())))
                 .andExpect(jsonPath("$[0].token", is(user.getToken())))
-                .andExpect(jsonPath("$[0].id", is(user.getId().intValue())))          // or is(1) works as well
+                .andExpect(jsonPath("$[0].id", is(user.getUserId().intValue())))          // or is(1) works as well
                 .andExpect(jsonPath("$[0].date", is(user.getDate().toString())));
     }
 
@@ -77,7 +77,7 @@ public class UserControllerTest {
     public void createUser_validInput_userCreated() throws Exception {             //  --------------------------------------------------->    POST "/users" test
         // given
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setPassword("testPassword");
         user.setUsername("testUsername");
         user.setToken("1");
@@ -101,7 +101,7 @@ public class UserControllerTest {
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.id", is(user.getUserId().intValue())))
                 .andExpect(jsonPath("$.password", is(user.getPassword())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
@@ -114,7 +114,7 @@ public class UserControllerTest {
     public void loginUser_validInput_userLoggedIn() throws Exception {             //  --------------------------------------------------->   PUT "/login" test
         // given
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setPassword("testPassword");
         user.setUsername("testUsername");
         user.setToken("1");
@@ -140,7 +140,7 @@ public class UserControllerTest {
         // then
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.id", is(user.getUserId().intValue())))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.password", is(user.getPassword())))           //E.g., '$.password' is an expression to select the wanted information from a Json object
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
@@ -155,7 +155,7 @@ public class UserControllerTest {
     public void userProfiles_whenGetProfile_returnUserProfile() throws Exception {             //  --------------------------------------------------->    GET "/users/{userId}" test
         // given
         User user = new User();
-        user.setId(0L);
+        user.setUserId(0L);
         user.setPassword("testPassword");
         user.setUsername("testUsername");
         user.setToken("1");
@@ -164,7 +164,7 @@ public class UserControllerTest {
         user.setBirth("00-00-0000");
 
 
-        given(userService.getUserById(user.getId())).willReturn(user);
+        given(userService.getUserById(user.getUserId())).willReturn(user);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/users/{userId}",0).contentType(MediaType.APPLICATION_JSON);
@@ -172,7 +172,7 @@ public class UserControllerTest {
         // then
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.id", is(user.getUserId().intValue())))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.password", is(user.getPassword())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
@@ -188,7 +188,7 @@ public class UserControllerTest {
         // given
         //user
         User user = new User();
-        user.setId(0L);
+        user.setUserId(0L);
         user.setPassword("123");
         user.setUsername("user0");
         user.setToken("1");
@@ -198,7 +198,7 @@ public class UserControllerTest {
 
         //user after edit
         User edited_user = new User();
-        edited_user.setId(0L);
+        edited_user.setUserId(0L);
         edited_user.setPassword("123");
 
         edited_user.setToken("1");
@@ -223,7 +223,7 @@ public class UserControllerTest {
         // then
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$.id", is(edited_user.getId().intValue())))
+                .andExpect(jsonPath("$.id", is(edited_user.getUserId().intValue())))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))                           //We need it to check whether the content-type is 'APPLICATION_JSON'
                 .andExpect(jsonPath("$.password", is(edited_user.getPassword())))
                 .andExpect(jsonPath("$.username", is(edited_user.getUsername())))
@@ -238,7 +238,7 @@ public class UserControllerTest {
     public void userIsAlreadyLoggedIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 204 test - "No Content"
         // given
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setPassword("testPassword");
         user.setUsername("testUsername");
         user.setToken("1");
@@ -271,7 +271,7 @@ public class UserControllerTest {
     public void usernameDoesNotExistWhileLoggingIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 401 test - "Unauthorized"
         // given
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setPassword("testPassword");
         user.setUsername("testUsername");
         user.setToken("1");
@@ -303,7 +303,7 @@ public class UserControllerTest {
     public void PasswordIsWrongWhileLoggingIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 401 test - "Unauthorized"
         // given
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setPassword("testPassword");
         user.setUsername("testUsername");
         user.setToken("1");

@@ -6,8 +6,8 @@ import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.LeaderboardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User Controller
@@ -26,7 +26,7 @@ public class LeaderboardController {
     @GetMapping("/leaderboards")
     @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
     @ResponseBody
-    public ArrayList<LeaderboardDTO> getAllUsersFromLeaderboard() {
+    public List<LeaderboardDTO> getAllUsersFromLeaderboard() {
 
 
         leaderboardService.fillUsers();
@@ -34,8 +34,8 @@ public class LeaderboardController {
 
         // fetch all users in the internal representation
 
-        ArrayList<User> users = leaderboardService.getUsers();
-        ArrayList<LeaderboardDTO> leaderboardDTOS = new ArrayList<>();
+        List<User> users = leaderboardService.getUsers();
+        List<LeaderboardDTO> leaderboardDTOS = new ArrayList<>();
 
         // convert each user to the API representation
         for (User user : users) {

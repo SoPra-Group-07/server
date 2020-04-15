@@ -2,10 +2,6 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.source.doctree.SeeTree;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +23,7 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Game(){}
+    public Game(){/* empty constructor */}
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)

@@ -11,7 +11,6 @@ import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 
 @RestController
@@ -31,8 +30,7 @@ public class GameRoundController {
     public GameRoundDTO createGameRound(@RequestBody long gameId){
         Game game = gameService.getGameByGameId(gameId);
         GameRound newGameRound = gameRoundService.createNewGameRound(game);
-        GameRoundDTO newGameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(newGameRound);
-        return newGameRoundDTO;
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(newGameRound);
     }
 
     @GetMapping("/gameRounds/{roundId}")
@@ -40,8 +38,7 @@ public class GameRoundController {
     @ResponseBody
     public GameRoundDTO getGameRoundByRoundId(@PathVariable Long roundId){
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(roundId);
-        GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
-        return gameRoundDTO;
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
     }
 
     @PutMapping("/gameRounds")
@@ -51,8 +48,7 @@ public class GameRoundController {
         GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
         gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
-        GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
-        return gameRoundDTO;
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
     }
 
 
@@ -63,8 +59,7 @@ public class GameRoundController {
         Clue clue = DTOMapper.INSTANCE.convertGameRoundClueDTOtoEntity(gameRoundClueDTO);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(clue.getGameRoundId());
         gameRoundService.submitClue(gameRoundByRoundId,clue.getWord(),clue.getPlayerId());
-        GameRoundDTO gameRoundDTO = DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
-        return gameRoundDTO;
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
 
     }
 

@@ -49,7 +49,7 @@ public class LeaderboardServiceTest {
         user1.setPassword("testPassword");
         user1.setUsername("User1");
         user1.setStatus(UserStatus.OFFLINE);
-        user1.setId(1L);
+        user1.setUserId(1L);
         user1.setToken("2dfc-g59k");
         user1.setDate(LocalDate.now());
         user1.setBirth("00-00-0000");
@@ -60,7 +60,7 @@ public class LeaderboardServiceTest {
         user2.setPassword("testPassword");
         user2.setUsername("User2");
         user2.setStatus(UserStatus.OFFLINE);
-        user2.setId(1L);
+        user2.setUserId(1L);
         user2.setToken("2dfc-g59k");
         user2.setDate(LocalDate.now());
         user2.setBirth("00-00-0000");
@@ -70,7 +70,7 @@ public class LeaderboardServiceTest {
         user3.setPassword("testPassword");
         user3.setUsername("User3");
         user3.setStatus(UserStatus.OFFLINE);
-        user3.setId(1L);
+        user3.setUserId(1L);
         user3.setToken("2dfc-g59k");
         user3.setDate(LocalDate.now());
         user3.setBirth("00-00-0000");
@@ -80,7 +80,7 @@ public class LeaderboardServiceTest {
         user4.setPassword("testPassword");
         user4.setUsername("User4");
         user4.setStatus(UserStatus.OFFLINE);
-        user4.setId(1L);
+        user4.setUserId(1L);
         user4.setToken("2dfc-g59k");
         user4.setDate(LocalDate.now());
         user4.setBirth("00-00-0000");
@@ -105,7 +105,7 @@ public class LeaderboardServiceTest {
         leaderboardService.fillUsers();
         leaderboardService.sortByHighScore();
 
-        ArrayList<User> users = leaderboard.getUsers();
+        List<User> users = leaderboard.getUsers();
         assertEquals(user2, users.get(0));
         assertEquals(user1, users.get(1));
 
@@ -125,7 +125,7 @@ public class LeaderboardServiceTest {
     public void TestfillUsers(){
         leaderboardService.fillUsers();
 
-        ArrayList<User> users = leaderboard.getUsers();
+        List<User> users = leaderboard.getUsers();
         assertEquals(3, users.size());
         assertFalse(users.contains(user4));
     }

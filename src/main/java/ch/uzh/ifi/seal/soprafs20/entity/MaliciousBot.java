@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.aptReq;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.persistence.Entity;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +17,7 @@ public class MaliciousBot extends Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public MaliciousBot() {}
+    public MaliciousBot() {/* empty constructor*/ }
 
     @Override
     public String giveClue(String word) throws IOException {

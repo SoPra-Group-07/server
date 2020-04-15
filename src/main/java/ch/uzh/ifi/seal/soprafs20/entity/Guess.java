@@ -7,11 +7,11 @@ import java.io.Serializable;
  *
  */
 @Entity
-public class Guess extends Submission {
+public class Guess extends Submission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Guess(){ }
+    public Guess(){ /* empty constructor*/ }
 
     @Column(name="game_round_id")
     private Long gameRoundId;

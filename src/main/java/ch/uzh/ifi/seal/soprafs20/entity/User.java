@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Comparator;
 
-//testee
+
 /**
  * Internal User Representation
  * This class composes the internal representation of the user and defines how the user is stored in the database.
@@ -20,7 +20,7 @@ import java.util.Comparator;
 public class User implements Serializable{
 
     private static final long serialVersionUID = 1L;
-    public User(){};
+    public User(){/* empty constructor*/ };
 
 	@Id
 	@GeneratedValue(strategy =GenerationType.IDENTITY)
@@ -91,14 +91,6 @@ public class User implements Serializable{
     public void setHighScore(double highScore) {
         this.highScore = highScore;
     }
-
-    public Long getId() {
-		return userId;
-	}
-
-	public void setId(Long id) {
-		this.userId = id;
-	}
 
 	public String getPassword() {
 		return password;

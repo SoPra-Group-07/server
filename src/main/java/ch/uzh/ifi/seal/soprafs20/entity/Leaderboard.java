@@ -1,23 +1,24 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
 
 public class Leaderboard {
     private static Leaderboard leaderboard;
-    //private static LeaderboardService leaderboardService = new LeaderboardService(UserRepository);
+
 
     private Long leaderboardId;
 
     // Todo: only users that played a game!!
-    private ArrayList<User> users;
+    private List<User> users;
 
 
     private Leaderboard() {
         this.leaderboardId = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
     }
 
     public static Leaderboard getInstance(){
@@ -28,10 +29,6 @@ public class Leaderboard {
                 }
             }
         }
-        //leaderboardService.fillUsers();
-        //leaderboardService.sortByHighScore();
-
-        // methods for sortByHighScore + fill list highscore not null
         return leaderboard;
     }
 
@@ -45,7 +42,7 @@ public class Leaderboard {
         this.leaderboardId = leaderboardId;
     }
 
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 

@@ -81,8 +81,7 @@ public class GameController {
         id = Long.parseLong(gameId);
 
         Game game = gameService.getGameByGameId(id);
-        List<Player> players = game.getPlayers();
-        return players;
+        return game.getPlayers();
 
     }
 

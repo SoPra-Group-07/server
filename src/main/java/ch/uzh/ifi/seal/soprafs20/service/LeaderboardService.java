@@ -35,7 +35,7 @@ public class LeaderboardService {
         Collections.sort(leaderboard.getUsers(), User.userHighscoreComparator);
     }
 
-    public ArrayList<User> getUsers(){
+    public List<User> getUsers(){
         return leaderboard.getUsers();
     }
 

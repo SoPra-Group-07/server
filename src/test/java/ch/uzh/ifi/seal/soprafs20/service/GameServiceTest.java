@@ -66,10 +66,10 @@ public class GameServiceTest {
         MockitoAnnotations.initMocks(this);
 
         // given
-        testUser.setId(1L);
+        testUser.setUserId(1L);
         testUser.setPassword("testPassword");
         testUser.setUsername("testUsername");
-        testUser1.setId(2L);
+        testUser1.setUserId(2L);
         testUser1.setPassword("testPassword1");
         testUser1.setUsername("tesUsername1");
 
@@ -140,9 +140,9 @@ public class GameServiceTest {
         testUser.setStatus(UserStatus.ONLINE);
 
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
-        Mockito.when(userRepository.findByUserId(testUser1.getId())).thenReturn(testUser1);
+        Mockito.when(userRepository.findByUserId(testUser1.getUserId())).thenReturn(testUser1);
 
-        gameService.joinGame(testGame.getGameId(), testUser1.getId());
+        gameService.joinGame(testGame.getGameId(), testUser1.getUserId());
 
         assertEquals(3, testGame.getNumberOfPlayers());
         assertEquals(3, testGame.getPlayers().size());
@@ -160,13 +160,13 @@ public class GameServiceTest {
         testUser1.setStatus(UserStatus.ONLINE);
         testUser.setStatus(UserStatus.ONLINE);
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
-        Mockito.when(userRepository.findByUserId(testUser1.getId())).thenReturn(testUser1);
+        Mockito.when(userRepository.findByUserId(testUser1.getUserId())).thenReturn(testUser1);
         testGame.setNumberOfPlayers(7);
 
 
 
         String exceptionMessage = "Game already full! Join another game.";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser1.getId()), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser1.getUserId()), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
@@ -179,11 +179,11 @@ public class GameServiceTest {
         testUser1.setStatus(UserStatus.ONLINE);
         testUser.setStatus(UserStatus.ONLINE);
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
-        Mockito.when(userRepository.findByUserId(testUser.getId())).thenReturn(testUser);
+        Mockito.when(userRepository.findByUserId(testUser.getUserId())).thenReturn(testUser);
         Mockito.when(playerRepository.findByUserId(testUser.getUserId())).thenReturn(testGame.getPlayers().get(0));
 
         String exceptionMessage = "The user is already in the game!";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser.getId()), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser.getUserId()), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.NO_CONTENT, exception.getStatus());
 

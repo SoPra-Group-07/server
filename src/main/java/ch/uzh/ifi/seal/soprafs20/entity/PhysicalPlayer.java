@@ -9,15 +9,8 @@ import javax.persistence.Column;
 public class PhysicalPlayer extends Player implements Serializable{
 
     private static final long serialVersionUID = 1L;
-    // Todo: evt constructor for ID from User
-    public PhysicalPlayer() {
-        // super()
-        /*this.setUser(user);
-        this.setGameId(game.getGameId());
-        this.setPlayerName(user.getUsername());
-*/
-       // this.setPlayerId(user.getUserId());
-    }
+
+    public PhysicalPlayer() { /* empty constructor*/  }
 
     @Override
     public String giveClue(String myWord) {

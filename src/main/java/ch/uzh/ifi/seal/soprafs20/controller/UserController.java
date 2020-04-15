@@ -9,9 +9,7 @@ import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,9 +63,13 @@ public class UserController {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        if (userService.checkUsername(userInput)) {                                                //Checks if a user with that username exists
-            if (userService.acceptLogin(userInput.getUsername(), userInput.getPassword())) {       //checks if the password is correct
-                if(userService.isAlreadyLoggedIn(userInput.getUsername())){                        //Checks if the user is already ONLINE (maybe from another device) and if so
+        boolean checkUserName = userService.checkUsername(userInput);
+        boolean acceptLogin = userService.acceptLogin(userInput.getUsername(), userInput.getPassword());
+        boolean alreadyLoggedIn = userService.isAlreadyLoggedIn(userInput.getUsername());
+
+        if (Boolean.TRUE.equals(checkUserName)) {                                                //Checks if a user with that username exists
+            if (Boolean.TRUE.equals(acceptLogin)) {       //checks if the password is correct
+                if(Boolean.TRUE.equals(alreadyLoggedIn)){                        //Checks if the user is already ONLINE (maybe from another device) and if so
                     throw new ResponseStatusException(HttpStatus.NO_CONTENT);                      // it sends back the status code 204
                 } else {
                     User updatedUser = userService.login(userInput);                               //updates user-object, e.g., UserStatus is set to ONLINE, etc...
@@ -89,7 +91,8 @@ public class UserController {
         long id;
         id = Long.parseLong(userId);
         User user = userService.getUserById(id);
-        if (!userService.userEqualsNull(user)) {
+        boolean userNotNull = !userService.userEqualsNull(user);
+        if (Boolean.TRUE.equals(userNotNull)) {
             return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
