@@ -24,7 +24,7 @@ public abstract class Submission implements Serializable {
     private long startTime;
     private long endTime;
     private boolean didSubmit;
-    private boolean isValid;
+
 
     public boolean isDidSubmit() {
         return didSubmit;
@@ -34,13 +34,6 @@ public abstract class Submission implements Serializable {
         this.didSubmit = didSubmit;
     }
 
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }
 
     public Long getSubmissionId() {
         return submissionId;

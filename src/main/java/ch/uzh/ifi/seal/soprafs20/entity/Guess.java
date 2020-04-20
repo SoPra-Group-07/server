@@ -21,7 +21,7 @@ public class Guess extends Submission implements Serializable {
     @Column
     private boolean didGuess;
 
-    public boolean isCorrectGuess() {
+    public boolean getCorrectGuess() {
         return correctGuess;
     }
     public void setCorrectGuess(boolean correctGuess) {

@@ -128,7 +128,7 @@ public class GameRound implements Serializable {
         this.submissions = submissions;
     }
 
-    public boolean isEveryoneSubmitted() {
+    public boolean getEveryoneSubmitted() {
         return everyoneSubmitted;
     }
 

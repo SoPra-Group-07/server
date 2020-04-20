@@ -11,6 +11,8 @@ import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 
 @RestController
@@ -45,10 +47,16 @@ public class GameRoundController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO chooseMisteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException, InterruptedException {
-        GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
-        GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
-        gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
-        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
+        try{
+            GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
+            GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
+            gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
+            return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
+        }
+        catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "choose a number between 1 and 5 to choose the mystery word");
+        }
+
     }
 
 
@@ -56,10 +64,15 @@ public class GameRoundController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO submitClue(@RequestBody GameRoundClueDTO gameRoundClueDTO){
+        try{
         Clue clue = DTOMapper.INSTANCE.convertGameRoundClueDTOtoEntity(gameRoundClueDTO);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(clue.getGameRoundId());
-        gameRoundService.submitClue(gameRoundByRoundId,clue.getWord(),clue.getPlayerId());
-        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
+        gameRoundService.submitClue(gameRoundByRoundId, clue.getWord(),clue.getPlayerId());
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);}
+
+        catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not submit a number as a clue, please submit a string");
+        }
 
     }
 

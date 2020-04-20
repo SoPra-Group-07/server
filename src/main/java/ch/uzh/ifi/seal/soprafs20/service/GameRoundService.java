@@ -2,19 +2,19 @@ package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.repository.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import opennlp.tools.stemmer.PorterStemmer;
+import opennlp.tools.stemmer.Stemmer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
 import java.time.ZonedDateTime;
-
 import java.util.*;
+
+
 
 /**
  * GameRound Service
@@ -145,10 +145,54 @@ public class GameRoundService {
 
     public void submitClue(GameRound gameRound, String clue, Long playerId){
         Clue clue1 = clueRepository.findByPlayerId(playerId);
+        if (clue.equals("noClue")){
+            clue1.setDidSubmit(false);
+        }
+        else{
         clue1.setWord(clue);
+        clue1.setDidSubmit(true);}
+
         clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
         clue1.setDuration((clue1.getEndTime()-clue1.getStartTime())/1000);
+        checkIfEveryoneSubmitted(gameRound);
+        if (gameRound.getEveryoneSubmitted()){
+            checkDuplicates(gameRound); }
 
+    }
+
+    public void checkIfEveryoneSubmitted(GameRound gameRound){
+        Game game = gameRepository.findByGameId(gameRound.getGameId());
+        int submissions = 0;
+        for (Clue clue: gameRound.getSubmissions()){
+            if (clue.getWord() != null){
+                submissions++;
+            }
+        }
+        if (submissions == game.getNumberOfPlayers()){
+            gameRound.setEveryoneSubmitted(true);
+        }
+    }
+
+
+    public void checkDuplicates(GameRound gameRound){
+        List<Clue> submission = gameRound.getSubmissions();
+        Stemmer stemmer = new PorterStemmer();
+
+
+        for (Clue clue: submission){
+            String stemmedClue = stemmer.stem(clue.getWord()).toString();
+            clue.setStemmedClue(stemmedClue); }
+
+        for (Clue clue: submission){
+
+            for(Clue clue1: submission){
+                if (clue.getStemmedClue().equals(clue1.getStemmedClue()) && !clue.getSubmissionId().equals(clue1.getSubmissionId())){
+                    clue.setDuplicate(true);
+                    clue1.setDuplicate(true); }
+
+            }
+
+        }
 
 
     }

@@ -17,11 +17,21 @@ public class Clue extends Submission implements Serializable {
     @Column()
     private boolean isDuplicate;
 
+    private String stemmedClue;
+
     public boolean isDuplicate() {
         return isDuplicate;
     }
 
     public void setDuplicate(boolean duplicate) {
         isDuplicate = duplicate;
+    }
+
+    public String getStemmedClue() {
+        return stemmedClue;
+    }
+
+    public void setStemmedClue(String stemmedClue) {
+        this.stemmedClue = stemmedClue;
     }
 }
