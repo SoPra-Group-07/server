@@ -107,6 +107,17 @@ public class GameController {
         GameRound gameRound = gameService.startGame(gameInput.getGameId());
         return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRound);
     }
+    
+   
+    @GetMapping("games/lobby/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameRoundDTO getGameRoundId(@PathVariable String gameId) {
+        long id;
+        id = Long.parseLong(gameId);
+        GameRound gameRound = gameService.getGameRoundByGameId(id);
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRound);
+    }
 
 
 }
