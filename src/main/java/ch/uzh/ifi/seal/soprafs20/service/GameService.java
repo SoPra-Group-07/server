@@ -172,6 +172,8 @@ public class GameService {
         return gameRoundService.startNewGameRound(game);
     }
 
-
+     public GameRound getGameRoundByGameId(long gameId){
+        return gameRoundRepository.findByGameId(gameId);
+    }
 
 }
