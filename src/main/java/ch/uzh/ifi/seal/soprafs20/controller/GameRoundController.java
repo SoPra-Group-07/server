@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class GameRoundController {
@@ -76,6 +77,18 @@ public class GameRoundController {
 
     }
 
+    @GetMapping("games/lobby/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameRoundDTO getGameRoundId(@PathVariable String gameId) {
+        long id;
+        id = Long.parseLong(gameId);
+
+        List<GameRound> gameRounds = gameRoundService.getGameRoundByGameId(id);
+        GameRound lastGameRound = gameRounds.get(gameRounds.size()-1);
+
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(lastGameRound);
+    }
 
 
 

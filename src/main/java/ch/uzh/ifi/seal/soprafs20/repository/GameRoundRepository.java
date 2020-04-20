@@ -11,8 +11,8 @@ import java.util.List;
 @Repository("gameRoundRepository")
 public interface GameRoundRepository extends JpaRepository<GameRound, Long> {         //Methods that are used to interact and work with DB
     GameRound findByGameRoundId(long gameRoundId);
-    
-    GameRound findByGameId(long gameId);
+
+    List<GameRound> findAllByGameId(long gameId);
 }
 
    
