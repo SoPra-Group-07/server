@@ -29,9 +29,9 @@ public class GameRoundController {
     @PostMapping("/games/{gameId}/gameRounds")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public GameRoundDTO createGameRound(@RequestBody long gameId){
+    public GameRoundDTO createGameRound(@PathVariable Long gameId){
         Game game = gameService.getGameByGameId(gameId);
-        GameRound newGameRound = gameRoundService.createNewGameRound(game);
+        GameRound newGameRound = gameRoundService.startNewGameRound(game);
         return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(newGameRound);
     }
 

@@ -60,8 +60,7 @@ public class GameRoundService {
             if (game.getActualGameRoundIndex() == 0) {
                 Random random = new Random();
                 int randomStart = random.nextInt(game.getNumberOfPlayers());
-                game.setRandomStartPosition(randomStart);
-            }
+                game.setRandomStartPosition(randomStart);}
 
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
             GameRound actualGameRound = createNewGameRound(game);
@@ -84,7 +83,9 @@ public class GameRoundService {
         if (game.getPlayers().get(nextGuessingPlayerIdx) instanceof PhysicalPlayer) {
             return game.getPlayers().get(nextGuessingPlayerIdx).getPlayerId();
         }
-        else { return game.getPlayers().get((nextGuessingPlayerIdx + 1) % numberOfPlayers).getPlayerId(); }
+        else {
+            game.setRandomStartPosition(game.getRandomStartPosition()+1);
+            return game.getPlayers().get((nextGuessingPlayerIdx + 1) % numberOfPlayers).getPlayerId(); }
     }
 
     private Card getActualCard(int cardId){

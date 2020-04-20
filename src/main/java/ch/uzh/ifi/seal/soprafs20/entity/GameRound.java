@@ -22,10 +22,10 @@ public class GameRound implements Serializable {
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
-    @Column(name="game_round_id")
+    @Column(name="game_round_id", unique = true)
     private Long gameRoundId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long gameId;
 
     @Column()
