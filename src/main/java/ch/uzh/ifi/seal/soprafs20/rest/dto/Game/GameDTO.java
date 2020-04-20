@@ -1,11 +1,9 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto.Game;
 
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs20.entity.Card;
+
 import ch.uzh.ifi.seal.soprafs20.entity.Player;
 
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.Set;
 

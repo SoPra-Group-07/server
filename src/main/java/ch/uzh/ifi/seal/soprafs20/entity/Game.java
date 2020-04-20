@@ -48,7 +48,7 @@ public class Game implements Serializable {
     private int actualGameRoundIndex;
 
     @ElementCollection
-    private Set<Integer> cardIds = new LinkedHashSet<Integer>();
+    private Set<Integer> cardIds = new LinkedHashSet<>();
 
     @Column
     private boolean hasBot;

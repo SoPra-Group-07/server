@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Card;
 import ch.uzh.ifi.seal.soprafs20.entity.Clue;
-import ch.uzh.ifi.seal.soprafs20.entity.Submission;
+
 
 import java.util.List;
 

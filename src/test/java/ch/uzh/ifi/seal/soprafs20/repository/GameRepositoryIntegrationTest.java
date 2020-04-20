@@ -87,7 +87,7 @@ public class GameRepositoryIntegrationTest {
         List<Game> found = gameRepository.findAllByGameStatus(GameStatus.RUNNING);
 
         // then
-        assertEquals(found.size(), 1);
+        assertEquals(1,found.size());
         assertNotNull(found.get(0).getGameId());
         assertEquals(found.get(0).getNumberOfPlayers(), game.getNumberOfPlayers());
         assertEquals(found.get(0).getHasBot(), game.getHasBot());

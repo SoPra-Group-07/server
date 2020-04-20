@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -47,9 +45,9 @@ public class UserService {
                                                               //     it sets the creation date and it also sets a default birthday e.g., "00-00-0000"
         newUser.setStatus(UserStatus.OFFLINE);                //     Finally, the new user is returned.
         LocalDate currentDate = LocalDate.now();
-        newUser.setDate(currentDate);
+        newUser.setCreationDate(currentDate);
 
-        newUser.setBirth("00-00-0000");
+        newUser.setDateOfBirth("00-00-0000");
 
         checkIfUserNameExists(newUser);
 
@@ -130,16 +128,17 @@ public class UserService {
     public User edit(User userToEdit) {                                            // <--  This method gets called in 'public UserGetDTO editUser(@RequestBody UserEditDTO editUser)'.
                                                                                     //      If the user is found, the the username and birth can be edited. Finally the
         User userById = userRepository.getOne(userToEdit.getUserId());                 //      edited user is returned.
-        if (userEqualsNull(userById)){
+        boolean userEqualsNull = userEqualsNull(userById);
+        if (userEqualsNull){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");       //status code 404
         }
 
-        else if (!userEqualsNull(userToEdit)){
+        else {
             if(userToEdit.getPassword() != null) {
                 userById.setPassword(userToEdit.getPassword());
             }
-            if(userToEdit.getBirth() != null) {
-                userById.setBirth(userToEdit.getBirth());
+            if(userToEdit.getDateOfBirth() != null) {
+                userById.setDateOfBirth(userToEdit.getDateOfBirth());
             }
         }
         return userById;

@@ -12,7 +12,6 @@ public class Leaderboard {
 
     private Long leaderboardId;
 
-    // Todo: only users that played a game!!
     private List<User> users;
 
 
@@ -46,7 +45,7 @@ public class Leaderboard {
         return users;
     }
 
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

@@ -26,9 +26,6 @@ public class LeaderboardService {
         this.userRepository = userRepository;
     }
 
-    // Todo: delete logger
-    //private final Logger log = LoggerFactory.getLogger(UserService.class);
-
     private static Leaderboard leaderboard = Leaderboard.getInstance();
 
     public void sortByHighScore(){

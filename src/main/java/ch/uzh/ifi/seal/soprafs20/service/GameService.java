@@ -25,14 +25,9 @@ import java.util.*;
 @Transactional
 public class GameService {
 
-    private final Logger log = LoggerFactory.getLogger(GameService.class);
-
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
-    private final CardRepository cardRepository;
     private final PlayerRepository playerRepository;
-    private final GameRoundRepository gameRoundRepository;
-    private final ClueRepository clueRepository;
 
     private final GameRoundService gameRoundService;
 
@@ -42,10 +37,7 @@ public class GameService {
                        @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository, @Qualifier("clueRepository") ClueRepository clueRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
-        this.cardRepository = cardRepository;
         this.playerRepository = playerRepository;
-        this.gameRoundRepository = gameRoundRepository;
-        this.clueRepository = clueRepository;
         this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository);
     }
 
@@ -102,7 +94,7 @@ public class GameService {
     public Set<Integer> getRandomUniqueCardIds() {
         Random rng = new Random(); // Ideally just create one instance globally
         // Note: use LinkedHashSet to maintain insertion order
-        Set<Integer> generated = new LinkedHashSet<Integer>();
+        Set<Integer> generated = new LinkedHashSet<>();
         while (generated.size() < 13)
         {
             // Todo: check bound -> number of cards available

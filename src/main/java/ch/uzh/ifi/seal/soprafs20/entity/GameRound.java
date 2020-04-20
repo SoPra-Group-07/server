@@ -50,18 +50,6 @@ public class GameRound implements Serializable {
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
     private Guess guess;
 
-    /*
-    @OneToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
-    private List<Submission> duplicates = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
-    private List<Submission> validClues = new ArrayList<>();
-*/
-
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )

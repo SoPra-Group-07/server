@@ -9,10 +9,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 public class FriendlyBot extends Player {
@@ -35,7 +34,6 @@ public class FriendlyBot extends Player {
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-        int responseCode = con.getResponseCode();
 
         // ordering the response
         StringBuilder response;
@@ -55,7 +53,7 @@ public class FriendlyBot extends Player {
                     response.toString(),
                     mapper.getTypeFactory().constructCollectionType(ArrayList.class, aptReq.class));
 
-            if (words.size() > 0) {
+            if (!words.isEmpty()) {
                 return words.get(0).getWord();
             }
             else {

@@ -90,7 +90,7 @@ public class GameRoundService {
 
     private Card getActualCard(int cardId){
         Card card = cardRepository.findByCardId((long) cardId);
-        if (!(card == null)) {
+        if ((card != null)) {
             return card;
         }
         else {

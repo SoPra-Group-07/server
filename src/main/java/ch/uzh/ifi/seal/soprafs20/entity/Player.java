@@ -33,7 +33,7 @@ public abstract class Player implements Serializable{
     @Column(name = "user_id")
     private long userId;
 
-    // Todo: return void
+
     public abstract String giveClue(String word) throws IOException;
 
 

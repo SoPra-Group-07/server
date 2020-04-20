@@ -1,8 +1,8 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound;
 
 public class aptReq {
-    public String word;
-    public int score;
+    private String word;
+    private int score;
 
     public String getWord() {
         return word;

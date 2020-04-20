@@ -35,8 +35,6 @@ public class MaliciousBot extends Player implements Serializable {
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-        int responseCode = con.getResponseCode();
-
         // ordering the response
         StringBuilder response;
         try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
@@ -55,7 +53,7 @@ public class MaliciousBot extends Player implements Serializable {
                     response.toString(),
                     mapper.getTypeFactory().constructCollectionType(ArrayList.class, aptReq.class));
 
-            if (words.size() > 0) {
+            if (!words.isEmpty()) {
                 return words.get(0).getWord();
             }
             else {

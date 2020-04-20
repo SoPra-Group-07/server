@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +21,7 @@ import java.util.Comparator;
 public class User implements Serializable{
 
     private static final long serialVersionUID = 1L;
-    public User(){/* empty constructor*/ };
+    public User(){/* empty constructor*/ }
 
 	@Id
 	@GeneratedValue(strategy =GenerationType.IDENTITY)
@@ -76,6 +77,11 @@ public class User implements Serializable{
         this.creationDate = creationDate;
     }
 
+    public LocalDate getDate(){return creationDate;}
+    public void setDate(LocalDate date){ this.creationDate = date;}
+
+    public String getBirth(){return dateOfBirth;}
+    public void setBirth(String birth){this.dateOfBirth = birth;}
     public String getDateOfBirth() {
         return dateOfBirth;
     }
@@ -124,24 +130,7 @@ public class User implements Serializable{
         this.status = status;
     }
 
-    public LocalDate getDate() {
-        return creationDate;
-    }
-
-    public void setDate(LocalDate date) {
-        this.creationDate = date;
-    }
-
-    public String getBirth() {
-        return dateOfBirth;
-    }
-
-    public void setBirth(String birth) {
-        this.dateOfBirth = birth;
-    }
-
-
-    public static Comparator<User> userHighscoreComparator = new Comparator<User>() {
+    public static final Comparator<User> userHighscoreComparator = new Comparator<User>() {
         @Override
         public int compare(User userOne, User userTwo) {
             if (userOne.getHighScore() > userTwo.getHighScore()){
@@ -151,6 +140,7 @@ public class User implements Serializable{
             return 0; }
     };
 
-
-
+    public static Comparator<User> getUserHighscoreComparator() {
+        return userHighscoreComparator;
+    }
 }
