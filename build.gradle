@@ -28,7 +28,7 @@ springBoot {
 }
 
 dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation 'org.apache.opennlp:opennlp-tools:1.9.2'
     implementation 'org.mapstruct:mapstruct:1.3.1.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
