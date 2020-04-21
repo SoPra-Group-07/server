@@ -1,5 +1,4 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
-
 import ch.uzh.ifi.seal.soprafs20.entity.Clue;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.GameRound;
@@ -83,15 +82,15 @@ public class GameRoundController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO submitGuess(@RequestBody GameRoundGuessDTO gameRoundGuessDTO){
-        try{
+        //try{
             Guess guess = DTOMapper.INSTANCE.convertGameRoundGuessDTOtoEntity(gameRoundGuessDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(guess.getGameRoundId());
             gameRoundService.submitGuess(gameRoundByRoundId, guess.getWord(), guess.getPlayerId());
-            return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);}
+            return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
 
-        catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not submit a number as a clue, please submit a string");
-        }
+        //catch (Exception e){
+          //  throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not submit a number as a clue, please submit a string");
+        //}
     }
 
 

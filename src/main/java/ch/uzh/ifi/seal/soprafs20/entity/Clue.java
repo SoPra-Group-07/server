@@ -38,12 +38,11 @@ public class Clue extends Submission implements Serializable {
         this.stemmedClue = stemmedClue;
     }
 
-    @Override
+
     public Long getGameRoundId() {
         return gameRoundId;
     }
 
-    @Override
     public void setGameRoundId(Long gameRoundId) {
         this.gameRoundId = gameRoundId;
     }

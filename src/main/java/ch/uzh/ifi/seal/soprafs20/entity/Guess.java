@@ -19,12 +19,11 @@ public class Guess extends Submission implements Serializable {
     @Column
     private boolean correctGuess;
 
-    @Override
     public Long getGameRoundId() {
         return gameRoundId;
     }
 
-    @Override
+
     public void setGameRoundId(Long gameRoundId) {
         this.gameRoundId = gameRoundId;
     }

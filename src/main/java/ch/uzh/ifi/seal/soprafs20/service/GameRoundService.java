@@ -151,10 +151,10 @@ public class GameRoundService {
                 Guess guess = new Guess();
                 guess.setPlayerId(player.getPlayerId());
                 guess.setGameRoundId(gameRound.getGameRoundId());
-
-                Guess guess1 = guessRepository.save(guess);
+                gameRound.setGuess(guess);
+                guessRepository.save(guess);
                 guessRepository.flush();
-                gameRound.setGuess(guess1);
+
 
 
             }
@@ -163,7 +163,11 @@ public class GameRoundService {
     }
 
     public void submitClue(GameRound gameRound, String clue, Long playerId){
-        Clue clue1 = clueRepository.findByPlayerIdAndGameRoundId(playerId, gameRound.getGameRoundId());
+        if (gameRound.getGuessingPlayerId().equals(playerId)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "a guessing player can not submit a clue!");
+        }
+        GameRound gameRound1 = gameRoundRepository.findByGameRoundId(gameRound.getGameRoundId());
+        Clue clue1 = clueRepository.findByPlayerIdAndGameRoundId(playerId, gameRound1.getGameRoundId());
         if (clue.equals("noClue")){
             clue1.setDidSubmit(false);
         }
@@ -173,13 +177,16 @@ public class GameRoundService {
 
         clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
         clue1.setDuration((clue1.getEndTime()-clue1.getStartTime())/1000);
-        checkIfEveryoneSubmitted(gameRound);
-        if (gameRound.getEveryoneSubmitted()){
-            checkDuplicates(gameRound); }
+        checkIfEveryoneSubmitted(gameRound1);
+        if (gameRound1.getEveryoneSubmitted()){
+            checkDuplicates(gameRound1); }
 
     }
 
     public void submitGuess(GameRound gameRound, String guess, Long playerId){
+        if (!gameRound.getGuessingPlayerId().equals(playerId)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "a clueing player can not submit a guess!");
+        }
         Guess guess1 = guessRepository.findByPlayerIdAndGameRoundId(playerId, gameRound.getGameRoundId());
         if (guess.equals("noGuess")){
             guess1.setDidSubmit(false);
@@ -215,7 +222,8 @@ public class GameRoundService {
         }
         if (submissions == game.getNumberOfPlayers()-1){
             gameRound.setEveryoneSubmitted(true);
-            gameRound.getGuess().setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
+            Guess guess = guessRepository.findByGameRoundId(gameRound.getGameRoundId());
+            guess.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
         }
     }
 

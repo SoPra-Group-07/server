@@ -12,12 +12,10 @@ public abstract class Submission implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long submissionId;
 
-    @Column(name = "game_round_id")
-    private Long gameRoundId;
 
     private Long playerId;
     private String word;
@@ -85,11 +83,4 @@ public abstract class Submission implements Serializable {
         this.endTime = endTime;
     }
 
-    public Long getGameRoundId() {
-        return gameRoundId;
-    }
-
-    public void setGameRoundId(Long gameRoundId) {
-        this.gameRoundId = gameRoundId;
-    }
 }
