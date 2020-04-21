@@ -29,15 +29,18 @@ public class GameRoundService {
     private final CardRepository cardRepository;
     private final GameRepository gameRepository;
     private final ClueRepository clueRepository;
+    private final GuessRepository guessRepository;
 
 
     @Autowired
     public GameRoundService(@Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
-                            @Qualifier("cardRepository") CardRepository cardRepository, @Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("clueRepository") ClueRepository clueRepository)  {
+                            @Qualifier("cardRepository") CardRepository cardRepository, @Qualifier("gameRepository") GameRepository gameRepository,
+                            @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository)  {
         this.gameRoundRepository = gameRoundRepository;
         this.cardRepository = cardRepository;
         this.gameRepository = gameRepository;
         this.clueRepository = clueRepository;
+        this.guessRepository = guessRepository;
     }
 
     public GameRound createNewGameRound(Game game){
@@ -116,28 +119,40 @@ public class GameRoundService {
         }
         else { throw new ResponseStatusException(HttpStatus.CONFLICT, "Choose a number between 1-5");}
 
-        createClues(gameRound);
+        createCluesAndGuesses(gameRound);
     }
 
 
-    public void createClues(GameRound gameRound) throws IOException, InterruptedException {
+    public void createCluesAndGuesses(GameRound gameRound) throws IOException, InterruptedException {
         Game game = gameRepository.findByGameId(gameRound.getGameId());
         for (Player player: game.getPlayers()){
             // check clue or guess
-            Clue clue = new Clue();
-            clue.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
-            clue.setPlayerId(player.getPlayerId());
-            clue.setGameRoundId(gameRound.getGameRoundId());
+            if (player.getPlayerId() != gameRound.getGuessingPlayerId()) {
+                Clue clue = new Clue();
+                clue.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
+                clue.setPlayerId(player.getPlayerId());
+                clue.setGameRoundId(gameRound.getGameRoundId());
 
-            Clue clue1 = clueRepository.save(clue);
-            clueRepository.flush();
-            if (player instanceof FriendlyBot || player instanceof MaliciousBot){
-                String friendlyOrMaliciousClue = player.giveClue(gameRound.getMysteryWord());
-                clue1.setWord(friendlyOrMaliciousClue);
-                Thread.sleep(3000);
-                clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
-                clue1.setDuration(((clue.getEndTime()-clue.getStartTime())/1000));
+                Clue clue1 = clueRepository.save(clue);
+                clueRepository.flush();
+                if (player instanceof FriendlyBot || player instanceof MaliciousBot) {
+                    String friendlyOrMaliciousClue = player.giveClue(gameRound.getMysteryWord());
+                    clue1.setWord(friendlyOrMaliciousClue);
+                    Thread.sleep(3000);
+                    clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
+                    clue1.setDuration(((clue.getEndTime() - clue.getStartTime()) / 1000));
 
+
+                }
+            }
+            else{
+                Guess guess = new Guess();
+                guess.setPlayerId(player.getPlayerId());
+                guess.setGameRoundId(gameRound.getGameRoundId());
+
+                Guess guess1 = guessRepository.save(guess);
+                guessRepository.flush();
+                gameRound.setGuess(guess1);
 
             }
 
@@ -145,7 +160,7 @@ public class GameRoundService {
     }
 
     public void submitClue(GameRound gameRound, String clue, Long playerId){
-        Clue clue1 = clueRepository.findByPlayerId(playerId);
+        Clue clue1 = clueRepository.findByPlayerIdAndGameRoundId(playerId, gameRound.getGameRoundId());
         if (clue.equals("noClue")){
             clue1.setDidSubmit(false);
         }
@@ -161,6 +176,32 @@ public class GameRoundService {
 
     }
 
+    public void submitGuess(GameRound gameRound, String guess, Long playerId){
+        Guess guess1 = guessRepository.findByPlayerIdAndGameRoundId(playerId, gameRound.getGameRoundId());
+        if (guess.equals("noGuess")){
+            guess1.setDidSubmit(false);
+        }
+        else{
+            guess1.setWord(guess);
+            guess1.setDidSubmit(true);}
+        guess1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
+        guess1.setDuration((guess1.getEndTime()-guess1.getStartTime())/1000);
+        checkGuess(gameRound, guess1);
+        // calculateGameRoundPoints()
+        // update PlayerScore etc.
+        }
+
+    public void checkGuess(GameRound gameRound, Guess guess){
+        Stemmer stemmer = new PorterStemmer();
+        String stemmedGuess = stemmer.stem(guess.getWord()).toString();
+        String stemmedMysteryWord = (String) stemmer.stem(gameRound.getMysteryWord());
+
+        if (stemmedGuess.equals(stemmedMysteryWord)){
+            guess.setCorrectGuess(true); }
+
+        else { guess.setCorrectGuess(false); }
+
+    }
     public void checkIfEveryoneSubmitted(GameRound gameRound){
         Game game = gameRepository.findByGameId(gameRound.getGameId());
         int submissions = 0;
@@ -169,8 +210,9 @@ public class GameRoundService {
                 submissions++;
             }
         }
-        if (submissions == game.getNumberOfPlayers()){
+        if (submissions == game.getNumberOfPlayers()-1){
             gameRound.setEveryoneSubmitted(true);
+            //gameRound.getGuess().setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
         }
     }
 
@@ -181,6 +223,7 @@ public class GameRoundService {
 
 
         for (Clue clue: submission){
+           // if (game.getHasBot()){
             String stemmedClue = stemmer.stem(clue.getWord()).toString();
             clue.setStemmedClue(stemmedClue); }
 

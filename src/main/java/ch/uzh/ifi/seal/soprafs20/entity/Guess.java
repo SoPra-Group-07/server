@@ -13,27 +13,11 @@ public class Guess extends Submission implements Serializable {
 
     public Guess(){ /* empty constructor*/ }
 
-    @Column(name="game_round_id")
+    @Column(name = "game_round_id")
     private Long gameRoundId;
 
     @Column
     private boolean correctGuess;
-    @Column
-    private boolean didGuess;
-
-    public boolean getCorrectGuess() {
-        return correctGuess;
-    }
-    public void setCorrectGuess(boolean correctGuess) {
-        this.correctGuess = correctGuess;
-    }
-
-    public boolean isDidGuess() {
-        return didGuess;
-    }
-    public void setDidGuess(boolean didGuess) {
-        this.didGuess = didGuess;
-    }
 
     @Override
     public Long getGameRoundId() {
@@ -44,4 +28,18 @@ public class Guess extends Submission implements Serializable {
     public void setGameRoundId(Long gameRoundId) {
         this.gameRoundId = gameRoundId;
     }
+
+    public boolean isCorrectGuess() {
+        return correctGuess;
+    }
+
+    public boolean getCorrectGuess() {
+        return correctGuess;
+    }
+    public void setCorrectGuess(boolean correctGuess) {
+        this.correctGuess = correctGuess;
+    }
+
+
+
 }

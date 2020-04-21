@@ -3,20 +3,22 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+
 @Table(name = "SUBMISSION")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@MappedSuperclass
 public abstract class Submission implements Serializable {
 
     public Submission(){}
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long submissionId;
 
     @Column(name = "game_round_id")
     private Long gameRoundId;
-
 
     private Long playerId;
     private String word;
@@ -51,13 +53,6 @@ public abstract class Submission implements Serializable {
         this.playerId = playerId;
     }
 
-    public Long getGameRoundId() {
-        return gameRoundId;
-    }
-
-    public void setGameRoundId(Long gameRoundId) {
-        this.gameRoundId = gameRoundId;
-    }
 
     public String getWord() {
         return word;
@@ -89,5 +84,13 @@ public abstract class Submission implements Serializable {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public Long getGameRoundId() {
+        return gameRoundId;
+    }
+
+    public void setGameRoundId(Long gameRoundId) {
+        this.gameRoundId = gameRoundId;
     }
 }

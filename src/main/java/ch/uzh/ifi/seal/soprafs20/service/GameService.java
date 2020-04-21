@@ -28,17 +28,19 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final PlayerRepository playerRepository;
-
+    private final GuessRepository guessRepository;
     private final GameRoundService gameRoundService;
 
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
-                       @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository, @Qualifier("clueRepository") ClueRepository clueRepository) {
+                       @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
+                       @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.playerRepository = playerRepository;
-        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository);
+        this.guessRepository = guessRepository;
+        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository, guessRepository);
     }
 
     public List<Game> getAllGames(){

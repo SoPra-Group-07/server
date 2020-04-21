@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.*;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundClueDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
@@ -99,6 +100,7 @@ public interface DTOMapper {
     @Mapping(source = "mysteryWord", target = "mysteryWord")
     @Mapping(source = "card", target = "card")
     @Mapping(source = "submissions", target = "submissions")
+    @Mapping(source = "guess", target = "guess")
     GameRoundDTO convertEntityToGameRoundDTO(GameRound gameRound);
 
     @Mapping(source = "gameId", target = "gameId")
@@ -114,6 +116,11 @@ public interface DTOMapper {
     @Mapping(source = "playerId", target = "playerId")
     @Mapping(source = "clue", target = "word")
     Clue convertGameRoundClueDTOtoEntity(GameRoundClueDTO gameRoundClueDTO);
+
+    @Mapping(source = "gameRoundId", target = "gameRoundId")
+    @Mapping(source = "playerId", target = "playerId")
+    @Mapping(source = "guess", target = "word")
+    Guess convertGameRoundGuessDTOtoEntity(GameRoundGuessDTO gameRoundGuessTO);
 
 
 }

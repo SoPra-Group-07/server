@@ -2,8 +2,11 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Card;
 import ch.uzh.ifi.seal.soprafs20.entity.Clue;
+import ch.uzh.ifi.seal.soprafs20.entity.Guess;
+import ch.uzh.ifi.seal.soprafs20.entity.Submission;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameRoundDTO {
@@ -13,10 +16,17 @@ public class GameRoundDTO {
     private long guessingPlayerId;
     private String mysteryWord;
     private Card card;
-    private List<Clue> submissions;
+    private ArrayList<Clue> submissions;
+    private Guess guess;
 
 
+    public Guess getGuess() {
+        return guess;
+    }
 
+    public void setGuess(Guess guess) {
+        this.guess = guess;
+    }
 
     public long getGameRoundId() {
         return gameRoundId;
@@ -42,6 +52,14 @@ public class GameRoundDTO {
         this.guessingPlayerId = guessingPlayerId;
     }
 
+    public ArrayList<Clue> getSubmissions() {
+        return submissions;
+    }
+
+    public void setSubmissions(ArrayList<Clue> submissions) {
+        this.submissions = submissions;
+    }
+
     public String getMysteryWord() {
         return mysteryWord;
     }
@@ -58,11 +76,4 @@ public class GameRoundDTO {
         this.card = card;
     }
 
-    public List<Clue> getSubmissions() {
-        return submissions;
-    }
-
-    public void setSubmissions(List<Clue> submissions) {
-        this.submissions = submissions;
-    }
 }

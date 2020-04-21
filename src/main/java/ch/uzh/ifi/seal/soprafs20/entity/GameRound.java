@@ -1,6 +1,8 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,8 +15,9 @@ import java.util.List;
  * - nullable = false -> this cannot be left empty
  * - unique = true -> this value must be unqiue across the database -> composes the primary key
  */
-@Entity
+
 @Table(name = "GAMEROUND")
+@Entity
 public class GameRound implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,6 +48,7 @@ public class GameRound implements Serializable {
     @Column
     private boolean everyoneSubmitted;
 
+
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
@@ -53,6 +57,7 @@ public class GameRound implements Serializable {
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
+    //@Where(clause = 'instanceof=Clue')
     private List<Clue> submissions = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
@@ -107,6 +112,8 @@ public class GameRound implements Serializable {
     public void setPlayerStatistic(List<PlayerStatistic> playerStatistic) {
         this.playerStatistic = playerStatistic;
     }
+
+
 
     public List<Clue> getSubmissions() {
         return submissions;
