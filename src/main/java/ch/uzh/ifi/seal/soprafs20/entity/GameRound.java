@@ -57,7 +57,7 @@ public class GameRound implements Serializable {
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
-    //@Where(clause = 'instanceof=Clue')
+    //@Where(clause = 'clueId=1')
     private List<Clue> submissions = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)

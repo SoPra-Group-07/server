@@ -138,9 +138,11 @@ public class GameRoundService {
                 if (player instanceof FriendlyBot || player instanceof MaliciousBot) {
                     String friendlyOrMaliciousClue = player.giveClue(gameRound.getMysteryWord());
                     clue1.setWord(friendlyOrMaliciousClue);
+                    //random
                     Thread.sleep(3000);
                     clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
                     clue1.setDuration(((clue.getEndTime() - clue.getStartTime()) / 1000));
+                    clue1.setDidSubmit(true);
 
 
                 }
@@ -153,6 +155,7 @@ public class GameRoundService {
                 Guess guess1 = guessRepository.save(guess);
                 guessRepository.flush();
                 gameRound.setGuess(guess1);
+
 
             }
 
@@ -212,7 +215,7 @@ public class GameRoundService {
         }
         if (submissions == game.getNumberOfPlayers()-1){
             gameRound.setEveryoneSubmitted(true);
-            //gameRound.getGuess().setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
+            gameRound.getGuess().setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
         }
     }
 

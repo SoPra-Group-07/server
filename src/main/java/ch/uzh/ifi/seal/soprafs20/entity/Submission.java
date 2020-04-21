@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 
 @Table(name = "SUBMISSION")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @MappedSuperclass
 public abstract class Submission implements Serializable {
 
