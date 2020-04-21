@@ -241,6 +241,10 @@ public class GameRoundService {
 
     }
 
+    public List<GameRound> getGameRoundByGameId(long gameId){
+        return gameRoundRepository.findAllByGameId(gameId);
+    }
+
 
 
 }

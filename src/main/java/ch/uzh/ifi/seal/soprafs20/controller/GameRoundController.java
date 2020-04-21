@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class GameRoundController {
@@ -69,7 +70,7 @@ public class GameRoundController {
         try{
         Clue clue = DTOMapper.INSTANCE.convertGameRoundClueDTOtoEntity(gameRoundClueDTO);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(clue.getGameRoundId());
-        gameRoundService.submitClue(gameRoundByRoundId, clue.getWord(), clue.getPlayerId());
+        gameRoundService.submitClue(gameRoundByRoundId, clue.getWord(),clue.getPlayerId());
         return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);}
 
         catch (Exception e){
@@ -94,6 +95,18 @@ public class GameRoundController {
     }
 
 
+    @GetMapping("games/lobby/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameRoundDTO getGameRoundId(@PathVariable String gameId) {
+        long id;
+        id = Long.parseLong(gameId);
+
+        List<GameRound> gameRounds = gameRoundService.getGameRoundByGameId(id);
+        GameRound lastGameRound = gameRounds.get(gameRounds.size()-1);
+
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(lastGameRound);
+    }
 
 
 
