@@ -67,9 +67,16 @@ public class GameController {
     @ResponseBody
     public GameDTO joinAGame(@RequestBody GamePutDTO gamePutDTO){
         Game joinedGame = gameService.joinGame(gamePutDTO.getGameId(), gamePutDTO.getUserId());
-        return DTOMapper.INSTANCE.convertEntityToGameDTO(joinedGame);
+        return DTOMapper.INSTANCE.convertEntityToGameDTO(joinedGame); }
 
+    // leave a game when in game lobby
+    @PutMapping("/games/out")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void leaveGame(@RequestBody GamePutDTO gamePutDTO){
+        gameService.leaveGame(gamePutDTO.getGameId(), gamePutDTO.getUserId());
     }
+
 
     // get all players from a game   -> do we really need this?
     @GetMapping("/games/{gameId}/players")

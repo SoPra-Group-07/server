@@ -84,7 +84,7 @@ public class GameService {
             List<Player> players = game.getPlayers();
             players.add(playerToAdd);
             game.setPlayers(players);
-            game.setNumberOfPlayers(game.getNumberOfPlayers()+1);
+            game.setNumberOfPlayers(game.getPlayers().size());
         }
 
         else{
@@ -164,6 +164,25 @@ public class GameService {
         Game game = getGameByGameId(gameId);
         game.setGameStatus(GameStatus.RUNNING);
         return gameRoundService.startNewGameRound(game);
+    }
+
+    public void leaveGame(Long gameId, Long userId){
+        Game game = getGameByGameId(gameId);
+        User user = userRepository.findByUserId(userId);
+        Player player = playerRepository.findByUserId(userId);
+
+        if (!game.getPlayers().contains(player)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not leave this game since you are not in it."); }
+
+        if (game.getGameStatus() != GameStatus.CREATED){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not leave this game since it is already running or finished.");}
+
+        else{
+            List<Player> listOfPlayers = game.getPlayers();
+            listOfPlayers.remove(player);
+            game.setPlayers(listOfPlayers);
+            playerRepository.delete(player);
+            game.setNumberOfPlayers(game.getPlayers().size()); }
     }
 
 

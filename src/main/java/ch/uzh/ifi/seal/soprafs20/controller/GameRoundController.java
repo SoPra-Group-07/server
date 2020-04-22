@@ -13,7 +13,6 @@ import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -34,16 +33,15 @@ public class GameRoundController {
     public GameRoundDTO createGameRound(@PathVariable Long gameId){
         Game game = gameService.getGameByGameId(gameId);
         GameRound newGameRound = gameRoundService.startNewGameRound(game);
-        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(newGameRound);
-    }
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(newGameRound); }
 
     @GetMapping("/gameRounds/{roundId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO getGameRoundByRoundId(@PathVariable Long roundId){
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(roundId);
-        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
-    }
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);}
+
 
     @PutMapping("/gameRounds")
     @ResponseStatus(HttpStatus.OK)

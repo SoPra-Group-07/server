@@ -77,7 +77,7 @@ public class GameRoundService {
     }
 
     private long computeGuessingPlayerId(Game game){
-        int numberOfPlayers = game.getPlayers().size();
+        int numberOfPlayers = game.getNumberOfPlayers();
         int actualGameRoundIdx = game.getActualGameRoundIndex();
         int randomStartPosition = game.getRandomStartPosition();
 

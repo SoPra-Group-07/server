@@ -48,7 +48,6 @@ public class GameRound implements Serializable {
     @Column
     private boolean everyoneSubmitted;
 
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )

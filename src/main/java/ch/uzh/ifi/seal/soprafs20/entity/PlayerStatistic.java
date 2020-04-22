@@ -22,6 +22,17 @@ public abstract class PlayerStatistic implements Serializable {
     @Column(name = "game_round_Id")
     private Long gameRoundId;
 
+    @Column
+    private int points;
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public Long getPlayerStatisticId() {
         return playerStatisticId;
     }

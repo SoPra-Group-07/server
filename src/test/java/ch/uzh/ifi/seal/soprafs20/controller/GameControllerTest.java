@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -53,7 +54,7 @@ public class GameControllerTest {
     private List<Player> players = new ArrayList<>();
     @InjectMocks
     private Game game;
-    private Class PhysicalPlayer;
+
 
     @BeforeEach
     public void setup() {
@@ -236,7 +237,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenGameRound_whenPUTGame_thenReturn_GameRoundDTO() throws Exception {
+    public void givenGameRound_whenPUTGame_thenStartGameAndReturn_GameRoundDTO() throws Exception {
         Card card = new Card();
         card.setCardId(5L);
         card.setWord1("I");
@@ -244,6 +245,7 @@ public class GameControllerTest {
         card.setWord3("testing");
         card.setWord4("start");
         card.setWord5("game");
+
 
         GameRound gameRound = new GameRound();
         gameRound.setGameId(1L);
@@ -264,10 +266,11 @@ public class GameControllerTest {
 
         mockMvc.perform(putRequest).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
-                .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))
-                //.andExpect(jsonPath("card", is(gameRound.getCard())))
-                .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue())))
+                .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))  // <-- GameRound created for the right game?
+               // .andExpect(jsonPath("card", sameInstance(ch.uzh.ifi.seal.soprafs20.entity.Card)))
+                .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue()))) // <--
                 .andExpect(jsonPath("guessingPlayerId", is(gameRound.getGuessingPlayerId().intValue())))
+
 
         ;
     }
