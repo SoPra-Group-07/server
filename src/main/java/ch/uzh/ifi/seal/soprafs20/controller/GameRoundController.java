@@ -12,7 +12,6 @@ import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.List;
 
@@ -64,15 +63,15 @@ public class GameRoundController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO submitClue(@RequestBody GameRoundClueDTO gameRoundClueDTO){
-        try{
+        //try{
         Clue clue = DTOMapper.INSTANCE.convertGameRoundClueDTOtoEntity(gameRoundClueDTO);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(clue.getGameRoundId());
         gameRoundService.submitClue(gameRoundByRoundId, clue.getWord(),clue.getPlayerId());
-        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);}
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId); //}
 
-        catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not submit a number as a clue, please submit a string");
-        }
+       // catch (Exception e){
+         //   throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not submit a number as a clue, please submit a string");
+       // }
 
     }
 

@@ -4,22 +4,21 @@ import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.repository.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.*;
 
 /**
- * User Service
- * This class is the "worker" and responsible for all functionality related to the user
- * (e.g., it creates, modifies, deletes, finds). The result will be passed back to the caller.
+ * Game Service
+ * This class is the "worker" and responsible for all functionality related to the game
+ * (e.g., it creates, modifies, deletes, finds, updates). The result will be passed back to the caller.
  */
 @Service
 @Transactional
@@ -30,12 +29,13 @@ public class GameService {
     private final PlayerRepository playerRepository;
     private final GuessRepository guessRepository;
     private final GameRoundService gameRoundService;
+    private Random random = SecureRandom.getInstanceStrong();
 
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
                        @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
-                       @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository) {
+                       @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository) throws NoSuchAlgorithmException {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.playerRepository = playerRepository;
@@ -84,8 +84,7 @@ public class GameService {
             List<Player> players = game.getPlayers();
             players.add(playerToAdd);
             game.setPlayers(players);
-            game.setNumberOfPlayers(game.getPlayers().size());
-        }
+            game.setNumberOfPlayers(game.getPlayers().size()); }
 
         else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already full! Join another game."); }
@@ -94,13 +93,10 @@ public class GameService {
 
 
     public Set<Integer> getRandomUniqueCardIds() {
-        Random rng = new Random(); // Ideally just create one instance globally
-        // Note: use LinkedHashSet to maintain insertion order
         Set<Integer> generated = new LinkedHashSet<>();
         while (generated.size() < 13)
         {
-            // Todo: check bound -> number of cards available
-            Integer next = rng.nextInt(55) + 1;
+            Integer next = this.random.nextInt(55) + 1;
             // As we're adding to a set, this will automatically do a containment check
             generated.add(next);
         }
@@ -120,8 +116,7 @@ public class GameService {
 
     private Player createBot(Game game) {
         List<String> fancyNames = new ArrayList<>(Arrays.asList("Jenny","Roy","Aquaman","JanTheNeck","Bernie","Hansi","Lars","Elaine","Alex","Renato","Chat","Christiane","Patrick","Andy","Thomas","Egon","Burkhard","Michael","Alberto","Ralph"));
-        Random random = new Random();
-        int idx = random.nextInt(fancyNames.size()-1);
+        int idx = this.random.nextInt(fancyNames.size()-1);
         boolean friendly = random.nextBoolean();
         if (friendly) {
             Player bot = new FriendlyBot();
