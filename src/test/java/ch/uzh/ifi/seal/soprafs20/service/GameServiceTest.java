@@ -9,7 +9,6 @@ import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,8 +34,6 @@ public class GameServiceTest {
     @Mock
     PlayerRepository playerRepository;
 
-    @Mock
-    CardRepository cardRepository;
 
     @InjectMocks
     private GameService gameService;
@@ -46,8 +43,6 @@ public class GameServiceTest {
     private User testUser1;
     @InjectMocks
     private Game testGame;
-    @InjectMocks
-    private Game testGame1;
     @InjectMocks
     private PhysicalPlayer testPlayer;
     @InjectMocks
@@ -161,7 +156,15 @@ public class GameServiceTest {
         testUser.setStatus(UserStatus.ONLINE);
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
         Mockito.when(userRepository.findByUserId(testUser1.getUserId())).thenReturn(testUser1);
-        testGame.setNumberOfPlayers(7);
+        List<Player> players = new ArrayList<>();
+        players.add(testPlayer);
+        players.add(testPlayer);
+        players.add(testPlayer);
+        players.add(testPlayer);
+        players.add(testPlayer);
+        players.add(testPlayer);
+        players.add(testPlayer);
+        testGame.setPlayers(players);
 
 
 

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -30,12 +32,13 @@ public class GameRoundService {
     private final GameRepository gameRepository;
     private final ClueRepository clueRepository;
     private final GuessRepository guessRepository;
+    private Random random = SecureRandom.getInstanceStrong();
 
 
     @Autowired
     public GameRoundService(@Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
                             @Qualifier("cardRepository") CardRepository cardRepository, @Qualifier("gameRepository") GameRepository gameRepository,
-                            @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository)  {
+                            @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository) throws NoSuchAlgorithmException {
         this.gameRoundRepository = gameRoundRepository;
         this.cardRepository = cardRepository;
         this.gameRepository = gameRepository;
@@ -61,8 +64,7 @@ public class GameRoundService {
         if (game.getActualGameRoundIndex() < 12) {
 
             if (game.getActualGameRoundIndex() == 0) {
-                Random random = new Random();
-                int randomStart = random.nextInt(game.getNumberOfPlayers());
+                int randomStart = this.random.nextInt(game.getNumberOfPlayers());
                 game.setRandomStartPosition(randomStart);}
 
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);

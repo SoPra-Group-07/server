@@ -69,29 +69,14 @@ public class UserService {
     }
 
 
-
-
-
-
     public Boolean checkUsername(User userToCheck) {                               // <-- This method gets called in 'public UserGetDTO login(@RequestBody UserPostDTO userPostDTO)'.
         return userRepository.existsUserByUsername(userToCheck.getUsername());     //     If a user exists with this username then true is returned. Else, false.
     }
 
 
-
-    //public Boolean existsUserByUsername (String userName){
-    //    return this.userRepository.existsUserByUsername(userName);
-    //}
-
-
-
     public Boolean acceptLogin(String username, String password) {                          // <-- This method gets called in 'public UserGetDTO login(@RequestBody UserPostDTO userPostDTO)'.
         return userRepository.findByUsername(username).getPassword().equals(password);      //     If the entered password equals the password of the specific username then true is returned.
     }                                                                                       //     Else, false.
-
-
-
-
 
     public Boolean isAlreadyLoggedIn(String username){                                                // <-- This method gets called in 'public UserGetDTO login(@RequestBody UserPostDTO userPostDTO)'.
         return this.userRepository.findByUsername(username).getStatus().equals(UserStatus.ONLINE);    // <-- If a user is already online then true is returned. Else, false.
