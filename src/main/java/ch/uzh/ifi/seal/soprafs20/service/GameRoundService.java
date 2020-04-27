@@ -54,10 +54,10 @@ public class GameRoundService {
         gameRound.setGameId(game.getGameId());
         List<Integer> list = new ArrayList<>(game.getCardIds());
         gameRound.setCard(getActualCard(list.get(game.getActualGameRoundIndex())));
-        gameRoundRepository.save(gameRound);
+        GameRound gameRound1 = gameRoundRepository.save(gameRound);
         gameRoundRepository.flush();
 
-        return gameRound;
+        return gameRound1;
     }
 
     public GameRound startNewGameRound(Game game){
@@ -83,7 +83,6 @@ public class GameRoundService {
         int actualGameRoundIdx = game.getActualGameRoundIndex();
         int randomStartPosition = game.getRandomStartPosition();
 
-        // Todo: decrease randomStartPosition
         int nextGuessingPlayerIdx = (randomStartPosition + actualGameRoundIdx) % numberOfPlayers;
         if (game.getPlayers().get(nextGuessingPlayerIdx) instanceof PhysicalPlayer) {
             return game.getPlayers().get(nextGuessingPlayerIdx).getPlayerId();
@@ -259,6 +258,5 @@ public class GameRoundService {
         return gameRoundRepository.findAllByGameId(gameId);
     }
 
-
-
+    public long computeGuessingPlayerIdTest(Game game){ return computeGuessingPlayerId(game);}
 }
