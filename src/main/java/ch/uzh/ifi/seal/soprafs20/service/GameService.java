@@ -52,7 +52,9 @@ public class GameService {
     }
 
     public Game createNewGame(Game gameInput) {
-
+        if (gameRepository.findByGameName(gameInput.getGameName()) == null){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Gamename is already taken!");
+        }
         Game game = new Game();
         game.setGameName(gameInput.getGameName());
         game.setAdminPlayerId(gameInput.getAdminPlayerId());
@@ -157,6 +159,9 @@ public class GameService {
 
     public GameRound startGame(long gameId){
         Game game = getGameByGameId(gameId);
+        if (game.getGameStatus() != GameStatus.CREATED){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "You cannot start a that is finished or already running!");
+        }
         game.setGameStatus(GameStatus.RUNNING);
         return gameRoundService.startNewGameRound(game);
     }

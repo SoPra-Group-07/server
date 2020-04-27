@@ -10,6 +10,7 @@ import java.util.List;
 @Repository("gameRepository")
 public interface GameRepository extends JpaRepository<Game, Long> {         //Methods that are used to interact and work with DB
     Game findByGameId(long gameId);
+    Game findByGameName(String gameName);
     List<Game> findAllByGameStatus(GameStatus gameStatus);
 
 }
