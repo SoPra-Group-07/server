@@ -192,6 +192,7 @@ public class GameRoundService {
         Guess guess1 = guessRepository.findByPlayerIdAndGameRoundId(playerId, gameRound.getGameRoundId());
         if (guess.equals("noGuess")){
             guess1.setDidSubmit(false);
+            guess1.setWord("noGuess");
         }
         else{
             guess1.setWord(guess);
