@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 
 @Entity
-public abstract class PlayerStatistic implements Serializable {
+public class PlayerStatistic implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,13 +25,8 @@ public abstract class PlayerStatistic implements Serializable {
     @Column
     private int points;
 
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
+    @Column
+    private Long playerID;
 
     public Long getPlayerStatisticId() {
         return playerStatisticId;
@@ -47,5 +42,21 @@ public abstract class PlayerStatistic implements Serializable {
 
     public void setGameRoundId(Long gameRoundId) {
         this.gameRoundId = gameRoundId;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public Long getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(Long playerID) {
+        this.playerID = playerID;
     }
 }

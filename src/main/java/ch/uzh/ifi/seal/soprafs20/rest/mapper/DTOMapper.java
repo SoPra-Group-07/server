@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.PlayerStatistic.PlayerStatisticDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
@@ -122,5 +123,9 @@ public interface DTOMapper {
     @Mapping(source = "guess", target = "word")
     Guess convertGameRoundGuessDTOtoEntity(GameRoundGuessDTO gameRoundGuessTO);
 
-
+    @Mapping(source = "playerStatisticId", target = "playerStatisticId")
+    @Mapping(source = "gameRoundId", target = "gameRoundId")
+    @Mapping(source = "playerId", target = "playerId")
+    @Mapping(source = "points", target = "points")
+    PlayerStatisticDTO convertEntityToPlayerStatisticDTO(PlayerStatistic playerStatistic);
 }

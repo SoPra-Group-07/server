@@ -26,24 +26,47 @@ import java.util.*;
 public class PlayerStatisticService {
 
     private final PlayerStatisticRepository playerStatisticRepository;
+    private final GameRoundRepository gameRoundRepository;
 
     @Autowired
-    public PlayerStatisticService(@Qualifier("playerStatisticRepository") PlayerStatisticRepository playerStatisticRepository) {
+    public PlayerStatisticService(@Qualifier("playerStatisticRepository") PlayerStatisticRepository playerStatisticRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository) {
         this.playerStatisticRepository = playerStatisticRepository;
+        this.gameRoundRepository = gameRoundRepository;
     }
-    /*
-    public GameRound createNewGameRound(Game game){
-        if (game.getActualGameRoundIndex() > 12 || game.getGameStatus() == GameStatus.FINISHED){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
-        }
-        GameRound gameRound = new GameRound();
-        gameRound.setGameId(game.getGameId());
-        List<Integer> list = new ArrayList<>(game.getCardIds());
-        gameRound.setCard(getActualCard(list.get(game.getActualGameRoundIndex())));
-        GameRound gameRound1 = gameRoundRepository.save(gameRound);
-        gameRoundRepository.flush();
 
-        return gameRound1;
+    public List<PlayerStatistic> computeGameRoundStatistic(long roundId){
+        GameRound gameRound = gameRoundRepository.findByGameRoundId(roundId);
+        List<PlayerStatistic> playerStatistics = new ArrayList<>();
+
+        for (Clue clue : gameRound.getSubmissions()){
+            int cluingPlayerPoints = calculateCluingPlayerPoints(clue);
+            PlayerStatistic playerStatistic = new PlayerStatistic();
+            playerStatistic.setGameRoundId(gameRound.getGameRoundId());
+            playerStatistic.setPlayerID(clue.getPlayerId());
+            playerStatistic.setPoints(cluingPlayerPoints);
+
+            playerStatisticRepository.save(playerStatistic);
+            playerStatisticRepository.flush();
+            playerStatistics.add(playerStatistic);
+        }
+
+        Guess guess = gameRound.getGuess();
+        int guessingPlayerPoints = calculateGuessingPlayerPoints(guess);
+        PlayerStatistic playerStatistic = new PlayerStatistic();
+        playerStatistic.setGameRoundId(gameRound.getGameRoundId());
+        playerStatistic.setPlayerID(guess.getPlayerId());
+        playerStatistic.setPoints(guessingPlayerPoints);
+        playerStatistics.add(playerStatistic);
+
+        return playerStatistics;
     }
-     */
+
+    private int calculateCluingPlayerPoints(Clue clue){
+        return 0;
+    }
+
+    private int calculateGuessingPlayerPoints(Guess guess){
+        return 0;
+    }
+
 }

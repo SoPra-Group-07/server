@@ -26,7 +26,7 @@ public class FriendlyBot extends Player {
 
     public static String getSynonyme(String word) throws IOException {
 
-        String url = "https://api.datamuse.com/words?rel_syn=" + word;
+        String url = "https://api.datamuse.com/words?rel_spc=" + word;
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

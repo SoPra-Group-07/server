@@ -52,7 +52,7 @@ public class GameService {
     }
 
     public Game createNewGame(Game gameInput) {
-        if (gameRepository.findByGameName(gameInput.getGameName()) == null){
+        if (gameRepository.findByGameName(gameInput.getGameName()) != null){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Gamename is already taken!");
         }
         Game game = new Game();

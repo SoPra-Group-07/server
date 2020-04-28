@@ -243,7 +243,9 @@ public class GameRoundService {
         for (Clue clue: submission){
 
             for(Clue clue1: submission){
-                if (clue.getStemmedClue().equals(clue1.getStemmedClue()) && !clue.getSubmissionId().equals(clue1.getSubmissionId())){
+                if ((clue.getStemmedClue().equals(clue1.getStemmedClue()) && !clue.getSubmissionId().equals(clue1.getSubmissionId()))
+                        || clue.getStemmedClue().equals(gameRound.getMysteryWord())){
+
                     clue.setDuplicate(true);
                     clue1.setDuplicate(true); }
 

@@ -9,7 +9,6 @@ public class PlayerStatisticDTO {
     private Long playerStatisticId;
     private Long gameRoundId;
     private Long playerID;
-    private int submissionTime;
     private int points;
 
     public Long getPlayerStatisticId() {
@@ -35,4 +34,5 @@ public class PlayerStatisticDTO {
     public void setPoints(int points) {
         this.points = points;
     }
+
 }
