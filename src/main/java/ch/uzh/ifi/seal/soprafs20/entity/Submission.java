@@ -25,7 +25,7 @@ public abstract class Submission implements Serializable {
     private boolean didSubmit;
 
 
-    public boolean isDidSubmit() {
+    public boolean getDidSubmit() {
         return didSubmit;
     }
 

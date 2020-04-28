@@ -46,15 +46,12 @@ public class GameRoundController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO chooseMisteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException, InterruptedException {
-        //try{
+
             GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
             gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
             return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
-      //  }
-     //   catch (Exception e){
-      //      throw new ResponseStatusException(HttpStatus.CONFLICT, "choose a number between 1 and 5 to choose the mystery word");
-      //  }
+
 
     }
 
@@ -103,6 +100,9 @@ public class GameRoundController {
 
         return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(lastGameRound);
     }
+
+
+
 
 
 

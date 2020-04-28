@@ -128,4 +128,9 @@ public interface DTOMapper {
     @Mapping(source = "playerId", target = "playerId")
     @Mapping(source = "points", target = "points")
     PlayerStatisticDTO convertEntityToPlayerStatisticDTO(PlayerStatistic playerStatistic);
+
+    @Mapping(source = "playerId", target = "playerId")
+    @Mapping(source = "playerName", target = "playerName")
+    @Mapping(source = "currentScore", target = "totalPoints")
+    GameStatisticDTO convertEntityToGameStatisticDTO(Player player);
 }

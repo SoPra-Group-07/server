@@ -108,12 +108,11 @@ public class GameServiceTest {
      */
     @Test
     public void Test_createGame() {
-        // when -> object is being save in the userRepository -> return the dummy testUser
+        // when -> object is being save in the gameRepository -> return the dummy testUser
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
         Mockito.when(playerRepository.save(Mockito.any())).thenReturn(testPlayer);
         Mockito.when(userRepository.findByUserId(testUser.getUserId())).thenReturn(testUser);
 
-        // when -> any object is being save in the userRepository -> return the dummy testUser
         Game createdGame = gameService.createNewGame(testGame);
 
         assertEquals(testGame.getGameId(), createdGame.getGameId());

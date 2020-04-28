@@ -147,11 +147,7 @@ public class GameControllerTest {
     @Test
     public void givenGame_whenCreateGame_thenReturn_GameDTO() throws Exception {
 
-/*
-        Game gameInput = new Game();
-        gameInput.setGameName("superGame");
-        gameInput.setAdminPlayerId(1L);
-        gameInput.setHasBot(true); */
+
 
         given(gameService.createNewGame(Mockito.any())).willReturn(game);
 
@@ -162,11 +158,6 @@ public class GameControllerTest {
         // when
         MockHttpServletRequestBuilder postRequest = post("/games").contentType(MediaType.APPLICATION_JSON).content(asJsonString(gamePostDTO));    //=give it to me as JSON
 
-        /*
-        MvcResult result = mockMvc.perform(postRequest).andReturn();
-        MockHttpServletResponse response = result.getResponse();
-        System.out.println(response);
-        // then */
 
         mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?

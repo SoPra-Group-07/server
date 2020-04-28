@@ -185,6 +185,10 @@ public class GameService {
             game.setNumberOfPlayers(game.getPlayers().size()); }
     }
 
+    public List<Player> getPlayersByGameId(Long gameId){
+        return playerRepository.findAllByGameId(gameId);
+    }
+
 
 
 }

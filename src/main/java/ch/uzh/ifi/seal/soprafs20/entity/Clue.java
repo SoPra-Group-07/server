@@ -22,7 +22,7 @@ public class Clue extends Submission implements Serializable {
 
     private String stemmedClue;
 
-    public boolean isDuplicate() {
+    public boolean getIsDuplicate() {
         return isDuplicate;
     }
 

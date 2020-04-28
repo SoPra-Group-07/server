@@ -1,15 +1,11 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto.PlayerStatistic;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 public class PlayerStatisticDTO {
     private Long playerStatisticId;
     private Long gameRoundId;
-    private Long playerID;
-    private int points;
+    private Long playerId;
+    private float points;
 
     public Long getPlayerStatisticId() {
         return playerStatisticId;
@@ -27,12 +23,19 @@ public class PlayerStatisticDTO {
         this.gameRoundId = gameRoundId;
     }
 
-    public int getPoints() {
+    public float getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(float points) {
         this.points = points;
     }
 
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
+    }
 }

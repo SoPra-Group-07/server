@@ -171,6 +171,7 @@ public class GameRoundService {
         Clue clue1 = clueRepository.findByPlayerIdAndGameRoundId(playerId, gameRound1.getGameRoundId());
         if (clue.equals("noClue")){
             clue1.setDidSubmit(false);
+            clue1.setWord("noClue");
         }
         else{
         clue1.setWord(clue);
@@ -180,7 +181,10 @@ public class GameRoundService {
         clue1.setDuration((clue1.getEndTime()-clue1.getStartTime())/1000);
         checkIfEveryoneSubmitted(gameRound1);
         if (gameRound1.getEveryoneSubmitted()){
-            checkDuplicates(gameRound1); }
+            checkDuplicates(gameRound1);
+            Guess guess = guessRepository.findByGameRoundId(clue1.getGameRoundId());
+            guess.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
+        }
 
     }
 
@@ -199,14 +203,18 @@ public class GameRoundService {
         guess1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
         guess1.setDuration((guess1.getEndTime()-guess1.getStartTime())/1000);
         checkGuess(gameRound, guess1);
-        // calculateGameRoundPoints()
-        // update PlayerScore etc.
+        Game game = gameRepository.findByGameId(gameRound.getGameId());
+        if (game.getActualGameRoundIndex() >= 13){
+            game.setGameStatus(GameStatus.FINISHED);
+
+        }
+
         }
 
     public void checkGuess(GameRound gameRound, Guess guess){
         Stemmer stemmer = new PorterStemmer();
-        String stemmedGuess = stemmer.stem(guess.getWord()).toString();
-        String stemmedMysteryWord = (String) stemmer.stem(gameRound.getMysteryWord());
+        String stemmedGuess = stemmer.stem(guess.getWord()).toString().toLowerCase();
+        String stemmedMysteryWord = stemmer.stem(gameRound.getMysteryWord()).toString().toLowerCase();
 
         if (stemmedGuess.equals(stemmedMysteryWord)){
             guess.setCorrectGuess(true); }
@@ -237,14 +245,14 @@ public class GameRoundService {
 
         for (Clue clue: submission){
            // if (game.getHasBot()){
-            String stemmedClue = stemmer.stem(clue.getWord()).toString();
+            String stemmedClue = stemmer.stem(clue.getWord()).toString().toLowerCase();
             clue.setStemmedClue(stemmedClue); }
 
         for (Clue clue: submission){
 
             for(Clue clue1: submission){
                 if ((clue.getStemmedClue().equals(clue1.getStemmedClue()) && !clue.getSubmissionId().equals(clue1.getSubmissionId()))
-                        || clue.getStemmedClue().equals(gameRound.getMysteryWord())){
+                        || clue.getStemmedClue().equals(stemmer.stem(gameRound.getMysteryWord()).toString().toLowerCase())){
 
                     clue.setDuplicate(true);
                     clue1.setDuplicate(true); }

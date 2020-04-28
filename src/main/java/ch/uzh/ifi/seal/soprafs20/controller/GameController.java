@@ -113,7 +113,27 @@ public class GameController {
         GameRound gameRound = gameService.startGame(gameInput.getGameId());
         return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRound);
     }
-    
+
+    @GetMapping("games/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public boolean isGameFinished(@PathVariable Long gameId){
+        Game game = gameService.getGameByGameId(gameId);
+        return game.getGameStatus() == GameStatus.FINISHED;
+    }
+
+    @GetMapping("games/{gameId}/gameStatistics")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<GameStatisticDTO> getGameStatistic(@PathVariable Long gameId){
+        List<Player> players = gameService.getPlayersByGameId(gameId);
+        List<GameStatisticDTO> playersDTO = new ArrayList<>();
+        for (Player player: players){
+            GameStatisticDTO gameStatisticDTO = DTOMapper.INSTANCE.convertEntityToGameStatisticDTO(player);
+            playersDTO.add(gameStatisticDTO); }
+
+        return playersDTO;
+    }
    
 
 
