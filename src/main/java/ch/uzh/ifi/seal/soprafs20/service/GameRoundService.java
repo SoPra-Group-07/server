@@ -61,7 +61,7 @@ public class GameRoundService {
     }
 
     public GameRound startNewGameRound(Game game){
-        if (game.getActualGameRoundIndex() < 12) {
+        if (game.getActualGameRoundIndex() <= 12) {
 
             if (game.getActualGameRoundIndex() == 0) {
                 int randomStart = this.random.nextInt(game.getNumberOfPlayers());

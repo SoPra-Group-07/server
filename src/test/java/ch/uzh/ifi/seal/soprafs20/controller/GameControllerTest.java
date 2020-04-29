@@ -28,9 +28,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * UserControllerTest
- * This is a WebMvcTest which allows to test the UserController i.e. GET/POST request without actually sending them over the network.
- * This tests if the UserController works.
+ * GameContorllerTest
+ * This is a WebMvcTest which allows to test the GameController i.e. GET/POST/PUT request without actually sending them over the network.
+ * This tests if the GameController works.
  */
 @WebMvcTest(GameController.class)
 public class GameControllerTest {
@@ -115,12 +115,11 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[0].gameId", is(game.getGameId().intValue())))
                 .andExpect(jsonPath("$[0].gameName", is(game.getGameName())))
                 .andExpect(jsonPath("$[0].numberOfPlayers", is(game.getNumberOfPlayers())))
-        // is("testPassword") would work as well
                ;
     }
 
     @Test
-    public void givenGames_whenGetGames_CREATED_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
+    public void givenGames_whenGetGames_CREATED_thenReturnJsonArray() throws Exception {
         // given
         List<Game> createdGames = Collections.singletonList(game);
 
@@ -147,8 +146,6 @@ public class GameControllerTest {
     @Test
     public void givenGame_whenCreateGame_thenReturn_GameDTO() throws Exception {
 
-
-
         given(gameService.createNewGame(Mockito.any())).willReturn(game);
 
         GamePostDTO gamePostDTO = new GamePostDTO();
@@ -165,10 +162,10 @@ public class GameControllerTest {
                 .andExpect(jsonPath("gameName", is(game.getGameName())))
                 .andExpect(jsonPath("numberOfPlayers", is(game.getNumberOfPlayers())))
                 .andExpect(jsonPath("gameStatus", is(game.getGameStatus().toString())))
-                //.andExpect(jsonPath("players", instanceOf(PhysicalPlayer)))
+                .andExpect(jsonPath("players", hasSize(2)))
                 .andExpect(jsonPath("actualGameRoundIndex", is(game.getActualGameRoundIndex())))
                 .andExpect(jsonPath("hasBot", is(game.getHasBot())))
-               // .andExpect(jsonPath("adminPlayerId", is(game.getAdminPlayerId().intValue())))
+                .andExpect(jsonPath("adminPlayerId", is(game.getAdminPlayerId().intValue())))
         ;
     }
 
@@ -221,7 +218,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("gameName", is(game.getGameName())))
                 .andExpect(jsonPath("numberOfPlayers", is(game.getNumberOfPlayers())))
                 .andExpect(jsonPath("gameStatus", is(game.getGameStatus().toString())))
-                //.andExpect(jsonPath("players", instanceOf(PhysicalPlayer)))
+                .andExpect(jsonPath("players", hasSize(4)))
                 .andExpect(jsonPath("adminPlayerId", is((game.getAdminPlayerId().intValue()))))
         ;
     }
@@ -256,8 +253,8 @@ public class GameControllerTest {
 
         mockMvc.perform(putRequest).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
-                .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))  // <-- GameRound created for the right game?
-               // .andExpect(jsonPath("card", sameInstance(ch.uzh.ifi.seal.soprafs20.entity.Card)))
+                .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))
+                .andExpect(jsonPath("card", notNullValue()))
                 .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue()))) // <--
                 .andExpect(jsonPath("guessingPlayerId", is(gameRound.getGuessingPlayerId().intValue())))
 
