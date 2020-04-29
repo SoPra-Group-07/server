@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * PlayerStatistic Controller
+ * This class is responsible for handling all REST request that are related to the playerStatistic.
+ * The controller will receive the request and delegate the execution to the PlayerStatisticService and finally return the result.
+ */
 @RestController
 public class PlayerStatisticController {
 
