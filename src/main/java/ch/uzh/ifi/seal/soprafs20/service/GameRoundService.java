@@ -34,7 +34,7 @@ public class GameRoundService {
     private final GuessRepository guessRepository;
     private final UserRepository userRepository;
     private Random random = SecureRandom.getInstanceStrong();
-    private final int max_number_of_rounds = 2;
+    private final int max_number_of_rounds = 13;
     private final PlayerStatisticService playerStatisticService;
 
 
