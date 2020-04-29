@@ -67,16 +67,13 @@ public class GameRoundController {
         Clue clue = DTOMapper.INSTANCE.convertGameRoundClueDTOtoEntity(gameRoundClueDTO);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(clue.getGameRoundId());
         gameRoundService.submitClue(gameRoundByRoundId, clue.getWord(),clue.getPlayerId());
-        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId); //}
-
-
+        return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
     }
 
     @PutMapping("/gameRounds/guesses")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO submitGuess(@RequestBody GameRoundGuessDTO gameRoundGuessDTO){
-
             Guess guess = DTOMapper.INSTANCE.convertGameRoundGuessDTOtoEntity(gameRoundGuessDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(guess.getGameRoundId());
             gameRoundService.submitGuess(gameRoundByRoundId, guess.getWord(), guess.getPlayerId());

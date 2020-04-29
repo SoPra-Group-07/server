@@ -21,14 +21,9 @@ public class Leaderboard {
         users = new ArrayList<>();
     }
 
-    public static Leaderboard getInstance(){
-        if (leaderboard == null){
-            synchronized (Leaderboard.class) {
-                if (leaderboard == null) {
-                    leaderboard = new Leaderboard();
-                }
-            }
-        }
+    public static synchronized Leaderboard getInstance(){
+        if (leaderboard == null) {
+            leaderboard = new Leaderboard();}
         return leaderboard;
     }
 

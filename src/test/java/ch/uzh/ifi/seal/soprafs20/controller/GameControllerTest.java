@@ -209,7 +209,7 @@ public class GameControllerTest {
         lobbyDTO.setNumberOfPlayers(3);
         lobbyDTO.setPlayers(players);
 
-        MockHttpServletRequestBuilder getRequest = get("/games/1/lobby").contentType(MediaType.APPLICATION_JSON).content(asJsonString(lobbyDTO));
+        MockHttpServletRequestBuilder getRequest = get("/games/1/lobby").contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
