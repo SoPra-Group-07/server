@@ -52,7 +52,7 @@ public class PlayerStatisticService {
             playerStatisticRepository.save(playerStatistic1);
             playerStatisticRepository.flush();
             playerStatistics.add(playerStatistic1);
-            updatePlayer(playerStatistic);
+            updatePlayer(playerStatistic1);
         }
 
 
@@ -111,7 +111,8 @@ public class PlayerStatisticService {
 
     public void updatePlayer(PlayerStatistic playerStatistic){
         Player player = playerRepository.findByPlayerId(playerStatistic.getPlayerId());
-        player.setCurrentScore(player.getCurrentScore()+playerStatistic.getPoints());
+        player.setCurrentScore(player.getCurrentScore() + playerStatistic.getPoints());
     }
+
 
 }

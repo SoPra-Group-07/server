@@ -208,12 +208,14 @@ public class GameRoundService {
         checkGuess(gameRound, guess1);
         Game game = gameRepository.findByGameId(gameRound.getGameId());
         playerStatisticService.computeGameRoundStatistic(gameRound);
+
         if(guess1.getDidSubmit() && !guess1.getCorrectGuess()){
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
             game.setRandomStartPosition(game.getRandomStartPosition() - 1); }
 
         if (game.getActualGameRoundIndex() >= max_number_of_rounds){
-            game.setGameStatus(GameStatus.FINISHED); }
+            game.setGameStatus(GameStatus.FINISHED);
+            }
 
         }
 

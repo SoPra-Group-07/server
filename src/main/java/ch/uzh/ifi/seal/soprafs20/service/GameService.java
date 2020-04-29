@@ -140,6 +140,7 @@ public class GameService {
             return bot;
         }
     }
+
     public Game joinGame(long gameId, long userId){
         Game game = gameRepository.findByGameId(gameId);
         // user logged in

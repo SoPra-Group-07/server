@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 
 /**
- *
+ * PlayerStatistic entity
  */
 
 @Entity
