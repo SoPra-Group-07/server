@@ -27,20 +27,22 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final PlayerRepository playerRepository;
-    private final GuessRepository guessRepository;
     private final GameRoundService gameRoundService;
+    private final GuessRepository guessRepository;
     private Random random = SecureRandom.getInstanceStrong();
+
 
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
                        @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
-                       @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository, PlayerStatisticService playerStatisticService) throws NoSuchAlgorithmException {
+                       @Qualifier("clueRepository") ClueRepository clueRepository, PlayerStatisticService playerStatisticService, @Qualifier("guessRepository") GuessRepository guessRepository) throws NoSuchAlgorithmException {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.playerRepository = playerRepository;
         this.guessRepository = guessRepository;
-        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository, guessRepository, playerStatisticService);
+
+        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository, guessRepository, userRepository, playerStatisticService);
     }
 
     public List<Game> getAllGames(){
