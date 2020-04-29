@@ -8,7 +8,6 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -162,7 +161,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("gameName", is(game.getGameName())))
                 .andExpect(jsonPath("numberOfPlayers", is(game.getNumberOfPlayers())))
                 .andExpect(jsonPath("gameStatus", is(game.getGameStatus().toString())))
-                .andExpect(jsonPath("players", hasSize(2)))
+                .andExpect(jsonPath("players", hasSize(3)))
                 .andExpect(jsonPath("actualGameRoundIndex", is(game.getActualGameRoundIndex())))
                 .andExpect(jsonPath("hasBot", is(game.getHasBot())))
                 .andExpect(jsonPath("adminPlayerId", is(game.getAdminPlayerId().intValue())))
@@ -218,7 +217,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("gameName", is(game.getGameName())))
                 .andExpect(jsonPath("numberOfPlayers", is(game.getNumberOfPlayers())))
                 .andExpect(jsonPath("gameStatus", is(game.getGameStatus().toString())))
-                .andExpect(jsonPath("players", hasSize(4)))
+                .andExpect(jsonPath("players", hasSize(3)))
                 .andExpect(jsonPath("adminPlayerId", is((game.getAdminPlayerId().intValue()))))
         ;
     }

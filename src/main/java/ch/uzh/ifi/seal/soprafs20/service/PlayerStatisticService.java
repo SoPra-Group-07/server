@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
-
-
 /**
  * PlayerStatistic Service
  * This class is the "worker" and responsible for all functionality related to the playerStatistic

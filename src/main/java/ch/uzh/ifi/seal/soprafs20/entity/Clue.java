@@ -5,7 +5,8 @@ import java.io.Serializable;
 
 
 /**
- *
+ *Internal Clue Representation
+ *his class composes the internal representation of the clue and defines how the clue is stored in the database.
  */
 @Entity
 public class Clue extends Submission implements Serializable {

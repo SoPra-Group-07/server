@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- *
+ *Internal Guess Representation
+ *This class composes the internal representation of the guess and defines how the guess is stored in the database.
  */
 @Entity
 public class Guess extends Submission implements Serializable {

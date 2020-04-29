@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 
 /**
- *
+ *Internal Player Representation
+ *This class composes the internal representation of the player and defines how the player is stored in the database.
  */
-
 @Entity
 public abstract class Player implements Serializable{
 

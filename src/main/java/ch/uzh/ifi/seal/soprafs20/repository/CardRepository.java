@@ -4,9 +4,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
-
 @Repository("cardRepository")
-public interface CardRepository extends JpaRepository<Card, Long> {         //Methods that are used to interact and work with DB
+public interface CardRepository extends JpaRepository<Card, Long> {
     Card findByCardId(long cardId);
 }

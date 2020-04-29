@@ -5,9 +5,9 @@ import java.io.Serializable;
 
 
 /**
- * PlayerStatistic entity
+ *Internal PlayerStatistic Representation
+ *This class composes the internal representation of the playerStatistic and defines how the playerStatistic is stored in the database.
  */
-
 @Entity
 public class PlayerStatistic implements Serializable {
 

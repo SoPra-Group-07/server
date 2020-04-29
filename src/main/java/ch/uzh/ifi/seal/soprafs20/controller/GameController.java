@@ -35,7 +35,6 @@ public class GameController {
         if (gameStatus != null){
             List<Game> games = gameService.getGameByGameStatus(gameStatus);
             List<GameGetOpenDTO> gameGetDTOS = new ArrayList<>();
-            // convert each game to the API representation
             for (Game game : games) {
                 gameGetDTOS.add(DTOMapper.INSTANCE.convertEntityToGameGetOpenDTO(game));
             }
@@ -43,7 +42,6 @@ public class GameController {
         } else {
             List<Game> games = gameService.getAllGames();
             List<GameGetOpenDTO> gameGetDTOS = new ArrayList<>();
-            // convert each game to the API representation
             for (Game game : games) {
                 gameGetDTOS.add(DTOMapper.INSTANCE.convertEntityToGameGetOpenDTO(game));
             }
@@ -51,7 +49,6 @@ public class GameController {
         }
     }
 
-    // create a new game
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -91,8 +88,7 @@ public class GameController {
 
     }
 
-    // return a game object with only the attributes needed in the lobby (place where you wait until a game starts)
-    // will be requested every xx seconds from front-end
+
     @GetMapping("games/{gameId}/lobby")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

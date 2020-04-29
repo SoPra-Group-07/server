@@ -9,7 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+/**
+ *Internal FriendlyBot Representation
+ *This class composes the internal representation of the friendlyBot and defines how the friendlyBot is stored in the database.
+ */
 @Entity
 public class FriendlyBot extends Player {
 

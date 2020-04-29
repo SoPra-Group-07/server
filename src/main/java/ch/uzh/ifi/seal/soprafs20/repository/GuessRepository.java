@@ -5,8 +5,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository("guessRepository")
-public interface GuessRepository extends JpaRepository<Guess, Long> {         //Methods that are used to interact and work with DB
-    Guess findByPlayerId(Long playerId);
+public interface GuessRepository extends JpaRepository<Guess, Long> {
     Guess findByPlayerIdAndGameRoundId(Long playerId, Long gameRoundId);
     Guess findByGameRoundId(Long gameRoundId);
 

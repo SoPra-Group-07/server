@@ -14,7 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * GameRound Controller
+ * This class is responsible for handling all REST request that are related to the GameRound.
+ * The controller will receive the request and delegate the execution to the GameRoundService and finally return the result.
+ */
 @RestController
 public class GameRoundController {
 
@@ -60,15 +64,11 @@ public class GameRoundController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO submitClue(@RequestBody GameRoundClueDTO gameRoundClueDTO){
-        //try{
         Clue clue = DTOMapper.INSTANCE.convertGameRoundClueDTOtoEntity(gameRoundClueDTO);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(clue.getGameRoundId());
         gameRoundService.submitClue(gameRoundByRoundId, clue.getWord(),clue.getPlayerId());
         return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId); //}
 
-       // catch (Exception e){
-         //   throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not submit a number as a clue, please submit a string");
-       // }
 
     }
 
@@ -76,15 +76,11 @@ public class GameRoundController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameRoundDTO submitGuess(@RequestBody GameRoundGuessDTO gameRoundGuessDTO){
-        //try{
+
             Guess guess = DTOMapper.INSTANCE.convertGameRoundGuessDTOtoEntity(gameRoundGuessDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(guess.getGameRoundId());
             gameRoundService.submitGuess(gameRoundByRoundId, guess.getWord(), guess.getPlayerId());
             return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
-
-        //catch (Exception e){
-          //  throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not submit a number as a clue, please submit a string");
-        //}
     }
 
 

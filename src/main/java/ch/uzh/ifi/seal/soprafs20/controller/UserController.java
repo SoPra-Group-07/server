@@ -28,14 +28,12 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getAllUsers() {
-        // fetch all users in the internal representation
-        List<User> users = userService.getUsers();                                  //creates list with all users in internal representation
+        List<User> users = userService.getUsers();
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
-        // convert each user to the API representation
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
@@ -43,36 +41,31 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)                                               //It is the status code 201
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {              //DTO is a Data Transfer Object. It carries Data between processes -> Encapsulation
-        // convert API user to internal representation
+    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        // create user
-        User createdUser = userService.createUser(userInput);                         //User status is set to OFFLINE, the birth date is set to "00-00-0000" and the creation date
-                                                                                      //is set corresponding to the local date. Everything is saved in the database and the created user
-        // convert internal representation of user back to API                        //is returned.
+        User createdUser = userService.createUser(userInput);
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
     @PutMapping("/login")
-    @ResponseStatus(HttpStatus.OK)                                                                 // Status code 200 ->  if everything went well
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO login(@RequestBody UserPostDTO userPostDTO) {                                //RequestBody converts from JSON-body from request into UserPostDTO instance
-        // convert API user to internal representation
+    public UserGetDTO login(@RequestBody UserPostDTO userPostDTO) {
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         boolean checkUserName = userService.checkUsername(userInput);
         boolean acceptLogin = userService.acceptLogin(userInput.getUsername(), userInput.getPassword());
         boolean alreadyLoggedIn = userService.isAlreadyLoggedIn(userInput.getUsername());
 
-        if (Boolean.TRUE.equals(checkUserName)) {                                                //Checks if a user with that username exists
-            if (Boolean.TRUE.equals(acceptLogin)) {       //checks if the password is correct
-                if(Boolean.TRUE.equals(alreadyLoggedIn)){                        //Checks if the user is already ONLINE (maybe from another device) and if so
-                    throw new ResponseStatusException(HttpStatus.NO_CONTENT);                      // it sends back the status code 204
+        if (Boolean.TRUE.equals(checkUserName)) {
+            if (Boolean.TRUE.equals(acceptLogin)) {
+                if(Boolean.TRUE.equals(alreadyLoggedIn)){
+                    throw new ResponseStatusException(HttpStatus.NO_CONTENT);
                 } else {
-                    User updatedUser = userService.login(userInput);                               //updates user-object, e.g., UserStatus is set to ONLINE, etc...
+                    User updatedUser = userService.login(userInput);
                     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
                 }
 

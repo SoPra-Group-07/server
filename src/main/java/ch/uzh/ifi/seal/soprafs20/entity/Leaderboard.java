@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
-
+/**
+ *Internal Leaderboard Representation
+ */
 public class Leaderboard {
     private static Leaderboard leaderboard;
 

@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto.User;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
-
 import java.time.LocalDate;
 
 public class UserGetDTO {

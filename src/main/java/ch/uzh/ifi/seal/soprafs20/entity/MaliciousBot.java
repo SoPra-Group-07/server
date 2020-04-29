@@ -11,7 +11,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+/**
+ *Internal MaliciousBot Representation
+ *This class composes the internal representation of the maliciousBot and defines how the maliciousBot is stored in the database.
+ */
 @Entity
 public class MaliciousBot extends Player implements Serializable {
 

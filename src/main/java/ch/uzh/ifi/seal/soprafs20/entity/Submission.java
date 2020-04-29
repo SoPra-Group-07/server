@@ -3,12 +3,15 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-
+/**
+ *Internal Submission Representation
+ *This class composes the internal representation of the submission and defines how the submission is stored in the database.
+ */
 @Table(name = "SUBMISSION")
 @MappedSuperclass
 public abstract class Submission implements Serializable {
 
-    public Submission(){}
+    public Submission(){/* empty constructor */}
 
 
     @Id
@@ -16,12 +19,22 @@ public abstract class Submission implements Serializable {
     @Column
     private Long submissionId;
 
-
+    @Column
     private Long playerId;
+
+    @Column
     private String word;
+
+    @Column
     private long duration;
+
+    @Column
     private long startTime;
+
+    @Column
     private long endTime;
+
+    @Column
     private boolean didSubmit;
 
 

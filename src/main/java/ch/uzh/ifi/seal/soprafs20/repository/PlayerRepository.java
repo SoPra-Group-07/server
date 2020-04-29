@@ -7,7 +7,7 @@ import java.util.List;
 
 
 @Repository("playerRepository")
-public interface PlayerRepository extends JpaRepository<Player, Long> {         //Methods that are used to interact and work with DB
+public interface PlayerRepository extends JpaRepository<Player, Long> {
     Player findByUserId(long userId);
     Player findByPlayerId(long playerId);
     List<Player> findAllByGameId(long gameId);

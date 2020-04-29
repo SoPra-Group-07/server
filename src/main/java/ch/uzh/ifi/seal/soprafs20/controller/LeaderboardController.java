@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User Controller
- * This class is responsible for handling all REST request that are related to the user.
- * The controller will receive the request and delegate the execution to the UserService and finally return the result.
+ * Leaderboard Controller
+ * This class is responsible for handling all REST request that are related to the leaderboard.
+ * The controller will receive the request and delegate the execution to the LeaderboardService and finally return the result.
  */
 @RestController
 public class LeaderboardController {
@@ -24,7 +24,7 @@ public class LeaderboardController {
     }
 
     @GetMapping("/leaderboards")
-    @ResponseStatus(HttpStatus.OK)                                                  // Status code 200 ->  if everything went well
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<LeaderboardDTO> getAllUsersFromLeaderboard() {
 
@@ -32,12 +32,9 @@ public class LeaderboardController {
         leaderboardService.fillUsers();
         leaderboardService.sortByHighScore();
 
-        // fetch all users in the internal representation
-
         List<User> users = leaderboardService.getUsers();
         List<LeaderboardDTO> leaderboardDTOS = new ArrayList<>();
 
-        // convert each user to the API representation
         for (User user : users) {
             leaderboardDTOS.add(DTOMapper.INSTANCE.convertEntityToLeaderboardDTO(user));
         }

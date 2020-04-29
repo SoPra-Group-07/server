@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto.Game;
 
-
 public class GameGetOpenDTO {
     private Long gameId;
     private String gameName;
