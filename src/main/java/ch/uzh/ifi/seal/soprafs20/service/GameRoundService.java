@@ -33,21 +33,24 @@ public class GameRoundService {
     private final ClueRepository clueRepository;
     private final GuessRepository guessRepository;
     private Random random = SecureRandom.getInstanceStrong();
+    private final int max_number_of_rounds = 3;
+    private final PlayerStatisticService playerStatisticService;
 
 
     @Autowired
     public GameRoundService(@Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
                             @Qualifier("cardRepository") CardRepository cardRepository, @Qualifier("gameRepository") GameRepository gameRepository,
-                            @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository) throws NoSuchAlgorithmException {
+                            @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository, PlayerStatisticService playerStatisticService) throws NoSuchAlgorithmException {
         this.gameRoundRepository = gameRoundRepository;
         this.cardRepository = cardRepository;
         this.gameRepository = gameRepository;
         this.clueRepository = clueRepository;
         this.guessRepository = guessRepository;
+        this.playerStatisticService = playerStatisticService;
     }
 
     public GameRound createNewGameRound(Game game){
-        if (game.getActualGameRoundIndex() > 12 || game.getGameStatus() == GameStatus.FINISHED){
+        if (game.getActualGameRoundIndex() > max_number_of_rounds || game.getGameStatus() == GameStatus.FINISHED){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
         }
         GameRound gameRound = new GameRound();
@@ -61,7 +64,7 @@ public class GameRoundService {
     }
 
     public GameRound startNewGameRound(Game game){
-        if (game.getActualGameRoundIndex() <= 12) {
+        if (game.getActualGameRoundIndex() < max_number_of_rounds) {
 
             if (game.getActualGameRoundIndex() == 0) {
                 int randomStart = this.random.nextInt(game.getNumberOfPlayers());
@@ -74,7 +77,7 @@ public class GameRoundService {
             return actualGameRound;
         }
         else{
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds. (startNewGameRound)");
         }
     }
 
@@ -128,7 +131,7 @@ public class GameRoundService {
         Game game = gameRepository.findByGameId(gameRound.getGameId());
         for (Player player: game.getPlayers()){
             // check clue or guess
-            if (player.getPlayerId() != gameRound.getGuessingPlayerId()) {
+            if (!player.getPlayerId().equals(gameRound.getGuessingPlayerId())) {
                 Clue clue = new Clue();
                 clue.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
                 clue.setPlayerId(player.getPlayerId());
@@ -204,10 +207,13 @@ public class GameRoundService {
         guess1.setDuration((guess1.getEndTime()-guess1.getStartTime())/1000);
         checkGuess(gameRound, guess1);
         Game game = gameRepository.findByGameId(gameRound.getGameId());
-        if (game.getActualGameRoundIndex() >= 13){
-            game.setGameStatus(GameStatus.FINISHED);
+        playerStatisticService.computeGameRoundStatistic(gameRound);
+        if(guess1.getDidSubmit() && !guess1.getCorrectGuess()){
+            game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
+            game.setRandomStartPosition(game.getRandomStartPosition() - 1); }
 
-        }
+        if (game.getActualGameRoundIndex() >= max_number_of_rounds){
+            game.setGameStatus(GameStatus.FINISHED); }
 
         }
 

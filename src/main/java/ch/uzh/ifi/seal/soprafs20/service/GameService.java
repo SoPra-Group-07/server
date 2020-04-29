@@ -35,12 +35,12 @@ public class GameService {
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
                        @Qualifier("playerRepository") PlayerRepository playerRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
-                       @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository) throws NoSuchAlgorithmException {
+                       @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository, PlayerStatisticService playerStatisticService) throws NoSuchAlgorithmException {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.playerRepository = playerRepository;
         this.guessRepository = guessRepository;
-        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository, guessRepository);
+        this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository, guessRepository, playerStatisticService);
     }
 
     public List<Game> getAllGames(){

@@ -1,11 +1,10 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
-import ch.uzh.ifi.seal.soprafs20.entity.Game;
+import ch.uzh.ifi.seal.soprafs20.entity.GameRound;
 import ch.uzh.ifi.seal.soprafs20.entity.PlayerStatistic;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.GameGetOpenDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.PlayerStatistic.PlayerStatisticDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
-import ch.uzh.ifi.seal.soprafs20.service.PlayerStatisticService;
+import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,26 +14,36 @@ import java.util.List;
 @RestController
 public class PlayerStatisticController {
 
-    public final PlayerStatisticService playerStatisticService;
+    private final GameRoundService gameRoundService;
 
 
-    PlayerStatisticController(PlayerStatisticService playerStatisticService){
-        this.playerStatisticService = playerStatisticService;
+    PlayerStatisticController(GameRoundService gameRoundService){
+
+        this.gameRoundService = gameRoundService;
     }
 
     @GetMapping("gameRounds/{roundId}/gameRoundStatistics")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<PlayerStatisticDTO> getGameRoundStatisticByRoundId(@PathVariable long roundId){
+        try{
+            GameRound gameRound = gameRoundService.getGameRoundByRoundId(roundId);
+            List<PlayerStatisticDTO> playerStatisticDTO = new ArrayList<>();
 
-        List<PlayerStatistic> playerStatistics = playerStatisticService.computeGameRoundStatistic(roundId);
-        List<PlayerStatisticDTO> playerStatisticDTO = new ArrayList<>();
+            // convert each game to the API representation
+            for (PlayerStatistic playerStatistic : gameRound.getPlayerStatistic()) {
+                playerStatisticDTO.add(DTOMapper.INSTANCE.convertEntityToPlayerStatisticDTO(playerStatistic));  }
 
-        // convert each game to the API representation
-        for (PlayerStatistic playerStatistic : playerStatistics) {
-            playerStatisticDTO.add(DTOMapper.INSTANCE.convertEntityToPlayerStatisticDTO(playerStatistic));
+            return playerStatisticDTO; }
+
+        catch (NullPointerException e){
+            PlayerStatistic playerStatistic = new PlayerStatistic();
+            playerStatistic.setGameRoundId(0L);
+            List<PlayerStatisticDTO> emptyList = new ArrayList<>();
+            emptyList.add(DTOMapper.INSTANCE.convertEntityToPlayerStatisticDTO(playerStatistic));
+            return emptyList;
         }
-        return playerStatisticDTO;
+
     }
 
 

@@ -19,20 +19,15 @@ import java.util.*;
 public class PlayerStatisticService {
 
     private final PlayerStatisticRepository playerStatisticRepository;
-    private final GameRoundRepository gameRoundRepository;
-    private final GameService gameService;
     private final PlayerRepository playerRepository;
 
     @Autowired
-    public PlayerStatisticService(@Qualifier("playerStatisticRepository") PlayerStatisticRepository playerStatisticRepository, @Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository, GameService gameService,@Qualifier("playerRepository") PlayerRepository playerRepository) {
+    public PlayerStatisticService(@Qualifier("playerStatisticRepository") PlayerStatisticRepository playerStatisticRepository, @Qualifier("playerRepository") PlayerRepository playerRepository) {
         this.playerStatisticRepository = playerStatisticRepository;
-        this.gameRoundRepository = gameRoundRepository;
-        this.gameService = gameService;
         this.playerRepository = playerRepository;
     }
 
-    public List<PlayerStatistic> computeGameRoundStatistic(long roundId){
-        GameRound gameRound = gameRoundRepository.findByGameRoundId(roundId);
+    public void computeGameRoundStatistic(GameRound gameRound){
         List<PlayerStatistic> playerStatistics = new ArrayList<>();
 
         Guess guess = gameRound.getGuess();
@@ -62,7 +57,7 @@ public class PlayerStatisticService {
 
 
 
-        return playerStatistics;
+        gameRound.setPlayerStatistic(playerStatistics);
     }
 
     private float calculateClueingPlayerPoints(Clue clue, boolean rightGuess) {
@@ -108,10 +103,7 @@ public class PlayerStatisticService {
                 else if (guess.getDuration() <= 45) {totalPoints += 0.1;}
             }
             //wrong guess, delete an additional card
-            else{
-                Game game = gameService.getGameByGameId(gameRound.getGameId());
-                game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
-                game.setRandomStartPosition(game.getRandomStartPosition() - 1); }
+          
         }
 
         return totalPoints;
