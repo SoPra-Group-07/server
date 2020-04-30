@@ -75,20 +75,11 @@ public class LeaderboardControllerTest {
         allUsers.add(user3);
 
 
-        // this mocks the LeaderboardService -> we define above what the userService should return when getUsers() is called
         given(leaderboardService.getUsers()).willReturn(allUsers);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/leaderboards").contentType(MediaType.APPLICATION_JSON);    //=give it to me as JSON
 
-        /*
-        MvcResult result = mockMvc.perform(getRequest).andReturn();
-        MockHttpServletResponse response = result.getResponse();
-        //assertEquals(HttpStatus.OK.value(), response.getStatus());
-        response.getErrorMessage();
-        System.out.println(response.getContentAsString());
-        System.out.println(result);
-         */
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())

@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  *Internal MaliciousBot Representation
@@ -57,10 +60,15 @@ public class MaliciousBot extends Player implements Serializable {
                     mapper.getTypeFactory().constructCollectionType(ArrayList.class, aptReq.class));
 
             if (!words.isEmpty()) {
-                return words.get(0).getWord();
+                return words.get(0).getWord().replaceAll("\\s","");
             }
             else {
-                return "surprise";
+                /*
+                List<String> randomClues = new ArrayList<String>(Arrays.asList("surprise","good","super"));
+                Random random = new Random();
+                return randomClues.get(random.nextInt(randomClues.size()));
+                 */
+                return word;
             }
         }
         catch (IOException e) { e.getMessage();}

@@ -148,7 +148,8 @@ public class GameService {
         // user logged in
         if (userRepository.findByUserId(userId).getStatus() == UserStatus.ONLINE){
             //not already in the game
-            if (!game.getPlayers().contains(playerRepository.findByUserId(userId))) {
+            Player p = playerRepository.findByUserId(userId);
+            if (!game.getPlayers().contains(p)) {
                 Player player = createPlayerByUserIdAndGame(userId, game);
                 addPlayerToGame(player, game);
                 return game;

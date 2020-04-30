@@ -134,7 +134,7 @@ public class GameControllerTest {
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].gameId", is(game.getGameId().intValue())))
                 .andExpect(jsonPath("$[0].gameName", is(game.getGameName())))
                 .andExpect(jsonPath("$[0].numberOfPlayers", is(game.getNumberOfPlayers())))
@@ -201,18 +201,10 @@ public class GameControllerTest {
     public void givenGame_whenGetLobby_thenReturn_LobbyDTO() throws Exception {
         given(gameService.getGameByGameId(1L)).willReturn(game);
 
-        LobbyDTO lobbyDTO = new LobbyDTO();
-        lobbyDTO.setGameId(1L);
-        lobbyDTO.setAdminPlayerId(1L);
-        lobbyDTO.setGameName("superGame");
-        lobbyDTO.setGameStatus(GameStatus.CREATED);
-        lobbyDTO.setNumberOfPlayers(3);
-        lobbyDTO.setPlayers(players);
-
         MockHttpServletRequestBuilder getRequest = get("/games/1/lobby").contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("gameId", is(game.getGameId().intValue())))
                 .andExpect(jsonPath("gameName", is(game.getGameName())))
                 .andExpect(jsonPath("numberOfPlayers", is(game.getNumberOfPlayers())))

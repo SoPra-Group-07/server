@@ -56,13 +56,9 @@ public class UserController {
     public UserGetDTO login(@RequestBody UserPostDTO userPostDTO) {
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        boolean checkUserName = userService.checkUsername(userInput);
-        boolean acceptLogin = userService.acceptLogin(userInput.getUsername(), userInput.getPassword());
-        boolean alreadyLoggedIn = userService.isAlreadyLoggedIn(userInput.getUsername());
-
-        if (Boolean.TRUE.equals(checkUserName)) {
-            if (Boolean.TRUE.equals(acceptLogin)) {
-                if(Boolean.TRUE.equals(alreadyLoggedIn)){
+        if (userService.checkUsername(userInput)) {
+            if (userService.acceptLogin(userInput.getUsername(), userInput.getPassword())) {
+                if(userService.isAlreadyLoggedIn(userInput.getUsername())){
                     throw new ResponseStatusException(HttpStatus.NO_CONTENT);
                 } else {
                     User updatedUser = userService.login(userInput);
