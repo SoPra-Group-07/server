@@ -47,7 +47,7 @@ public class User implements Serializable{
     private String dateOfBirth;
 
     @Column
-    private float highScore;
+    private double highScore;
 
     @Column
     private int numberOfGamesPlayed;
@@ -90,11 +90,11 @@ public class User implements Serializable{
         this.dateOfBirth = dateOfBirth;
     }
 
-    public float getHighScore() {
+    public double getHighScore() {
         return highScore;
     }
 
-    public void setHighScore(float highScore) {
+    public void setHighScore(double highScore) {
         this.highScore = highScore;
     }
 

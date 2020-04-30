@@ -85,7 +85,7 @@ public class GameRoundServiceTest {
         testGame.setNumberOfPlayers(2);
         testGame.setPlayers(players);
         testGame.setCardIds(gameService.getRandomUniqueCardIds());
-        testGame.setActualGameRoundIndex(1);
+        testGame.setActualGameRoundIndex(0);
 
         gameRound.setCard(testCard);
         gameRound.setGameId(testGame.getGameId());

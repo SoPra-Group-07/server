@@ -47,7 +47,7 @@ public class LeaderboardControllerTest {
         user1.setToken("2dfc-g59k");
         user1.setDate(LocalDate.now());
         user1.setBirth("00-00-0000");
-        user1.setHighScore((float) 5.3);
+        user1.setHighScore(5.3);
 
         User user2 = new User();
         user2.setPassword("testPassword");
@@ -57,7 +57,7 @@ public class LeaderboardControllerTest {
         user2.setToken("2dfc-g59k");
         user2.setDate(LocalDate.now());
         user2.setBirth("00-00-0000");
-        user2.setHighScore((float) 8.1);
+        user2.setHighScore(8.1);
 
         User user3 = new User();
         user3.setPassword("testPassword");
@@ -67,7 +67,7 @@ public class LeaderboardControllerTest {
         user3.setToken("2dfc-g59k");
         user3.setDate(LocalDate.now());
         user3.setBirth("00-00-0000");
-        user3.setHighScore((float) 3.1);
+        user3.setHighScore(3.1);
 
         ArrayList<User> allUsers = new ArrayList<User>();
         allUsers.add(user1);
@@ -78,18 +78,18 @@ public class LeaderboardControllerTest {
         given(leaderboardService.getUsers()).willReturn(allUsers);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/leaderboards").contentType(MediaType.APPLICATION_JSON);    //=give it to me as JSON
+        MockHttpServletRequestBuilder getRequest = get("/leaderboards").contentType(MediaType.APPLICATION_JSON);
 
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
-                .andExpect(jsonPath("$[0].username", is(user1.getUsername())))         // is("testPassword") would work as well
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].username", is(user1.getUsername())))
                 .andExpect(jsonPath("$[0].highScore", is(user1.getHighScore())))
-                .andExpect(jsonPath("$[1].username", is(user2.getUsername())))         // is("testPassword") would work as well
+                .andExpect(jsonPath("$[1].username", is(user2.getUsername())))
                 .andExpect(jsonPath("$[1].highScore", is(user2.getHighScore())))
-                .andExpect(jsonPath("$[2].username", is(user3.getUsername())))         // is("testPassword") would work as well
+                .andExpect(jsonPath("$[2].username", is(user3.getUsername())))
                 .andExpect(jsonPath("$[2].highScore", is(user3.getHighScore())));
     }
 
