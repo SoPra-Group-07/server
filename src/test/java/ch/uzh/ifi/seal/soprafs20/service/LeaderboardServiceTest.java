@@ -53,7 +53,7 @@ public class LeaderboardServiceTest {
         user1.setToken("2dfc-g59k");
         user1.setDate(LocalDate.now());
         user1.setBirth("00-00-0000");
-        user1.setHighScore(5.3);
+        user1.setHighScore((float) 5.3);
         user1.setNumberOfGamesPlayed(1);
 
 
@@ -64,7 +64,7 @@ public class LeaderboardServiceTest {
         user2.setToken("2dfc-g59k");
         user2.setDate(LocalDate.now());
         user2.setBirth("00-00-0000");
-        user2.setHighScore(8.1);
+        user2.setHighScore((float) 8.1);
         user2.setNumberOfGamesPlayed(10);
 
         user3.setPassword("testPassword");
@@ -74,7 +74,7 @@ public class LeaderboardServiceTest {
         user3.setToken("2dfc-g59k");
         user3.setDate(LocalDate.now());
         user3.setBirth("00-00-0000");
-        user3.setHighScore(3.1);
+        user3.setHighScore((float) 3.1);
         user3.setNumberOfGamesPlayed(5);
 
         user4.setPassword("testPassword");
