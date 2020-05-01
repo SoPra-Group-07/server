@@ -49,7 +49,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        // then
+        // the
         assertEquals(testUser.getUserId(), createdUser.getUserId());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getUsername(), createdUser.getUsername());
