@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the UserResource REST resource.
  * @see UserService
  */
-//@WebAppConfiguration
+@WebAppConfiguration
 @SpringBootTest
 public class UserServiceIntegrationTest {
 

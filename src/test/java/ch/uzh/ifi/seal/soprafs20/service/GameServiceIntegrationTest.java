@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.service;
+/*package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.jupiter.api.Assertions.*;
 
-//@WebAppConfiguration
-//@Configuration
+@WebAppConfiguration
 @SpringBootTest
 class GameServiceIntegrationTest {
 
@@ -77,3 +76,6 @@ class GameServiceIntegrationTest {
 
     }
 }
+
+
+ */
