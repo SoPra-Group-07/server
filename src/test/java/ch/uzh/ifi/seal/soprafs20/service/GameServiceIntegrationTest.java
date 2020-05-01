@@ -33,7 +33,7 @@ class GameServiceIntegrationTest {
     private GameService gameService;
 
     @BeforeEach
-    void setup() {
+    public void setup() {
         gameRepository.deleteAll();
         userRepository.deleteAll();
         playerRepository.deleteAll();
@@ -46,7 +46,7 @@ class GameServiceIntegrationTest {
     }
 
     @Test
-    void createGame_validInputs_success() {
+    public void createGame_validInputs_success() {
         // given -> gameName not used yet
         assertNull(gameRepository.findByGameName("testGameName"));
 
