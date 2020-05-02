@@ -148,7 +148,7 @@ public class GameService {
         // user logged in
         if (userRepository.findByUserId(userId).getStatus() == UserStatus.ONLINE){
             //not already in the game
-            Player p = playerRepository.findByUserId(userId);
+            Player p = playerRepository.findByUserIdAndGameId(userId, gameId);
             if (!game.getPlayers().contains(p)) {
                 Player player = createPlayerByUserIdAndGame(userId, game);
                 addPlayerToGame(player, game);
@@ -172,8 +172,7 @@ public class GameService {
 
     public void leaveGame(Long gameId, Long userId){
         Game game = getGameByGameId(gameId);
-        User user = userRepository.findByUserId(userId);
-        Player player = playerRepository.findByUserId(userId);
+        Player player = playerRepository.findByUserIdAndGameId(userId, gameId);
 
         if (!game.getPlayers().contains(player)){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not leave this game since you are not in it."); }

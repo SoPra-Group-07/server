@@ -45,8 +45,6 @@ public class FriendlyBot_and_MaliciousBot_Test {
     assertNotEquals("mouse", maliciousWord);
     assertFalse(maliciousWord.contains(" "));
 
-    System.out.println(friendlyWord);
-    System.out.println(maliciousWord);
 
     }
     /**
@@ -64,8 +62,6 @@ public class FriendlyBot_and_MaliciousBot_Test {
         assertFalse(maliciousWord.contains(" "));
 
 
-        System.out.println(friendlyWord);
-        System.out.println(maliciousWord);
 
     }
 
@@ -84,8 +80,6 @@ public class FriendlyBot_and_MaliciousBot_Test {
         assertFalse(maliciousWord.contains(" "));
 
 
-        System.out.println(friendlyWord);
-        System.out.println(maliciousWord);
 
 
     }
@@ -104,8 +98,6 @@ public class FriendlyBot_and_MaliciousBot_Test {
         assertFalse(maliciousWord.contains(" "));
 
 
-        System.out.println(friendlyWord);
-        System.out.println(maliciousWord);
 
     }
     /**
@@ -122,9 +114,6 @@ public class FriendlyBot_and_MaliciousBot_Test {
         assertNotEquals("diamond", maliciousWord);
         assertFalse(maliciousWord.contains(" "));
 
-
-        System.out.println(friendlyWord);
-        System.out.println(maliciousWord);
 
 
     }
