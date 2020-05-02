@@ -28,7 +28,7 @@ public abstract class Player implements Serializable{
     private String playerName;
 
     @Column
-    private float currentScore;
+    private double currentScore;
 
     @Column(name = "user_id")
     private long userId;
@@ -59,10 +59,10 @@ public abstract class Player implements Serializable{
     }
 
 
-    public float getCurrentScore() {
+    public double getCurrentScore() {
         return currentScore;
     }
-    public void setCurrentScore(float currentScore) {
+    public void setCurrentScore(double currentScore) {
         this.currentScore = currentScore;
     }
 

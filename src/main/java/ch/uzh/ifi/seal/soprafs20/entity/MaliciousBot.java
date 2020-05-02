@@ -10,9 +10,6 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 /**
  *Internal MaliciousBot Representation
@@ -27,13 +24,30 @@ public class MaliciousBot extends Player implements Serializable {
 
     @Override
     public String giveClue(String word) throws IOException {
-
-        return getAntonyme(word);
+        String ant = get_word_by_url(get_antonym_url(word.toLowerCase()), word.toLowerCase());
+        if (ant.equals(word.toLowerCase())){
+        String adj = get_word_by_url(get_adjective_url(word.toLowerCase()), word.toLowerCase());
+        return get_word_by_url(get_antonym_url(adj), adj);
+        }
+        return ant;
     }
 
-    public static String getAntonyme(String word) throws IOException {
+    public static String get_adjective_url(String word) throws IOException {
 
-        String url = "https://api.datamuse.com/words?rel_ant=" + word;
+        String url = "https://api.datamuse.com/words?rel_jjb=" + word;
+
+        return url;
+    }
+
+
+    public static String get_antonym_url(String word) throws IOException {
+
+        return "https://api.datamuse.com/words?rel_ant=" + word;
+    }
+
+
+
+    public static String get_word_by_url(String url, String word) throws IOException {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -63,15 +77,15 @@ public class MaliciousBot extends Player implements Serializable {
                 return words.get(0).getWord().replaceAll("\\s","");
             }
             else {
-                /*
-                List<String> randomClues = new ArrayList<String>(Arrays.asList("surprise","good","super"));
-                Random random = new Random();
-                return randomClues.get(random.nextInt(randomClues.size()));
-                 */
+
                 return word;
             }
         }
         catch (IOException e) { e.getMessage();}
         return "notWorking";
     }
+
+
+
+
 }

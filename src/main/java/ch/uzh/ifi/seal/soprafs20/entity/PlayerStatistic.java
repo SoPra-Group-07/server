@@ -23,7 +23,7 @@ public class PlayerStatistic implements Serializable {
     private Long gameRoundId;
 
     @Column
-    private float points;
+    private double points;
 
     @Column
     private Long playerId;
@@ -44,11 +44,11 @@ public class PlayerStatistic implements Serializable {
         this.gameRoundId = gameRoundId;
     }
 
-    public float getPoints() {
+    public double getPoints() {
         return points;
     }
 
-    public void setPoints(float points) {
+    public void setPoints(double points) {
         this.points = points;
     }
 

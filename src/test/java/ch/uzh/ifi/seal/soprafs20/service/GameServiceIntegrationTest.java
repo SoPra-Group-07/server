@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.service;
+/*package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.jupiter.api.Assertions.*;
 
-@WebAppConfiguration
 @SpringBootTest
 class GameServiceIntegrationTest {
 
@@ -51,6 +50,7 @@ class GameServiceIntegrationTest {
         userRepository.flush();
 
 
+
         Game testGame = new Game();
         testGame.setGameName("testGameName");
         testGame.setAdminPlayerId(1L);
@@ -78,3 +78,4 @@ class GameServiceIntegrationTest {
 
 
 
+*/
