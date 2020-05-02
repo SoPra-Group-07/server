@@ -1,4 +1,4 @@
-/*package ch.uzh.ifi.seal.soprafs20.service;
+package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,18 +37,18 @@ class GameServiceIntegrationTest {
         gameRepository.deleteAll();
         userRepository.deleteAll();
         playerRepository.deleteAll();
-
-        User user = new User();
-        user.setUsername("testUser");
-        user.setPassword("testPassword");
-        user.setStatus(UserStatus.ONLINE);
-        userRepository.save(user);
     }
 
     @Test
     public void createGame_validInputs_success() {
         // given -> gameName not used yet
         assertNull(gameRepository.findByGameName("testGameName"));
+        User user = new User();
+        user.setUsername("testUser");
+        user.setPassword("testPassword");
+        user.setStatus(UserStatus.ONLINE);
+        userRepository.save(user);
+        userRepository.flush();
 
 
         Game testGame = new Game();
@@ -78,4 +77,4 @@ class GameServiceIntegrationTest {
 }
 
 
- */
+
