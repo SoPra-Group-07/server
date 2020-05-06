@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,8 +21,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import javax.validation.constraints.AssertFalse;
 import java.util.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -75,7 +78,7 @@ public class GameControllerTest {
 
         players.add(testPlayer);
         players.add(testFriedlyBot);
-        players.add(testFriedlyBot);
+        players.add(testPlayer1);
 
         testFriedlyBot.setGameId(1L);
         testFriedlyBot.setPlayerId(1L);
@@ -253,6 +256,44 @@ public class GameControllerTest {
         ;
     }
 
+    @Test
+    public void givenGame_when_getPlayersFromGameByGameId_thenReturn_players() throws Exception {
+
+        given(gameService.getGameByGameId(1L)).willReturn(game);
+        MockHttpServletRequestBuilder getRequest = get("/games/1/players").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].playerName", is(game.getPlayers().get(0).getPlayerName())))
+                .andExpect(jsonPath("$[0].gameId", is(game.getGameId().intValue())))
+                .andExpect(jsonPath("$[1].playerName", is(game.getPlayers().get(1).getPlayerName())))
+                .andExpect(jsonPath("$[1].gameId", is(game.getGameId().intValue())))
+                .andExpect(jsonPath("$[2].playerName", is(game.getPlayers().get(2).getPlayerName())))
+                .andExpect(jsonPath("$[2].gameId", is(game.getGameId().intValue())))
+
+
+      ;
+    }
+
+    @Test
+    public void givenNotFinishedGame_whenGetIsGameFinished_ReturnFalse() throws Exception {
+        given(gameService.getGameByGameId(1L)).willReturn(game);
+        MockHttpServletRequestBuilder getRequest = get("/games/1").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", is(false)))
+        ;
+    }
+
+    @Test
+    public void givenFinishedGame_whenGetIsGameFinished_ReturnFalse() throws Exception {
+        game.setGameStatus(GameStatus.FINISHED);
+        given(gameService.getGameByGameId(1L)).willReturn(game);
+        MockHttpServletRequestBuilder getRequest = get("/games/1").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", is(true)))
+        ;
+    }
 
 
 

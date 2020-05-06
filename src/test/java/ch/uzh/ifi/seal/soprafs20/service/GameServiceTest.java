@@ -104,7 +104,7 @@ public class GameServiceTest {
     }
 
     /**
-     * tests that createNewFame() creates a game with the given parameters
+     * tests that createNewGame() creates a game with the given parameters
      */
     @Test
     public void Test_createGame() {

@@ -112,8 +112,6 @@ public class GameRound implements Serializable {
         this.playerStatistic = playerStatistic;
     }
 
-
-
     public List<Clue> getSubmissions() {
         return submissions;
     }
