@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
+import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.*;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
@@ -43,6 +44,9 @@ public class GameControllerTest {
     @MockBean
     private GameService gameService;
 
+    @MockBean
+    private PlayerRepository playerRepository;
+
     @InjectMocks
     private PhysicalPlayer testPlayer;
     @InjectMocks
@@ -64,6 +68,8 @@ public class GameControllerTest {
         testPlayer.setPlayerId(1L);
         testPlayer.setUserId(1L);
         testPlayer.setGameId(1L);
+        float score = (float) 4.6;
+        testPlayer.setCurrentScore(score);
 
         testFriedlyBot.setPlayerId(2L);
         testFriedlyBot.setGameId(1L);
@@ -71,6 +77,8 @@ public class GameControllerTest {
         testPlayer1.setPlayerId(3L);
         testPlayer1.setUserId(2L);
         testPlayer1.setGameId(1L);
+        float score1 = (float) 5.6;
+        testPlayer1.setCurrentScore(score1);
 
         testPlayer2.setPlayerId(4L);
         testPlayer2.setUserId(3L);
@@ -82,6 +90,8 @@ public class GameControllerTest {
 
         testFriedlyBot.setGameId(1L);
         testFriedlyBot.setPlayerId(1L);
+        float score2 = (float) 6.6;
+        testFriedlyBot.setCurrentScore(score2);
 
 
         game.setGameId(1L);
@@ -293,6 +303,43 @@ public class GameControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(true)))
         ;
+    }
+
+    @Test
+    public void givenGame_whenPutLeaveGame_return_nothingButOk() throws Exception {
+        given(gameService.getGameByGameId(1L)).willReturn(game);
+        given(playerRepository.findByPlayerId(3L)).willReturn(testPlayer2);
+
+        GamePutDTO gamePutDTO = new GamePutDTO();
+        gamePutDTO.setGameId(1L);
+        gamePutDTO.setUserId(3L);
+
+        MockHttpServletRequestBuilder putRequest = put("/games/out").contentType(MediaType.APPLICATION_JSON).content(asJsonString(gamePutDTO));
+        mockMvc.perform(putRequest).andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    public void givenGame_whenGetGameStatistics_thenReturn_GameStatisticDTO() throws Exception{
+     given(gameService.getPlayersByGameId(game.getGameId())).willReturn(game.getPlayers());
+     MockHttpServletRequestBuilder getRequest = get("/games/1/gameStatistics").contentType(MediaType.APPLICATION_JSON);
+     mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                 .andExpect(jsonPath("$[0].playerName", is(game.getPlayers().get(0).getPlayerName())))
+                .andExpect(jsonPath("$[0].playerId", is(game.getPlayers().get(0).getPlayerId().intValue())))
+                 .andExpect(jsonPath("$[0].totalPoints", is((double) 4.6)))
+                 .andExpect(jsonPath("$[1].playerName", is(game.getPlayers().get(1).getPlayerName())))
+                 .andExpect(jsonPath("$[1].playerId", is(game.getPlayers().get(1).getPlayerId().intValue())))
+                 .andExpect(jsonPath("$[1].totalPoints", is(((double) 6.6))))
+                 .andExpect(jsonPath("$[2].playerName", is(game.getPlayers().get(2).getPlayerName())))
+                 .andExpect(jsonPath("$[2].playerId", is(game.getPlayers().get(2).getPlayerId().intValue())))
+                 .andExpect(jsonPath("$[2].totalPoints", is((double)5.6)))
+
+
+
+     ;
+
     }
 
 

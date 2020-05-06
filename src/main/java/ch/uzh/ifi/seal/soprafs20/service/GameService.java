@@ -172,7 +172,7 @@ public class GameService {
 
     public void leaveGame(Long gameId, Long userId){
         Game game = getGameByGameId(gameId);
-        User user = userRepository.findByUserId(userId);
+        //User user = userRepository.findByUserId(userId);
         Player player = playerRepository.findByUserId(userId);
 
         if (!game.getPlayers().contains(player)){
