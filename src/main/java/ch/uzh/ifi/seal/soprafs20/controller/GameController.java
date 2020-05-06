@@ -10,7 +10,6 @@ import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +57,6 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
     }
 
-    // join a game
     @PutMapping("/games")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -66,7 +64,6 @@ public class GameController {
         Game joinedGame = gameService.joinGame(gamePutDTO.getGameId(), gamePutDTO.getUserId());
         return DTOMapper.INSTANCE.convertEntityToGameDTO(joinedGame); }
 
-    // leave a game when in game lobby
     @PutMapping("/games/out")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -74,33 +71,22 @@ public class GameController {
         gameService.leaveGame(gamePutDTO.getGameId(), gamePutDTO.getUserId());
     }
 
-
-    // get all players from a game   -> do we really need this?
     @GetMapping("/games/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<Player> getPlayersFromGameByGameId(@PathVariable String gameId){
-        long id;
-        id = Long.parseLong(gameId);
-
-        Game game = gameService.getGameByGameId(id);
+    public List<Player> getPlayersFromGameByGameId(@PathVariable Long gameId){
+        Game game = gameService.getGameByGameId(gameId);
         return game.getPlayers();
-
     }
-
 
     @GetMapping("games/{gameId}/lobby")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyDTO getGameLobby(@PathVariable String gameId){
-        long id;
-        id = Long.parseLong(gameId);
-
-        Game game = gameService.getGameByGameId(id);
+    public LobbyDTO getGameLobby(@PathVariable Long gameId){
+        Game game = gameService.getGameByGameId(gameId);
         return DTOMapper.INSTANCE.convertEntityToLobbyDTO(game);
     }
 
-    // start the game and return first gameround
     @PutMapping("games/lobby")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -130,7 +116,5 @@ public class GameController {
 
         return playersDTO;
     }
-   
-
 
 }

@@ -79,6 +79,7 @@ public class GameServiceTest {
 
         testPlayer1.setPlayerId(3L);
         testPlayer1.setUserId(2L);
+        testPlayer1.setGameId(4L);
 
         players.add(testPlayer);
         players.add(testFriedlyBot);
@@ -209,6 +210,7 @@ public class GameServiceTest {
 
     }
 
+
     @Test
     public void test_getGameByGameStatus(){
         List<Game> game = new ArrayList<>();
@@ -330,6 +332,8 @@ public class GameServiceTest {
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
+
+
 
 
 

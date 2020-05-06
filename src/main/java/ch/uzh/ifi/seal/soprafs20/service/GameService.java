@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
@@ -28,10 +27,7 @@ public class GameService {
     private final UserRepository userRepository;
     private final PlayerRepository playerRepository;
     private final GameRoundService gameRoundService;
-    private final GuessRepository guessRepository;
     private Random random = SecureRandom.getInstanceStrong();
-
-
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("userRepository") UserRepository userRepository, @Qualifier("cardRepository") CardRepository cardRepository,
@@ -40,8 +36,6 @@ public class GameService {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.playerRepository = playerRepository;
-        this.guessRepository = guessRepository;
-
         this.gameRoundService = new GameRoundService(gameRoundRepository, cardRepository, gameRepository, clueRepository, guessRepository, userRepository, playerStatisticService);
     }
 
@@ -80,10 +74,10 @@ public class GameService {
         }
         game.setNumberOfPlayers(game.getPlayers().size());
         return game;
-
     }
 
     private void addPlayerToGame(Player playerToAdd, Game game){
+
         if (game.getNumberOfPlayers() < 7){
             List<Player> players = game.getPlayers();
             players.add(playerToAdd);
@@ -93,8 +87,6 @@ public class GameService {
         else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already full! Join another game."); }
     }
-
-
 
     public Set<Integer> getRandomUniqueCardIds() {
         Set<Integer> generated = new LinkedHashSet<>();
@@ -145,9 +137,7 @@ public class GameService {
 
     public Game joinGame(long gameId, long userId){
         Game game = gameRepository.findByGameId(gameId);
-        // user logged in
         if (userRepository.findByUserId(userId).getStatus() == UserStatus.ONLINE){
-            //not already in the game
             Player p = playerRepository.findByUserIdAndGameId(userId, gameId);
             if (!game.getPlayers().contains(p)) {
                 Player player = createPlayerByUserIdAndGame(userId, game);
@@ -174,7 +164,6 @@ public class GameService {
 
         Game game = getGameByGameId(gameId);
         Player player = playerRepository.findByUserIdAndGameId(userId, gameId);
-            //User user = userRepository.findByUserId(userId);
         if (game == null)
         {  throw new ResponseStatusException(HttpStatus.CONFLICT, "you can only leave a game that exists.");}
 
@@ -192,17 +181,12 @@ public class GameService {
             listOfPlayers.remove(player);
             game.setPlayers(listOfPlayers);
             playerRepository.delete(player);
-            game.setNumberOfPlayers(game.getPlayers().size());
-        }
-
+            game.setNumberOfPlayers(game.getPlayers().size()); }
 
         }
-
 
     public List<Player> getPlayersByGameId(Long gameId){
         return playerRepository.findAllByGameId(gameId);
     }
-
-
 
 }

@@ -9,7 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-
 /**
  * Internal Game Representation
  * This class composes the internal representation of the game and defines how the game is stored in the database.
