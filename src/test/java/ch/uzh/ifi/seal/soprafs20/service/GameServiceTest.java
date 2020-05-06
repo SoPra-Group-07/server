@@ -182,7 +182,7 @@ public class GameServiceTest {
         testUser.setStatus(UserStatus.ONLINE);
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
         Mockito.when(userRepository.findByUserId(testUser.getUserId())).thenReturn(testUser);
-        Mockito.when(playerRepository.findByUserId(testUser.getUserId())).thenReturn(testGame.getPlayers().get(0));
+        Mockito.when(playerRepository.findByUserIdAndGameId(testUser.getUserId(), testGame.getGameId()) ).thenReturn(testGame.getPlayers().get(0));
 
         String exceptionMessage = "The user is already in the game!";
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser.getUserId()), exceptionMessage);

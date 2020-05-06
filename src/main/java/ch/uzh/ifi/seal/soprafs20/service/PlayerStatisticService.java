@@ -29,7 +29,7 @@ public class PlayerStatisticService {
         List<PlayerStatistic> playerStatistics = new ArrayList<>();
 
         Guess guess = gameRound.getGuess();
-        float guessingPlayerPoints = calculateGuessingPlayerPoints(guess, gameRound);
+        double guessingPlayerPoints = calculateGuessingPlayerPoints(guess, gameRound);
         PlayerStatistic playerStatistic = new PlayerStatistic();
         playerStatistic.setGameRoundId(gameRound.getGameRoundId());
         playerStatistic.setPlayerId(guess.getPlayerId());
@@ -41,7 +41,7 @@ public class PlayerStatisticService {
 
         for (Clue clue : gameRound.getSubmissions()){
             boolean rightGuess = gameRound.getGuess().getCorrectGuess();
-            float cluingPlayerPoints = calculateClueingPlayerPoints(clue, rightGuess);
+            double cluingPlayerPoints = calculateClueingPlayerPoints(clue, rightGuess);
             PlayerStatistic playerStatistic1 = new PlayerStatistic();
             playerStatistic1.setGameRoundId(gameRound.getGameRoundId());
             playerStatistic1.setPlayerId(clue.getPlayerId());
@@ -58,8 +58,8 @@ public class PlayerStatisticService {
         gameRound.setPlayerStatistic(playerStatistics);
     }
 
-    private float calculateClueingPlayerPoints(Clue clue, boolean rightGuess) {
-        float totalPoints = 0;
+    private double calculateClueingPlayerPoints(Clue clue, boolean rightGuess) {
+        double totalPoints = 0;
 
         if (rightGuess) {
             totalPoints += 1;
@@ -84,10 +84,11 @@ public class PlayerStatisticService {
             }
         }
 
-        return totalPoints;
+
+        return Math.round(totalPoints * 100.0) / 100.0;
     }
 
-    private float calculateGuessingPlayerPoints(Guess guess, GameRound gameRound){
+    private double calculateGuessingPlayerPoints(Guess guess, GameRound gameRound){
         float totalPoints = 0;
         if (!guess.getDidSubmit()){
             return totalPoints;
@@ -103,8 +104,8 @@ public class PlayerStatisticService {
             //wrong guess, delete an additional card
           
         }
+        return Math.round(totalPoints * 100.0) / 100.0;
 
-        return totalPoints;
     }
 
     public void updatePlayer(PlayerStatistic playerStatistic){

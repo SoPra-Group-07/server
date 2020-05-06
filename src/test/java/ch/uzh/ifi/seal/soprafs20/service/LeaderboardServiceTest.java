@@ -81,9 +81,8 @@ public class LeaderboardServiceTest {
         user4.setUsername("User4");
         user4.setStatus(UserStatus.OFFLINE);
         user4.setUserId(1L);
-        user4.setToken("2dfc-g59k");
-        user4.setDate(LocalDate.now());
-        user4.setBirth("00-00-0000");
+        user4.setNumberOfGamesPlayed(0);
+
 
         LinkedList<User> allUsers = new LinkedList<User>();
         allUsers.add(user1);
