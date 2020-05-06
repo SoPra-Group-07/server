@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +75,8 @@ public class GameServiceTest {
         testFriedlyBot.setPlayerId(2L);
         testFriedlyBot.setGameId(1L);
 
+
+
         testPlayer1.setPlayerId(3L);
         testPlayer1.setUserId(2L);
 
@@ -90,6 +93,7 @@ public class GameServiceTest {
         testGame.setGameId(1L);
         testGame.setNumberOfPlayers(2);
         testGame.setPlayers(players);
+        testGame.setGameStatus(GameStatus.CREATED);
 
 
 
@@ -123,6 +127,20 @@ public class GameServiceTest {
         assertEquals(testGame.getAdminPlayerId(), createdGame.getAdminPlayerId());
         assertEquals(testGame.getHasBot(), createdGame.getHasBot());
         assertEquals(testGame.getPlayers(), createdGame.getPlayers());
+    }
+
+    /**
+     * tests that createNewGame(Game game) throws a response status exception if the gameName is already taken
+     */
+    @Test
+    public void Test_createGame_withAlreadyTaken_gameName() {
+        // when -> object is being save in the gameRepository -> return the dummy testUser
+        Mockito.when(gameRepository.findByGameName(testGame.getGameName())).thenReturn(testGame);
+
+        String exceptionMessage = "GameName is already taken!";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.createNewGame(testGame), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
 
     /**
@@ -200,6 +218,124 @@ public class GameServiceTest {
         assertEquals(game.get(0).getGameId(), games.get(0).getGameId());
         assertEquals(game, games);
     }
+
+    /**
+     * test that leaveGame(long gameId, Long userId) removes the player from the desired game
+     */
+    @Test
+    public void test_leaveGame(){
+        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
+        Mockito.when(playerRepository.findByUserIdAndGameId(testUser.getUserId(), testGame.getGameId())).thenReturn(testPlayer);
+        gameService.leaveGame(testGame.getGameId(), testUser.getUserId());
+
+        assertEquals(1, testGame.getPlayers().size());
+        assertFalse(testGame.getPlayers().contains(testPlayer));
+    }
+
+    /**
+     * test that leaveGame(long gameId, Long userId) throws a response status exception when player that not exist wants to leave a game
+     */
+    @Test
+    public void test_leaveGame_whenPlayerNotInRepo(){
+        User testUser3 = new User();
+        testUser3.setUserId(3L);
+        testUser3.setPassword("newUser");
+        testUser3.setUsername("newUser");
+
+        Player testPlayer3 = new PhysicalPlayer();
+        testPlayer3.setPlayerId(5L);
+        testPlayer3.setUserId(4L);
+
+        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
+        Mockito.when(playerRepository.findByUserIdAndGameId(testUser3.getUserId(), testGame.getGameId())).thenReturn(null);
+
+
+        String exceptionMessage = "only players that exist can leave a game.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.leaveGame(testGame.getGameId(), testUser.getUserId()), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+    /**
+     * test that leaveGame(long gameId, Long userId) throws a response status exception when game that wants to be left does not exist in gameRepo
+     */
+    @Test
+    public void test_leaveGame_whenGameNotInGameRepo(){
+        User testUser3 = new User();
+        testUser3.setUserId(3L);
+        testUser3.setPassword("newUser");
+        testUser3.setUsername("newUser");
+
+        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(null);
+
+        String exceptionMessage = "you can only leave a game that exists.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.leaveGame(testGame.getGameId(), testUser.getUserId()), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+    /**
+     * test that leaveGame(long gameId, Long userId) throws a response status exception when a player wants to leave a game he is not in
+     */
+    @Test
+    public void test_leaveGame_whenPlayerNotInGame(){
+        User testUser3 = new User();
+        testUser3.setUserId(3L);
+        testUser3.setPassword("newUser");
+        testUser3.setUsername("newUser");
+
+        Player testPlayer3 = new PhysicalPlayer();
+        testPlayer3.setPlayerId(5L);
+        testPlayer3.setUserId(3L);
+
+        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
+        Mockito.when(playerRepository.findByUserIdAndGameId(testUser3.getUserId(), testGame.getGameId())).thenReturn(testPlayer3);
+
+
+        String exceptionMessage = "you can not leave this game since you are not in it.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.leaveGame(testGame.getGameId(), testUser3.getUserId()), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+
+    /**
+     * test that leaveGame(long gameId, Long userId) throws a response status exception when a player wants to leave a game that is running
+     */
+    @Test
+    public void test_leaveGame_whenGameIsRunning(){
+        testGame.setGameStatus(GameStatus.RUNNING);
+
+
+        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
+        Mockito.when(playerRepository.findByUserIdAndGameId(testUser.getUserId(), testGame.getGameId())).thenReturn(testPlayer);
+
+
+        String exceptionMessage = "you can not leave this game since it is already running or finished.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.leaveGame(testGame.getGameId(), testUser.getUserId()), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+    /**
+     * test that startGame(long gameId) throws a response status exception when a player wants to start a game that is already running
+     */
+    @Test
+    public void test_startGame_whenGameIsAlready_Running(){
+        testGame.setGameStatus(GameStatus.RUNNING);
+        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
+
+        String exceptionMessage = "You cannot start a game that is finished or already running.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.startGame(testGame.getGameId()), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+
+
+
+
+
 //Todo: this is more likely a test for GameRoundService
     /*
     @Test

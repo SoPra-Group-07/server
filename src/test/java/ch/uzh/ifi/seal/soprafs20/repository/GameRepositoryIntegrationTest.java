@@ -75,7 +75,7 @@ public class GameRepositoryIntegrationTest {
         Game game1 = new Game();
         game1.setNumberOfPlayers(4);
         game1.setHasBot(true);
-        game1.setGameName("Lokomotive");
+        game1.setGameName("Q");
         game1.setGameStatus(GameStatus.CREATED);
         game1.setRandomStartPosition(3);
         game1.setActualGameRoundIndex(0);
@@ -101,6 +101,50 @@ public class GameRepositoryIntegrationTest {
 
     }
 
+    @Test
+    public void findByGameName_success() {
+        // given
+        Game game = new Game();
+        game.setNumberOfPlayers(4);
+        game.setHasBot(true);
+        game.setGameName("Mac");
+        game.setGameStatus(GameStatus.RUNNING);
+        game.setRandomStartPosition(3);
+        game.setActualGameRoundIndex(1);
+        game.setAdminPlayerId(33L);
+
+        entityManager.persist(game);
+        entityManager.flush();
+
+        Game game1 = new Game();
+        game1.setNumberOfPlayers(4);
+        game1.setHasBot(true);
+        game1.setGameName("Lokomotive");
+        game1.setGameStatus(GameStatus.CREATED);
+        game1.setRandomStartPosition(3);
+        game1.setActualGameRoundIndex(0);
+        game1.setAdminPlayerId(33L);
+
+        entityManager.persist(game1);
+        entityManager.flush();
+        // when
+        Game found = gameRepository.findByGameName("Mac");
+
+        // then
+        assertNotNull(found.getGameId());
+        assertEquals(found.getNumberOfPlayers(), game.getNumberOfPlayers());
+        assertEquals(found.getHasBot(), game.getHasBot());
+        assertEquals(found.getGameName(), game.getGameName());
+        assertEquals(found.getGameStatus(), game.getGameStatus());
+        assertEquals(found.getRandomStartPosition(), game.getRandomStartPosition());
+        assertEquals(found.getActualGameRoundIndex(), game.getActualGameRoundIndex());
+        assertEquals(found.getAdminPlayerId(), game.getAdminPlayerId());
+
+
+
+
+
+    }
 
 
 

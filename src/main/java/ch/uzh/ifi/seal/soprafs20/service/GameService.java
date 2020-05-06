@@ -55,7 +55,7 @@ public class GameService {
 
     public Game createNewGame(Game gameInput) {
         if (gameRepository.findByGameName(gameInput.getGameName()) != null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Gamename is already taken!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
         }
         Game game = new Game();
         game.setGameName(gameInput.getGameName());
@@ -164,31 +164,40 @@ public class GameService {
     public GameRound startGame(long gameId){
         Game game = getGameByGameId(gameId);
         if (game.getGameStatus() != GameStatus.CREATED){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "You cannot start a that is finished or already running!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "You cannot start a game that is finished or already running.");
         }
         game.setGameStatus(GameStatus.RUNNING);
         return gameRoundService.startNewGameRound(game);
     }
 
     public void leaveGame(Long gameId, Long userId){
+
         Game game = getGameByGameId(gameId);
         Player player = playerRepository.findByUserIdAndGameId(userId, gameId);
-        //User user = userRepository.findByUserId(userId);
+            //User user = userRepository.findByUserId(userId);
+        if (game == null)
+        {  throw new ResponseStatusException(HttpStatus.CONFLICT, "you can only leave a game that exists.");}
 
+        if (player == null)
+            {  throw new ResponseStatusException(HttpStatus.CONFLICT, "only players that exist can leave a game.");}
 
-        if (!game.getPlayers().contains(player)){
+        if (!game.getPlayers().contains(player)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not leave this game since you are not in it."); }
 
-        if (game.getGameStatus() != GameStatus.CREATED){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not leave this game since it is already running or finished.");}
+        if (game.getGameStatus() != GameStatus.CREATED) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "you can not leave this game since it is already running or finished."); }
 
-        else{
+        else {
             List<Player> listOfPlayers = game.getPlayers();
             listOfPlayers.remove(player);
             game.setPlayers(listOfPlayers);
             playerRepository.delete(player);
-            game.setNumberOfPlayers(game.getPlayers().size()); }
-    }
+            game.setNumberOfPlayers(game.getPlayers().size());
+        }
+
+
+        }
+
 
     public List<Player> getPlayersByGameId(Long gameId){
         return playerRepository.findAllByGameId(gameId);
