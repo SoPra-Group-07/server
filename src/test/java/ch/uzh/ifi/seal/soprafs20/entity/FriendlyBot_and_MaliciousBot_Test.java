@@ -19,6 +19,8 @@ public class FriendlyBot_and_MaliciousBot_Test {
     private MaliciousBot testMaliciousBot;
     @InjectMocks
     private FriendlyBot testFriendlyBot;
+    @InjectMocks
+    private PhysicalPlayer testPhysicalPlayer;
 
 
     @BeforeEach
@@ -28,6 +30,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
 
         testFriendlyBot.setPlayerId(1L);
         testFriendlyBot.setGameId(1L);
+
 
     }
 
@@ -117,4 +120,21 @@ public class FriendlyBot_and_MaliciousBot_Test {
 
 
     }
+
+    /**
+     * tests that a physicalplayer returns the mysteryword if giveClue() is called
+     */
+    @Test
+    public void test_physicalPlayer_giveClue() throws IOException{
+        String mysteryWord = testPhysicalPlayer.giveClue("Diamond");
+        assertEquals("Diamond", mysteryWord);
+
+
+
+
+
+
+    }
+
+
 }
