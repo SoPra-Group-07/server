@@ -49,11 +49,11 @@ public class GameRoundController {
     @PutMapping("/gameRounds")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundDTO chooseMisteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException, InterruptedException {
+    public GameRoundDTO chooseMysteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException, InterruptedException {
 
             GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
-            gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
+            gameRoundByRoundId = gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
             return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
 
 

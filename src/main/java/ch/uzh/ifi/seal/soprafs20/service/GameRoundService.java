@@ -111,7 +111,7 @@ public class GameRoundService {
         return gameRoundRepository.findByGameRoundId(roundId);
     }
 
-    public void chooseMisteryWord(GameRound gameRound, int wordNumber) throws IOException, InterruptedException {
+    public GameRound chooseMisteryWord(GameRound gameRound, int wordNumber) throws IOException, InterruptedException {
         if (wordNumber==1) {
             gameRound.setMysteryWord(gameRound.getCard().getWord1());
         }else if (wordNumber==2) {
@@ -126,6 +126,7 @@ public class GameRoundService {
         else { throw new ResponseStatusException(HttpStatus.CONFLICT, "Choose a number between 1-5");}
 
         createCluesAndGuesses(gameRound);
+        return gameRound;
     }
 
 

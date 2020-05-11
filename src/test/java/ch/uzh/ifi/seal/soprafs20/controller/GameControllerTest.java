@@ -107,27 +107,20 @@ public class GameControllerTest {
     @Test
     public void givenGames_whenGetGames_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
         // given
-
-
         List<Game> allGames = Collections.singletonList(game);
-
 
         given(gameService.getAllGames()).willReturn(allGames);
 
-        GameGetOpenDTO gameGetOpenDTO = new GameGetOpenDTO();
-        gameGetOpenDTO.setGameName("abc");
-        gameGetOpenDTO.setGameId(1L);
         // when
-        MockHttpServletRequestBuilder getRequest = get("/games").contentType(MediaType.APPLICATION_JSON).content(asJsonString(gameGetOpenDTO));    //=give it to me as JSON
+        MockHttpServletRequestBuilder getRequest = get("/games").contentType(MediaType.APPLICATION_JSON);
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))                    // <-- Content-Type accepted?
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].gameId", is(game.getGameId().intValue())))
                 .andExpect(jsonPath("$[0].gameName", is(game.getGameName())))
-                .andExpect(jsonPath("$[0].numberOfPlayers", is(game.getNumberOfPlayers())))
-               ;
+                .andExpect(jsonPath("$[0].numberOfPlayers", is(game.getNumberOfPlayers())));
     }
 
     @Test
