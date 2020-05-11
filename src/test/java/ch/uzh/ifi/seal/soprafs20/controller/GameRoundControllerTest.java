@@ -234,7 +234,7 @@ public class GameRoundControllerTest {
         gameRoundWithWordSet.setCard(card);
 
         given(gameRoundService.getGameRoundByRoundId(1L)).willReturn(gameRound);
-        given(gameRoundService.chooseMisteryWord(gameRound,3)).willReturn(gameRoundWithWordSet);
+        given(gameRoundService.chooseMysteryWord(gameRound,3)).willReturn(gameRoundWithWordSet);
 
         GameRoundPutDTO gameRoundPutDTO = new GameRoundPutDTO();
 

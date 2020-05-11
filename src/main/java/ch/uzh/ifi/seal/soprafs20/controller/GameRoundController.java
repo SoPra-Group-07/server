@@ -53,7 +53,8 @@ public class GameRoundController {
 
             GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
-            gameRoundByRoundId = gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
+            gameRoundByRoundId = gameRoundService.chooseMysteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
+            gameRoundService.createCluesAndGuesses(gameRound);
             return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
 
 

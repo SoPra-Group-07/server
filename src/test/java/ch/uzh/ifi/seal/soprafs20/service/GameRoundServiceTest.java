@@ -12,10 +12,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 
 public class GameRoundServiceTest {
@@ -62,17 +64,18 @@ public class GameRoundServiceTest {
         testUser1.setPassword("testPassword1");
         testUser1.setUsername("tesUsername1");
 
-        testPlayer.setPlayerId(1L);
+        testPlayer.setPlayerId(2L);
         testPlayer.setUserId(1L);
-        testPlayer.setGameId(1L);
-        testFriedlyBot.setPlayerId(2L);
-        testFriedlyBot.setGameId(1L);
-
         testPlayer1.setPlayerId(3L);
         testPlayer1.setUserId(2L);
 
+        testFriedlyBot.setPlayerId(1L);
+        testFriedlyBot.setGameId(1L);
+
+
         players.add(testPlayer);
         players.add(testFriedlyBot);
+        players.add(testPlayer1);
 
         testFriedlyBot.setGameId(1L);
         testFriedlyBot.setPlayerId(1L);
@@ -146,72 +149,58 @@ public class GameRoundServiceTest {
     }
 
     /**
-     * test that joinGame(gameId, userId) throws an response status exception if game is already full
+     * test that the guessingPlayer is correctly computed and in the range of the # of players playing
+     * also it is asserted, that the guessingPlayer can not be a Malicious of FriendlyBot and has to be a PhysicalPlayer
      */
     @Test
     public void computeGuessingPlayerIdTest(){
-        testUser1.setStatus(UserStatus.ONLINE);
-        testUser.setStatus(UserStatus.ONLINE);
-        Mockito.when(gameRoundRepository.save(Mockito.any())).thenReturn(gameRound);
-        Mockito.when(cardRepository.findByCardId(Mockito.anyLong())).thenReturn(testCard);
-
-        //to test private method
         long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
+
+        Player guessingPlayer = new PhysicalPlayer();
+        for (Player player: players){
+            if(player.getPlayerId() == guessingPlayerId){
+                guessingPlayer = player;
+            }
+        }
 
         assertTrue(testGame.getNumberOfPlayers() >= guessingPlayerId);
         assertTrue(1L <= guessingPlayerId);
-    }
-
-    /**
-     * test that joinGame(gameId, userId) throws an response status exception if this player is already in the game
-     */    /*
-
-    @Test
-    public void test_joinGame_when_player_already_in_game(){
-        testUser1.setStatus(UserStatus.ONLINE);
-        testUser.setStatus(UserStatus.ONLINE);
-        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
-        Mockito.when(userRepository.findByUserId(testUser.getUserId())).thenReturn(testUser);
-        Mockito.when(playerRepository.findByUserId(testUser.getUserId())).thenReturn(testGame.getPlayers().get(0));
-
-        String exceptionMessage = "The user is already in the game!";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser.getUserId()), exceptionMessage);
-        assertEquals(exceptionMessage, exception.getReason());
-        assertEquals(HttpStatus.NO_CONTENT, exception.getStatus());
+        assertFalse(guessingPlayer instanceof MaliciousBot);
+        assertFalse(guessingPlayer instanceof FriendlyBot);
+        assertTrue(guessingPlayer instanceof PhysicalPlayer);
 
     }
 
-    @Test
-    public void test_getGameByGameStatus(){
-        List<Game> game = new ArrayList<>();
-        game.add(testGame);
-        Mockito.when(gameRepository.findAllByGameStatus(GameStatus.CREATED)).thenReturn(game);
-        List<Game> games = gameService.getGameByGameStatus(GameStatus.CREATED);
-        assertEquals(game.get(0).getGameId(), games.get(0).getGameId());
-        assertEquals(game, games);
-    }
-//Todo: this is more likely a test for GameRoundService
-    /*
-    @Test
-    public void test_startGame(){
-        testUser1.setStatus(UserStatus.ONLINE);
-        testUser.setStatus(UserStatus.ONLINE);
-        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
-        Mockito.when(userRepository.findByUserId(testUser1.getId())).thenReturn(testUser1);
-        players.add(testPlayer1);
-        testGame.setPlayers(players);
-        testGame.setCardIds(gameService.getRandomUniqueCardIds());
-
-        Mockito.when(cardRepository.findByCardId(Mockito.anyLong())).thenReturn(testCard);
-
-        GameRound gameRound = gameService.startGame(testGame.getGameId());
-
-        System.out.println(gameRound);
-    }
-
-
-
+    /***
+     *  a simple helper method test of getGameRoundByRoundId
      */
+    @Test
+    public void getGameRoundByRoundIdTest(){
+        given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
+        GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(1L);
+        assertTrue(gameRoundByRoundId.equals(gameRound));
+    }
+
+    /***
+     *  tests that the correct mysteryWord is determined depending on the wordNumber provided by the Client
+     */
+    @Test
+    public void chooseMysteryWordTest() throws IOException, InterruptedException {
+        GameRound gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,1);
+        assertTrue(gameRoundWithMysteryWord.getMysteryWord().equals("a"));
+
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,2);
+        assertTrue(gameRoundWithMysteryWord.getMysteryWord().equals("b"));
+
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,3);
+        assertTrue(gameRoundWithMysteryWord.getMysteryWord().equals("c"));
+
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,4);
+        assertTrue(gameRoundWithMysteryWord.getMysteryWord().equals("d"));
+
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,5);
+        assertTrue(gameRoundWithMysteryWord.getMysteryWord().equals("e"));
+    }
 
 
 }

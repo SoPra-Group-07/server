@@ -111,7 +111,7 @@ public class GameRoundService {
         return gameRoundRepository.findByGameRoundId(roundId);
     }
 
-    public GameRound chooseMisteryWord(GameRound gameRound, int wordNumber) throws IOException, InterruptedException {
+    public GameRound chooseMysteryWord(GameRound gameRound, int wordNumber) throws IOException, InterruptedException {
         if (wordNumber==1) {
             gameRound.setMysteryWord(gameRound.getCard().getWord1());
         }else if (wordNumber==2) {
@@ -125,7 +125,6 @@ public class GameRoundService {
         }
         else { throw new ResponseStatusException(HttpStatus.CONFLICT, "Choose a number between 1-5");}
 
-        createCluesAndGuesses(gameRound);
         return gameRound;
     }
 
@@ -219,7 +218,7 @@ public class GameRoundService {
             game.setRandomStartPosition(game.getRandomStartPosition() - 1); }
 
         if (game.getActualGameRoundIndex() >= max_number_of_rounds){
-            finish_game(game);
+            finishGame(game);
             }
             return gameRound;
         }
@@ -277,14 +276,14 @@ public class GameRoundService {
 
     }
 
-    public void finish_game(Game game){
+    public void finishGame(Game game){
         game.setGameStatus(GameStatus.FINISHED);
-        update_users(game);
+        updateUsers(game);
 
     }
 
 
-    public void update_users(Game game){
+    public void updateUsers(Game game){
         for (Player player: game.getPlayers()) {
             if (player instanceof PhysicalPlayer) {
                 User user = userRepository.findByUserId(player.getUserId());
