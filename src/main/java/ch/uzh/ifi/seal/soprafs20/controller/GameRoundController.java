@@ -76,7 +76,7 @@ public class GameRoundController {
     public GameRoundDTO submitGuess(@RequestBody GameRoundGuessDTO gameRoundGuessDTO){
             Guess guess = DTOMapper.INSTANCE.convertGameRoundGuessDTOtoEntity(gameRoundGuessDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(guess.getGameRoundId());
-            gameRoundService.submitGuess(gameRoundByRoundId, guess.getWord(), guess.getPlayerId());
+            gameRoundByRoundId = gameRoundService.submitGuess(gameRoundByRoundId, guess.getWord(), guess.getPlayerId());
             return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
     }
 

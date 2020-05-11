@@ -194,7 +194,7 @@ public class GameRoundService {
 
     }
 
-    public void submitGuess(GameRound gameRound, String guess, Long playerId){
+    public GameRound submitGuess(GameRound gameRound, String guess, Long playerId){
         if (!gameRound.getGuessingPlayerId().equals(playerId)){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "a clueing player can not submit a guess!");
         }
@@ -205,12 +205,14 @@ public class GameRoundService {
         }
         else{
             guess1.setWord(guess);
-            guess1.setDidSubmit(true);}
+            guess1.setDidSubmit(true);
+        }
         guess1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
         guess1.setDuration((guess1.getEndTime()-guess1.getStartTime())/1000);
         checkGuess(gameRound, guess1);
         Game game = gameRepository.findByGameId(gameRound.getGameId());
         playerStatisticService.computeGameRoundStatistic(gameRound);
+        gameRound.setGuess(guess1);
 
         if(guess1.getDidSubmit() && !guess1.getCorrectGuess()){
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
@@ -219,7 +221,7 @@ public class GameRoundService {
         if (game.getActualGameRoundIndex() >= max_number_of_rounds){
             finish_game(game);
             }
-
+            return gameRound;
         }
 
     public void checkGuess(GameRound gameRound, Guess guess){

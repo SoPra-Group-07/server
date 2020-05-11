@@ -126,7 +126,7 @@ public class GameRoundControllerTest {
         gameRound.setGuessingPlayerId(3L);
         gameRound.setGameId(1L);
         gameRound.setGameRoundId(1L);
-        gameRound.setGuess(guess);
+        gameRound.setGuess(null);
         gameRound.setCard(card);
 
         gameRounds.add(gameRound);
@@ -230,7 +230,7 @@ public class GameRoundControllerTest {
         gameRoundWithWordSet.setGuessingPlayerId(3L);
         gameRoundWithWordSet.setGameId(1L);
         gameRoundWithWordSet.setGameRoundId(1L);
-        gameRoundWithWordSet.setGuess(guess);
+        gameRoundWithWordSet.setGuess(null);
         gameRoundWithWordSet.setCard(card);
 
         given(gameRoundService.getGameRoundByRoundId(1L)).willReturn(gameRound);
@@ -249,7 +249,7 @@ public class GameRoundControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))
                 .andExpect(jsonPath("guessingPlayerId", is(gameRound.getGuessingPlayerId().intValue())))
-                .andExpect(jsonPath("guess").isNotEmpty())
+                .andExpect(jsonPath("guess").isEmpty())
                 .andExpect(jsonPath("card").isNotEmpty())
                 .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue())))
                 .andExpect(jsonPath("submissions").isArray())
@@ -263,8 +263,17 @@ public class GameRoundControllerTest {
      */
     @Test
     public void givenGameRound_whenSubmitGuess_thenSetGuess() throws Exception {
+        GameRound gameRoundWithSubmittedGuess = new GameRound();
+        gameRoundWithSubmittedGuess.setMysteryWord("");
+        gameRoundWithSubmittedGuess.setGuessingPlayerId(3L);
+        gameRoundWithSubmittedGuess.setGameId(1L);
+        gameRoundWithSubmittedGuess.setGameRoundId(1L);
+        gameRoundWithSubmittedGuess.setGuess(guess);
+        gameRoundWithSubmittedGuess.setCard(card);
+
         // given
         given(gameRoundService.getGameRoundByRoundId(1L)).willReturn(gameRound);
+        given(gameRoundService.submitGuess(gameRound,"awesomeGuess",1L)).willReturn(gameRoundWithSubmittedGuess);
         given(guessRepository.findByPlayerIdAndGameRoundId(1L, 1L)).willReturn(guess);
 
         GameRoundGuessDTO gameroundGuessDTO = new GameRoundGuessDTO();
@@ -285,7 +294,7 @@ public class GameRoundControllerTest {
                 .andExpect(jsonPath("card").isNotEmpty())
                 .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue())))
                 .andExpect(jsonPath("submissions").isArray())
-                .andExpect(jsonPath("submissions").isNotEmpty())
+                .andExpect(jsonPath("submissions").isEmpty())
                 .andExpect(jsonPath("mysteryWord", is(gameRound.getMysteryWord())));
     }
 
