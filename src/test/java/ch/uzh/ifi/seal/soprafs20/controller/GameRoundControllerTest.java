@@ -187,7 +187,7 @@ public class GameRoundControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))
                 .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue())))
-                .andExpect(jsonPath("guess").isNotEmpty())
+                .andExpect(jsonPath("guess").isEmpty())
                 .andExpect(jsonPath("submissions").isNotEmpty())
                 .andExpect(jsonPath("submissions").isArray());
     }
@@ -213,7 +213,7 @@ public class GameRoundControllerTest {
                 .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))
                 .andExpect(jsonPath("guessingPlayerId", is(gameRound.getGuessingPlayerId().intValue())))
                 .andExpect(jsonPath("mysteryWord", is(gameRound.getMysteryWord())))
-                .andExpect(jsonPath("guess").isNotEmpty())
+                .andExpect(jsonPath("guess").isEmpty())
                 .andExpect(jsonPath("card").isNotEmpty())
                 .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue())))
                 .andExpect(jsonPath("submissions").isArray());
@@ -315,7 +315,7 @@ public class GameRoundControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("gameId", is(gameRound.getGameId().intValue())))
                 .andExpect(jsonPath("guessingPlayerId", is(gameRound.getGuessingPlayerId().intValue())))
-                .andExpect(jsonPath("guess").isNotEmpty())
+                .andExpect(jsonPath("guess").isEmpty())
                 .andExpect(jsonPath("card").isNotEmpty())
                 .andExpect(jsonPath("gameRoundId", is(gameRound.getGameRoundId().intValue())))
                 .andExpect(jsonPath("submissions").isArray())
