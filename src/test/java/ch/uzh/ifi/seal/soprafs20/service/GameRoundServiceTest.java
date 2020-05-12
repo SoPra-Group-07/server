@@ -249,7 +249,7 @@ public class GameRoundServiceTest {
         assertNotNull(gameRound.getGuess());
         assertFalse(gameRound.getGuess().getDidSubmit());
         assertEquals(gameRound.getGameRoundId(), gameRound.getGuess().getGameRoundId());
-        assertNotEquals(0, gameRound.getGuess().getStartTime());
+        assertEquals(0, gameRound.getGuess().getStartTime());
         assertEquals(0, gameRound.getGuess().getEndTime());
     }
 
