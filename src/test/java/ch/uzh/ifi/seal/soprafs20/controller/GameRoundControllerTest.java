@@ -220,8 +220,8 @@ public class GameRoundControllerTest {
     }
 
     /***
-     * mocks a put request to "gameRounds/clues" with body gameRoundClueDTO to submit a clue
-     * asserts that the responseStatusCode is 200 and the clue is correctly added to the submissions array in gameRound
+     * mocks a put request to "gameRounds" with body gameRoundPutDTO to choose a mysteryWord
+     * asserts that the responseStatusCode is 200 and the mysteryWord is correctly determined
      */
     @Test
     public void givenGameRound_whenChooseMysteryWord_thenSetMysteryWord() throws Exception {
