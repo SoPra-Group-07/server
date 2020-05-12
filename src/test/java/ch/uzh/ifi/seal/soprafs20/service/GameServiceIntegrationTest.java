@@ -1,4 +1,4 @@
-/*package ch.uzh.ifi.seal.soprafs20.service;
+package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -71,14 +70,5 @@ class GameServiceIntegrationTest {
         assertTrue(createdGame.getPlayers().get(0) instanceof PhysicalPlayer);
         assertTrue(createdGame.getPlayers().get(1) instanceof MaliciousBot
                     || createdGame.getPlayers().get(1) instanceof FriendlyBot);
-
-
     }
-
-
-
 }
-
-
-
-*/
