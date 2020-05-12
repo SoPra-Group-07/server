@@ -29,10 +29,6 @@ public class Guess extends Submission implements Serializable {
         this.gameRoundId = gameRoundId;
     }
 
-    public boolean isCorrectGuess() {
-        return correctGuess;
-    }
-
     public boolean getCorrectGuess() {
         return correctGuess;
     }

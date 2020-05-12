@@ -69,7 +69,7 @@ public class UserRepositoryIntegrationTest {
         assertEquals(found.getToken(), user.getToken());
         assertEquals(found.getStatus(), user.getStatus());
         assertEquals(found.getBirth(), user.getBirth());
-        assertEquals(found.getDate(), user.getDate());
+        assertEquals(found.getCreationDate(), user.getCreationDate());
 
     }
 
@@ -95,7 +95,7 @@ public class UserRepositoryIntegrationTest {
         assertEquals(found.getToken(), user.getToken());
         assertEquals(found.getStatus(), user.getStatus());
         assertEquals(found.getBirth(), user.getBirth());
-        assertEquals(found.getDate(), user.getDate());
+        assertEquals(found.getCreationDate(), user.getCreationDate());
 
     }
 

@@ -70,7 +70,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].birth", is(user.getBirth())))
                 .andExpect(jsonPath("$[0].token", is(user.getToken())))
                 .andExpect(jsonPath("$[0].id", is(user.getUserId().intValue())))          // or is(1) works as well
-                .andExpect(jsonPath("$[0].date", is(user.getDate().toString())));
+                .andExpect(jsonPath("$[0].date", is(user.getCreationDate().toString())));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$.birth", is("00-00-0000")))            //alternative to user.getBirth()
-                .andExpect(jsonPath("$.date", is(user.getDate().toString())))
+                .andExpect(jsonPath("$.date", is(user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(user.getToken())));
     }
 
@@ -146,7 +146,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$.birth", is("00-00-0000")))
-                .andExpect(jsonPath("$.date", is(user.getDate().toString())))
+                .andExpect(jsonPath("$.date", is(user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(user.getToken())));
     }
 
@@ -178,7 +178,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$.birth", is("00-00-0000")))
-                .andExpect(jsonPath("$.date", is(user.getDate().toString())))
+                .andExpect(jsonPath("$.date", is(user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(user.getToken())));
     }
 
@@ -229,7 +229,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username", is(edited_user.getUsername())))
                 .andExpect(jsonPath("$.status", is(edited_user.getStatus().toString())))
                 .andExpect(jsonPath("$.birth", is(edited_user.getBirth())))
-                .andExpect(jsonPath("$.date", is(edited_user.getDate().toString())))
+                .andExpect(jsonPath("$.date", is(edited_user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(edited_user.getToken())));
     }
 

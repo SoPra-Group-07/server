@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -56,7 +55,6 @@ public class User implements Serializable{
     public int getNumberOfGamesPlayed() {
         return numberOfGamesPlayed;
     }
-
     public void setNumberOfGamesPlayed(int numberOfGamesPlayed) {
         this.numberOfGamesPlayed = numberOfGamesPlayed;
     }
@@ -64,7 +62,6 @@ public class User implements Serializable{
     public Long getUserId() {
         return userId;
     }
-
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -72,20 +69,13 @@ public class User implements Serializable{
     public LocalDate getCreationDate() {
         return creationDate;
     }
-
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
-    public LocalDate getDate(){return creationDate;}
-    public void setDate(LocalDate date){ this.creationDate = date;}
-
-    public String getBirth(){return dateOfBirth;}
-    public void setBirth(String birth){this.dateOfBirth = birth;}
     public String getDateOfBirth() {
         return dateOfBirth;
     }
-
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
@@ -93,7 +83,6 @@ public class User implements Serializable{
     public double getHighScore() {
         return highScore;
     }
-
     public void setHighScore(double highScore) {
         this.highScore = highScore;
     }
@@ -101,7 +90,6 @@ public class User implements Serializable{
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -109,7 +97,6 @@ public class User implements Serializable{
 	public String getUsername() {
 		return username;
 	}
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -117,7 +104,6 @@ public class User implements Serializable{
 	public String getToken() {
 		return token;
 	}
-
 	public void setToken(String token) {
 		this.token = token;
 	}
@@ -125,7 +111,6 @@ public class User implements Serializable{
 	public UserStatus getStatus() {
         return status;
     }
-
     public void setStatus(UserStatus status) {
         this.status = status;
     }

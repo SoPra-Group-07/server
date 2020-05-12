@@ -24,30 +24,28 @@ public class MaliciousBot extends Player implements Serializable {
 
     @Override
     public String giveClue(String word) throws IOException {
-        String ant = get_word_by_url(get_antonym_url(word.toLowerCase()), word.toLowerCase());
-        if (ant.equals(word.toLowerCase())){
-        String adj = get_word_by_url(get_adjective_url(word.toLowerCase()), word.toLowerCase());
-        return get_word_by_url(get_antonym_url(adj), adj);
+        String ant = getWordByUrl(getAntonymUrl(word.toLowerCase()), word.toLowerCase());
+        if (ant.equalsIgnoreCase(word)){
+        String adj = getWordByUrl(getAdjectiveUrl(word.toLowerCase()), word.toLowerCase());
+        return getWordByUrl(getAntonymUrl(adj), adj);
         }
         return ant;
     }
 
-    public static String get_adjective_url(String word) throws IOException {
+    public static String getAdjectiveUrl(String word) throws IOException {
 
-        String url = "https://api.datamuse.com/words?rel_jjb=" + word;
-
-        return url;
+        return "https://api.datamuse.com/words?rel_jjb=" + word;
     }
 
 
-    public static String get_antonym_url(String word) throws IOException {
+    public static String getAntonymUrl(String word) throws IOException {
 
         return "https://api.datamuse.com/words?rel_ant=" + word;
     }
 
 
 
-    public static String get_word_by_url(String url, String word) throws IOException {
+    public static String getWordByUrl(String url, String word) throws IOException {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
