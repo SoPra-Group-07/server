@@ -48,32 +48,35 @@ public class GameService {
     }
 
     public Game createNewGame(Game gameInput) {
-        if (gameRepository.findByGameName(gameInput.getGameName()) != null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
-        }
-        Game game = new Game();
-        game.setGameName(gameInput.getGameName());
-        game.setAdminPlayerId(gameInput.getAdminPlayerId());
-        game.setHasBot(gameInput.getHasBot());
-        game.setGameStatus(GameStatus.CREATED);
-        game.setActualGameRoundIndex(0);
-        game.setCardIds(getRandomUniqueCardIds());
-        game.setRandomStartPosition(new Random().nextInt(7));
+        try {
+            if (gameRepository.findByGameName(gameInput.getGameName()) != null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
+            }
+            Game game = new Game();
+            game.setGameName(gameInput.getGameName());
+            game.setAdminPlayerId(gameInput.getAdminPlayerId());
+            game.setHasBot(gameInput.getHasBot());
+            game.setGameStatus(GameStatus.CREATED);
+            game.setActualGameRoundIndex(0);
+            game.setCardIds(getRandomUniqueCardIds());
+            game.setRandomStartPosition(new Random().nextInt(7));
 
-        game = gameRepository.save(game);
-        gameRepository.flush();
+            game = gameRepository.save(game);
+            gameRepository.flush();
 
-        Player adminPlayer = createPlayerByUserIdAndGame(gameInput.getAdminPlayerId(), game);
-        addPlayerToGame(adminPlayer, game);
+            Player adminPlayer = createPlayerByUserIdAndGame(gameInput.getAdminPlayerId(), game);
+            addPlayerToGame(adminPlayer, game);
 
-        if (game.getHasBot()){
-            Player bot = createBot(game);
-            bot = playerRepository.save(bot);
-            playerRepository.flush();
-            addPlayerToGame(bot, game);
-        }
-        game.setNumberOfPlayers(game.getPlayers().size());
-        return game;
+            if (game.getHasBot()) {
+                Player bot = createBot(game);
+                bot = playerRepository.save(bot);
+                playerRepository.flush();
+                addPlayerToGame(bot, game);
+            }
+            game.setNumberOfPlayers(game.getPlayers().size());
+            return game;
+        }catch (Exception e){e.printStackTrace();
+        return null;}
     }
 
     private void addPlayerToGame(Player playerToAdd, Game game){
