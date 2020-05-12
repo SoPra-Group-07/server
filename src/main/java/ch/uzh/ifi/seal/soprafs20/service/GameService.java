@@ -75,8 +75,10 @@ public class GameService {
             }
             game.setNumberOfPlayers(game.getPlayers().size());
             return game;
-        }catch (Exception e){e.printStackTrace();
-        return null;}
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void addPlayerToGame(Player playerToAdd, Game game){

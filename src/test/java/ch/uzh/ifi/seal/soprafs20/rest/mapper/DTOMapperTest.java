@@ -60,7 +60,7 @@ public class DTOMapperTest {
         User user = DTOMapper.INSTANCE.convertUserEditDTOtoEntity(userEditDTO);
 
         // check content
-        assertEquals(userEditDTO.getBirth(), user.getBirth());
+        assertEquals(userEditDTO.getBirth(), user.getDateOfBirth());
 
         assertEquals(userEditDTO.getId(), user.getUserId());
     }

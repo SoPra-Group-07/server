@@ -51,10 +51,10 @@ public interface DTOMapper {
     //Edit
     @Mapping(source = "id", target = "userId")
     @Mapping(source = "password", target = "password")
-    @Mapping(source = "birth", target = "birth")
+    @Mapping(source = "birth", target = "dateOfBirth")
     User convertUserEditDTOtoEntity(UserEditDTO userEditDTO);
 
-    //LEADERBOARD!!!
+    //LEADERBOARD
     @Mapping(source = "username", target = "username")
     @Mapping(source = "highScore", target = "highScore")
     LeaderboardDTO convertEntityToLeaderboardDTO(User user);
@@ -70,10 +70,6 @@ public interface DTOMapper {
     @Mapping(source = "adminPlayerId", target = "adminPlayerId")
     Game convertGamePostDTOToEntity(GamePostDTO gamePostDTO);
 
-
-    @Mapping(source = "gameId", target = "gameId")
-    @Mapping(source = "userId", target = "adminPlayerId")
-    Game convertGamePutDTOToEntity(GamePutDTO gamePutDTO);
 
     @Mapping(source = "hasBot", target = "hasBot")
     @Mapping(source = "gameName", target = "gameName")
