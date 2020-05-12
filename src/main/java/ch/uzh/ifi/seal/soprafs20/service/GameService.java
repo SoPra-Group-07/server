@@ -48,10 +48,10 @@ public class GameService {
     }
 
     public Game createNewGame(Game gameInput) {
+        if (gameRepository.findByGameName(gameInput.getGameName()) != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
+        }
         try {
-            if (gameRepository.findByGameName(gameInput.getGameName()) != null) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
-            }
             Game game = new Game();
             game.setGameName(gameInput.getGameName());
             game.setAdminPlayerId(gameInput.getAdminPlayerId());

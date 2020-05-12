@@ -52,7 +52,7 @@ public class DTOMapperTest {
     public void testConversionFromUserEditDTO_toUser_success() {                       //--------> Conversion from UserEditDTO to User is tested
         // create UserPostDTO
         UserEditDTO userEditDTO = new UserEditDTO();
-        userEditDTO.setBirth("18. 01. 1999");
+        userEditDTO.setDateOfBirth("18. 01. 1999");
 
         userEditDTO.setId(1L);
 
@@ -60,7 +60,7 @@ public class DTOMapperTest {
         User user = DTOMapper.INSTANCE.convertUserEditDTOtoEntity(userEditDTO);
 
         // check content
-        assertEquals(userEditDTO.getBirth(), user.getDateOfBirth());
+        assertEquals(userEditDTO.getDateOfBirth(), user.getDateOfBirth());
 
         assertEquals(userEditDTO.getId(), user.getUserId());
     }

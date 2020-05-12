@@ -51,7 +51,7 @@ public interface DTOMapper {
     //Edit
     @Mapping(source = "id", target = "userId")
     @Mapping(source = "password", target = "password")
-    @Mapping(source = "birth", target = "dateOfBirth")
+    @Mapping(source = "dateOfBirth", target = "dateOfBirth")
     User convertUserEditDTOtoEntity(UserEditDTO userEditDTO);
 
     //LEADERBOARD

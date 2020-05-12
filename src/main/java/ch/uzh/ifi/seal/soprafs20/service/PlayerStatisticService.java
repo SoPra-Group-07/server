@@ -29,7 +29,7 @@ public class PlayerStatisticService {
         List<PlayerStatistic> playerStatistics = new ArrayList<>();
 
         Guess guess = gameRound.getGuess();
-        double guessingPlayerPoints = calculateGuessingPlayerPoints(guess, gameRound);
+        double guessingPlayerPoints = calculateGuessingPlayerPoints(guess);
         PlayerStatistic playerStatistic = new PlayerStatistic();
         playerStatistic.setGameRoundId(gameRound.getGameRoundId());
         playerStatistic.setPlayerId(guess.getPlayerId());
@@ -88,7 +88,7 @@ public class PlayerStatisticService {
         return Math.round(totalPoints * 100.0) / 100.0;
     }
 
-    private double calculateGuessingPlayerPoints(Guess guess, GameRound gameRound){
+    private double calculateGuessingPlayerPoints(Guess guess){
         float totalPoints = 0;
         if (!guess.getDidSubmit()){
             return totalPoints;
