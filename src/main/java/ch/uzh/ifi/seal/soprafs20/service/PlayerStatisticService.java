@@ -56,7 +56,7 @@ public class PlayerStatisticService {
     }
 
     private PlayerStatistic calculateClueingPlayerPoints(Clue clue, boolean rightGuess, PlayerStatistic playerStatistic) {
-        double totalPoints = 0;
+        float totalPoints = 0;
 
         if (rightGuess) {
             totalPoints += 1;
@@ -101,7 +101,7 @@ public class PlayerStatisticService {
     }
 
     private PlayerStatistic calculateGuessingPlayerPoints(Guess guess, PlayerStatistic playerStatistic){
-        double totalPoints = 0;
+        float totalPoints = 0;
         if (!guess.getDidSubmit()){
             playerStatistic.setRightGuess(false);
             playerStatistic.setRightGuessPoints(0);

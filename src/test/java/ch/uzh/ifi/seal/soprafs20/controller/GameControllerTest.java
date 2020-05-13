@@ -68,8 +68,7 @@ public class GameControllerTest {
         testPlayer.setPlayerId(1L);
         testPlayer.setUserId(1L);
         testPlayer.setGameId(1L);
-        float score = (float) 4.6;
-        testPlayer.setCurrentScore(score);
+        testPlayer.setCurrentScore(4.6);
 
         testFriedlyBot.setPlayerId(2L);
         testFriedlyBot.setGameId(1L);
@@ -77,8 +76,7 @@ public class GameControllerTest {
         testPlayer1.setPlayerId(3L);
         testPlayer1.setUserId(2L);
         testPlayer1.setGameId(1L);
-        float score1 = (float) 5.6;
-        testPlayer1.setCurrentScore(score1);
+        testPlayer1.setCurrentScore(5.6);
 
         testPlayer2.setPlayerId(4L);
         testPlayer2.setUserId(3L);
@@ -90,8 +88,7 @@ public class GameControllerTest {
 
         testFriedlyBot.setGameId(1L);
         testFriedlyBot.setPlayerId(1L);
-        float score2 = (float) 6.6;
-        testFriedlyBot.setCurrentScore(score2);
+        testFriedlyBot.setCurrentScore(6.6);
 
 
         game.setGameId(1L);
@@ -321,7 +318,7 @@ public class GameControllerTest {
                  .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                  .andExpect(jsonPath("$[0].playerName", is(game.getPlayers().get(0).getPlayerName())))
                 .andExpect(jsonPath("$[0].playerId", is(game.getPlayers().get(0).getPlayerId().intValue())))
-                 .andExpect(jsonPath("$[0].totalPoints", is((double) 4.6)))
+                 .andExpect(jsonPath("$[0].totalPoints", is(4.6)))
                  .andExpect(jsonPath("$[1].playerName", is(game.getPlayers().get(1).getPlayerName())))
                  .andExpect(jsonPath("$[1].playerId", is(game.getPlayers().get(1).getPlayerId().intValue())))
                  .andExpect(jsonPath("$[1].totalPoints", is(((double) 6.6))))
