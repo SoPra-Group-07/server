@@ -56,7 +56,53 @@ public class Game implements Serializable {
     private Long adminPlayerId;
 
     @Column
+    private String adminPlayerName;
+
+    @Column
     private int randomStartPosition;
+
+    @Column
+    private int actualGameRound;
+
+    @Column
+    private int totalGameRounds;
+
+    @Column
+    private boolean isDemoGame;
+
+
+
+    public boolean getIsDemoGame() {
+        return isDemoGame;
+    }
+
+    public void setIsDemoGame(boolean demoGame) {
+        isDemoGame = demoGame;
+    }
+
+    public String getAdminPlayerName() {
+        return adminPlayerName;
+    }
+
+    public void setAdminPlayerName(String adminPlayerName) {
+        this.adminPlayerName = adminPlayerName;
+    }
+
+    public int getActualGameRound() {
+        return actualGameRound;
+    }
+
+    public void setActualGameRound(int actualGameRound) {
+        this.actualGameRound = actualGameRound;
+    }
+
+    public int getTotalGameRounds() {
+        return totalGameRounds;
+    }
+
+    public void setTotalGameRounds(int totalGameRounds) {
+        this.totalGameRounds = totalGameRounds;
+    }
 
     public Long getGameId() {
         return gameId;

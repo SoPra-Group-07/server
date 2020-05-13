@@ -4,7 +4,25 @@ public class GameStatisticDTO {
 
     private Long playerId;
     private String playerName;
-    private float totalPoints;
+    private double totalPoints;
+    private int numberOfCorrectGuesses;
+    private int numberOfDuplicateClues;
+
+    public int getNumberOfCorrectGuesses() {
+        return numberOfCorrectGuesses;
+    }
+
+    public void setNumberOfCorrectGuesses(int numberOfCorrectGuesses) {
+        this.numberOfCorrectGuesses = numberOfCorrectGuesses;
+    }
+
+    public int getNumberOfDuplicateClues() {
+        return numberOfDuplicateClues;
+    }
+
+    public void setNumberOfDuplicateClues(int numberOfDuplicateClues) {
+        this.numberOfDuplicateClues = numberOfDuplicateClues;
+    }
 
     public Long getPlayerId() {
         return playerId;
@@ -22,11 +40,11 @@ public class GameStatisticDTO {
         this.playerName = playerName;
     }
 
-    public float getTotalPoints() {
+    public double getTotalPoints() {
         return totalPoints;
     }
 
-    public void setTotalPoints(float totalPoints) {
+    public void setTotalPoints(double totalPoints) {
         this.totalPoints = totalPoints;
     }
 }

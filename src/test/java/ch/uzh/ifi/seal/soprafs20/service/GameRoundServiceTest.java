@@ -3,7 +3,6 @@ package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
-import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRoundRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +84,7 @@ public class GameRoundServiceTest {
         testGame.setPlayers(players);
         testGame.setCardIds(gameService.getRandomUniqueCardIds());
         testGame.setActualGameRoundIndex(0);
+        testGame.setTotalGameRounds(13);
 
         gameRound.setCard(testCard);
         gameRound.setGameId(testGame.getGameId());

@@ -23,6 +23,9 @@ public abstract class Submission implements Serializable {
     private Long playerId;
 
     @Column
+    private String playerName;
+
+    @Column
     private String word;
 
     @Column
@@ -37,6 +40,17 @@ public abstract class Submission implements Serializable {
     @Column
     private boolean didSubmit;
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public boolean isDidSubmit() {
+        return didSubmit;
+    }
 
     public boolean getDidSubmit() {
         return didSubmit;
@@ -45,7 +59,6 @@ public abstract class Submission implements Serializable {
     public void setDidSubmit(boolean didSubmit) {
         this.didSubmit = didSubmit;
     }
-
 
     public Long getSubmissionId() {
         return submissionId;
@@ -62,7 +75,6 @@ public abstract class Submission implements Serializable {
     public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
-
 
     public String getWord() {
         return word;

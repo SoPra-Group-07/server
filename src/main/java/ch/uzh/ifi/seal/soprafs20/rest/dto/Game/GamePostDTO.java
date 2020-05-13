@@ -3,7 +3,18 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto.Game;
 public class GamePostDTO {
     private String gameName;
     private boolean hasBot;
+    private boolean isDemoGame;
     private long adminPlayerId;
+
+
+
+    public boolean getIsDemoGame() {
+        return isDemoGame;
+    }
+
+    public void setIsDemoGame(boolean demoGame) {
+        isDemoGame = demoGame;
+    }
 
     public String getGameName() {
         return gameName;

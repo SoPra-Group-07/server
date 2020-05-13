@@ -10,11 +10,28 @@ public class GameRoundDTO {
     private long gameRoundId;
     private long gameId;
     private long guessingPlayerId;
+    private int actualGameRound;
+    private int totalGameRounds;
     private String mysteryWord;
     private Card card;
     private ArrayList<Clue> submissions;
     private Guess guess;
 
+    public int getActualGameRound() {
+        return actualGameRound;
+    }
+
+    public void setActualGameRound(int actualGameRound) {
+        this.actualGameRound = actualGameRound;
+    }
+
+    public int getTotalGameRounds() {
+        return totalGameRounds;
+    }
+
+    public void setTotalGameRounds(int totalGameRounds) {
+        this.totalGameRounds = totalGameRounds;
+    }
 
     public Guess getGuess() {
         return guess;

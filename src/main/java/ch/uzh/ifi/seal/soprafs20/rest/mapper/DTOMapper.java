@@ -15,6 +15,8 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import javax.persistence.MappedSuperclass;
+
 /**
  * DTOMapper
  * This class is responsible for generating classes that will automatically transform/map the internal representation
@@ -68,6 +70,7 @@ public interface DTOMapper {
     @Mapping(source = "hasBot", target = "hasBot")
     @Mapping(source = "gameName", target = "gameName")
     @Mapping(source = "adminPlayerId", target = "adminPlayerId")
+    @Mapping(source = "isDemoGame", target = "isDemoGame")
     Game convertGamePostDTOToEntity(GamePostDTO gamePostDTO);
 
 
@@ -102,16 +105,16 @@ public interface DTOMapper {
     @Mapping(source = "card", target = "card")
     @Mapping(source = "submissions", target = "submissions")
     @Mapping(source = "guess", target = "guess")
+    @Mapping(source = "totalGameRounds", target = "totalGameRounds")
+    @Mapping(source = "actualGameRound", target = "actualGameRound")
     GameRoundDTO convertEntityToGameRoundDTO(GameRound gameRound);
 
     @Mapping(source = "gameId", target = "gameId")
     Game convertGameStartDTOToEntity(GameStartPutDTO gameStartPutDTO);
 
-
     @Mapping(source = "gameRoundId", target = "gameRoundId")
     @Mapping(source = "wordNumber", target = "wordNumber")
     GameRound convertGameRoundPutDTOtoEntity(GameRoundPutDTO gameRoundPutDTO);
-
 
     @Mapping(source = "gameRoundId", target = "gameRoundId")
     @Mapping(source = "playerId", target = "playerId")
@@ -126,11 +129,25 @@ public interface DTOMapper {
     @Mapping(source = "playerStatisticId", target = "playerStatisticId")
     @Mapping(source = "gameRoundId", target = "gameRoundId")
     @Mapping(source = "playerId", target = "playerId")
-    @Mapping(source = "points", target = "points")
+    @Mapping(source = "playerName", target = "playerName")
+    @Mapping(source = "totalPoints", target = "totalPoints")
+    @Mapping(source = "wasGuessingPlayer", target = "wasGuessingPlayer")
+    @Mapping(source = "duration", target = "duration")
+    @Mapping(source = "durationPoints", target = "durationPoints")
+    @Mapping(source = "duplicateClue", target = "duplicateClue")
+    @Mapping(source = "duplicateCluePoints", target = "duplicateCluePoints")
+    @Mapping(source = "didNotClue", target = "didNotClue")
+    @Mapping(source = "notCluePoints", target = "notCluePoints")
+    @Mapping(source = "rightGuess", target = "rightGuess")
+    @Mapping(source = "rightGuessPoints", target = "rightGuessPoints")
+    @Mapping(source = "guess", target = "guess")
+    @Mapping(source = "clue", target = "clue")
     PlayerStatisticDTO convertEntityToPlayerStatisticDTO(PlayerStatistic playerStatistic);
 
     @Mapping(source = "playerId", target = "playerId")
     @Mapping(source = "playerName", target = "playerName")
     @Mapping(source = "currentScore", target = "totalPoints")
+    @Mapping(source = "numberOfCorrectGuesses", target = "numberOfCorrectGuesses")
+    @Mapping(source = "numberOfDuplicateClues", target = "numberOfDuplicateClues")
     GameStatisticDTO convertEntityToGameStatisticDTO(Player player);
 }

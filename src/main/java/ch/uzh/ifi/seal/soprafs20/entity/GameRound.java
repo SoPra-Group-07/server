@@ -62,6 +62,33 @@ public class GameRound implements Serializable {
     @JoinColumn(name = "game_round_id", referencedColumnName = "game_round_id" )
     private List<PlayerStatistic> playerStatistic = new ArrayList<>();
 
+    @Column
+    private int actualGameRound;
+
+    @Column
+    private int totalGameRounds;
+
+
+    public boolean isEveryoneSubmitted() {
+        return everyoneSubmitted;
+    }
+
+    public int getActualGameRound() {
+        return actualGameRound;
+    }
+
+    public void setActualGameRound(int actualGameRound) {
+        this.actualGameRound = actualGameRound;
+    }
+
+    public int getTotalGameRounds() {
+        return totalGameRounds;
+    }
+
+    public void setTotalGameRounds(int totalGameRounds) {
+        this.totalGameRounds = totalGameRounds;
+    }
+
     public Long getGameRoundId() {
         return gameRoundId;
     }

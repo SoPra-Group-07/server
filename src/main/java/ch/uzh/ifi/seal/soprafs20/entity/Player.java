@@ -33,13 +33,34 @@ public abstract class Player implements Serializable{
     @Column(name = "user_id")
     private long userId;
 
+    @Column
+    private int numberOfCorrectGuesses;
+
+    @Column
+    private int numberOfDuplicateClues;
+
+    public int getNumberOfCorrectGuesses() {
+        return numberOfCorrectGuesses;
+    }
+
+    public void setNumberOfCorrectGuesses(int numberOfCorrectGuesses) {
+        this.numberOfCorrectGuesses = numberOfCorrectGuesses;
+    }
+
+    public int getNumberOfDuplicateClues() {
+        return numberOfDuplicateClues;
+    }
+
+    public void setNumberOfDuplicateClues(int numberOfDuplicateClues) {
+        this.numberOfDuplicateClues = numberOfDuplicateClues;
+    }
 
     public abstract String giveClue(String word) throws IOException;
-
 
     public Long getPlayerId() {
         return playerId;
     }
+
     public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
@@ -47,6 +68,7 @@ public abstract class Player implements Serializable{
     public long getGameId() {
         return gameId;
     }
+
     public void setGameId(long gameId) {
         this.gameId = gameId;
     }
@@ -54,14 +76,15 @@ public abstract class Player implements Serializable{
     public String getPlayerName() {
         return playerName;
     }
+
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-
     public double getCurrentScore() {
         return currentScore;
     }
+
     public void setCurrentScore(double currentScore) {
         this.currentScore = currentScore;
     }
@@ -69,6 +92,7 @@ public abstract class Player implements Serializable{
     public long getUserId() {
         return userId;
     }
+
     public void setUserId(long userId) {
         this.userId = userId;
     }

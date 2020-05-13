@@ -34,7 +34,6 @@ public class GameRoundService {
     private final GuessRepository guessRepository;
     private final UserRepository userRepository;
     private Random random = SecureRandom.getInstanceStrong();
-    private final int max_number_of_rounds = 1;
     private final PlayerStatisticService playerStatisticService;
 
 
@@ -52,7 +51,7 @@ public class GameRoundService {
     }
 
     public GameRound createNewGameRound(Game game){
-        if (game.getActualGameRoundIndex() > max_number_of_rounds || game.getGameStatus() == GameStatus.FINISHED){
+        if (game.getActualGameRoundIndex() > game.getTotalGameRounds() || game.getGameStatus() == GameStatus.FINISHED){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game has finished! No more gameRounds.");
         }
         GameRound gameRound = new GameRound();
@@ -61,19 +60,22 @@ public class GameRoundService {
         gameRound.setCard(getActualCard(list.get(game.getActualGameRoundIndex())));
         GameRound gameRound1 = gameRoundRepository.save(gameRound);
         gameRoundRepository.flush();
-
         return gameRound1;
     }
 
     public GameRound startNewGameRound(Game game){
-        if (game.getActualGameRoundIndex() < max_number_of_rounds) {
+        if (game.getActualGameRoundIndex() < game.getTotalGameRounds()) {
 
             if (game.getActualGameRoundIndex() == 0) {
                 int randomStart = this.random.nextInt(game.getNumberOfPlayers());
                 game.setRandomStartPosition(randomStart);}
 
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
+            game.setActualGameRound(game.getActualGameRound() + 1);
+
             GameRound actualGameRound = createNewGameRound(game);
+            actualGameRound.setTotalGameRounds(game.getTotalGameRounds());
+            actualGameRound.setActualGameRound(game.getActualGameRound());
             long nextGuessingPlayerIdx = computeGuessingPlayerId(game);
             actualGameRound.setGuessingPlayerId(nextGuessingPlayerIdx);
             return actualGameRound;
@@ -138,17 +140,17 @@ public class GameRoundService {
                 clue.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
                 clue.setPlayerId(player.getPlayerId());
                 clue.setGameRoundId(gameRound.getGameRoundId());
+                clue.setPlayerName(player.getPlayerName());
 
                 Clue clue1 = clueRepository.save(clue);
                 clueRepository.flush();
                 if (player instanceof FriendlyBot || player instanceof MaliciousBot) {
                     String friendlyOrMaliciousClue = player.giveClue(gameRound.getMysteryWord());
                     clue1.setWord(friendlyOrMaliciousClue);
-                    //random
-                    Thread.sleep(3000);
-                    clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
+                    clue1.setEndTime(clue1.getStartTime() + 16000);
                     clue1.setDuration(((clue.getEndTime() - clue.getStartTime()) / 1000));
                     clue1.setDidSubmit(true);
+                    clue1.setPlayerName(player.getPlayerName());
 
 
                 }
@@ -157,6 +159,7 @@ public class GameRoundService {
                 Guess guess = new Guess();
                 guess.setPlayerId(player.getPlayerId());
                 guess.setGameRoundId(gameRound.getGameRoundId());
+                guess.setPlayerName(player.getPlayerName());
                 gameRound.setGuess(guess);
                 guessRepository.save(guess);
                 guessRepository.flush();
@@ -213,10 +216,11 @@ public class GameRoundService {
 
         if(guess1.getDidSubmit() && !guess1.getCorrectGuess()){
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
+            game.setTotalGameRounds(game.getTotalGameRounds() - 1);
             game.setRandomStartPosition(game.getRandomStartPosition() - 1); }
 
-        if (game.getActualGameRoundIndex() >= max_number_of_rounds){
-            finish_game(game);
+        if (game.getActualGameRound() >= game.getTotalGameRounds()){
+            finishGame(game);
             }
 
         }
@@ -274,14 +278,14 @@ public class GameRoundService {
 
     }
 
-    public void finish_game(Game game){
+    public void finishGame(Game game){
         game.setGameStatus(GameStatus.FINISHED);
-        update_users(game);
+        updateUsers(game);
 
     }
 
 
-    public void update_users(Game game){
+    public void updateUsers(Game game){
         for (Player player: game.getPlayers()) {
             if (player instanceof PhysicalPlayer) {
                 User user = userRepository.findByUserId(player.getUserId());
