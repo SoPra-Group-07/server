@@ -49,8 +49,8 @@ public class UserControllerTest {
         user.setStatus(UserStatus.OFFLINE);
         user.setUserId(1L);
         user.setToken("2dfc-g59k");
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
         List<User> allUsers = Collections.singletonList(user);
 
@@ -67,10 +67,10 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].password", is(user.getPassword())))         // is("testPassword") would work as well
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())))
-                .andExpect(jsonPath("$[0].birth", is(user.getBirth())))
+                .andExpect(jsonPath("$[0].birth", is(user.getDateOfBirth())))
                 .andExpect(jsonPath("$[0].token", is(user.getToken())))
                 .andExpect(jsonPath("$[0].id", is(user.getUserId().intValue())))          // or is(1) works as well
-                .andExpect(jsonPath("$[0].date", is(user.getDate().toString())));
+                .andExpect(jsonPath("$[0].date", is(user.getCreationDate().toString())));
     }
 
     @Test
@@ -82,8 +82,8 @@ public class UserControllerTest {
         user.setUsername("testUsername");
         user.setToken("1");
         user.setStatus(UserStatus.OFFLINE);
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("Test User");
@@ -105,8 +105,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.password", is(user.getPassword())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
-                .andExpect(jsonPath("$.birth", is("00-00-0000")))            //alternative to user.getBirth()
-                .andExpect(jsonPath("$.date", is(user.getDate().toString())))
+                .andExpect(jsonPath("$.birth", is("00-00-0000")))            //alternative to user.getDateOfBirth()
+                .andExpect(jsonPath("$.date", is(user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(user.getToken())));
     }
 
@@ -119,8 +119,8 @@ public class UserControllerTest {
         user.setUsername("testUsername");
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("testPassword");
@@ -146,7 +146,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$.birth", is("00-00-0000")))
-                .andExpect(jsonPath("$.date", is(user.getDate().toString())))
+                .andExpect(jsonPath("$.date", is(user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(user.getToken())));
     }
 
@@ -160,8 +160,8 @@ public class UserControllerTest {
         user.setUsername("testUsername");
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
 
         given(userService.getUserById(user.getUserId())).willReturn(user);
@@ -178,7 +178,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
                 .andExpect(jsonPath("$.birth", is("00-00-0000")))
-                .andExpect(jsonPath("$.date", is(user.getDate().toString())))
+                .andExpect(jsonPath("$.date", is(user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(user.getToken())));
     }
 
@@ -193,8 +193,8 @@ public class UserControllerTest {
         user.setUsername("user0");
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
         //user after edit
         User edited_user = new User();
@@ -203,14 +203,14 @@ public class UserControllerTest {
 
         edited_user.setToken("1");
         edited_user.setStatus(UserStatus.ONLINE);
-        edited_user.setDate(LocalDate.now());
-        edited_user.setBirth("18-01-1999");
+        edited_user.setCreationDate(LocalDate.now());
+        edited_user.setDateOfBirth("18-01-1999");
 
 
         UserEditDTO userEditDTO = new UserEditDTO();
         userEditDTO.setId(0L);
 
-        userEditDTO.setBirth("18-01-1999");
+        userEditDTO.setDateOfBirth("18-01-1999");
 
 
         given(userService.edit(Mockito.any())).willReturn(edited_user);
@@ -228,8 +228,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.password", is(edited_user.getPassword())))
                 .andExpect(jsonPath("$.username", is(edited_user.getUsername())))
                 .andExpect(jsonPath("$.status", is(edited_user.getStatus().toString())))
-                .andExpect(jsonPath("$.birth", is(edited_user.getBirth())))
-                .andExpect(jsonPath("$.date", is(edited_user.getDate().toString())))
+                .andExpect(jsonPath("$.birth", is(edited_user.getDateOfBirth())))
+                .andExpect(jsonPath("$.date", is(edited_user.getCreationDate().toString())))
                 .andExpect(jsonPath("$.token", is(edited_user.getToken())));
     }
 
@@ -243,8 +243,8 @@ public class UserControllerTest {
         user.setUsername("testUsername");
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("testPassword");
@@ -276,8 +276,8 @@ public class UserControllerTest {
         user.setUsername("testUsername");
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("testPassword");
@@ -308,8 +308,8 @@ public class UserControllerTest {
         user.setUsername("testUsername");
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
-        user.setDate(LocalDate.now());
-        user.setBirth("00-00-0000");
+        user.setCreationDate(LocalDate.now());
+        user.setDateOfBirth("00-00-0000");
 
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("testPassword");

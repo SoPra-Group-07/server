@@ -130,7 +130,7 @@ public class UserServiceTest {
         userService.login(testUser);
 
         assertEquals(testUser.getStatus(), UserStatus.ONLINE);
-        assertEquals(testUser1.getStatus(), UserStatus.OFFLINE);
+        assertEquals(UserStatus.OFFLINE, testUser1.getStatus());
     }
 
 
@@ -156,19 +156,19 @@ public class UserServiceTest {
     @Test
     public void test_edit_with_new_credentials(){
 
-        testUser1.setBirth("22-03-1997");
+        testUser1.setDateOfBirth("22-03-1997");
         notExistingUser.setPassword("notHere");
         notExistingUser.setUsername("NoName");
 
         editUser.setUserId(1L);
         editUser.setPassword("xy");
         editUser.setUsername("changedUsername");
-        editUser.setBirth("06-08-1996");
+        editUser.setDateOfBirth("06-08-1996");
 
         editUser1.setUserId(2L);
         editUser1.setPassword("xy");
         editUser1.setUsername(null);
-        editUser1.setBirth(null);
+        editUser1.setDateOfBirth(null);
 
         testUser.setStatus(UserStatus.ONLINE);
         testUser1.setStatus(UserStatus.ONLINE);
@@ -179,7 +179,7 @@ public class UserServiceTest {
         userService.edit(editUser);
         assertNotEquals(editUser.getUsername(), testUser.getUsername());
         assertEquals(editUser.getPassword(), testUser.getPassword());
-        assertEquals(editUser.getBirth(), testUser.getBirth());
+        assertEquals(editUser.getDateOfBirth(), testUser.getDateOfBirth());
 
     }
 
@@ -189,12 +189,12 @@ public class UserServiceTest {
     @Test
     public void test_edit_without_new_credentials(){
 
-        testUser1.setBirth("22-03-1997");
+        testUser1.setDateOfBirth("22-03-1997");
 
         editUser1.setUserId(2L);
         editUser1.setPassword("xy");
         editUser1.setUsername(null);
-        editUser1.setBirth(null);
+        editUser1.setDateOfBirth(null);
 
 
         testUser1.setStatus(UserStatus.ONLINE);
@@ -202,7 +202,7 @@ public class UserServiceTest {
 
         // do not edit testUser1 when edituser1's username and birth are null
         userService.edit(editUser1);
-        assertNotNull(testUser1.getBirth());
+        assertNotNull(testUser1.getDateOfBirth());
         assertNotNull(testUser1.getUsername());
 
     }

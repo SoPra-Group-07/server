@@ -51,8 +51,8 @@ public class LeaderboardServiceTest {
         user1.setStatus(UserStatus.OFFLINE);
         user1.setUserId(1L);
         user1.setToken("2dfc-g59k");
-        user1.setDate(LocalDate.now());
-        user1.setBirth("00-00-0000");
+        user1.setCreationDate(LocalDate.now());
+        user1.setDateOfBirth("00-00-0000");
         user1.setHighScore((float) 5.3);
         user1.setNumberOfGamesPlayed(1);
 
@@ -62,8 +62,8 @@ public class LeaderboardServiceTest {
         user2.setStatus(UserStatus.OFFLINE);
         user2.setUserId(1L);
         user2.setToken("2dfc-g59k");
-        user2.setDate(LocalDate.now());
-        user2.setBirth("00-00-0000");
+        user2.setCreationDate(LocalDate.now());
+        user2.setDateOfBirth("00-00-0000");
         user2.setHighScore((float) 8.1);
         user2.setNumberOfGamesPlayed(10);
 
@@ -72,8 +72,8 @@ public class LeaderboardServiceTest {
         user3.setStatus(UserStatus.OFFLINE);
         user3.setUserId(1L);
         user3.setToken("2dfc-g59k");
-        user3.setDate(LocalDate.now());
-        user3.setBirth("00-00-0000");
+        user3.setCreationDate(LocalDate.now());
+        user3.setDateOfBirth("00-00-0000");
         user3.setHighScore((float) 3.1);
         user3.setNumberOfGamesPlayed(5);
 

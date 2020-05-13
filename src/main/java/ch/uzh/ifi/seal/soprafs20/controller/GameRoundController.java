@@ -49,11 +49,12 @@ public class GameRoundController {
     @PutMapping("/gameRounds")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundDTO chooseMisteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException, InterruptedException {
+    public GameRoundDTO chooseMysteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException, InterruptedException {
 
             GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());
-            gameRoundService.chooseMisteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
+            gameRoundByRoundId = gameRoundService.chooseMysteryWord(gameRoundByRoundId, gameRoundPutDTO.getWordNumber());
+            gameRoundService.createCluesAndGuesses(gameRoundByRoundId);
             return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
 
 
@@ -76,7 +77,7 @@ public class GameRoundController {
     public GameRoundDTO submitGuess(@RequestBody GameRoundGuessDTO gameRoundGuessDTO){
             Guess guess = DTOMapper.INSTANCE.convertGameRoundGuessDTOtoEntity(gameRoundGuessDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(guess.getGameRoundId());
-            gameRoundService.submitGuess(gameRoundByRoundId, guess.getWord(), guess.getPlayerId());
+            gameRoundByRoundId = gameRoundService.submitGuess(gameRoundByRoundId, guess.getWord(), guess.getPlayerId());
             return DTOMapper.INSTANCE.convertEntityToGameRoundDTO(gameRoundByRoundId);
     }
 

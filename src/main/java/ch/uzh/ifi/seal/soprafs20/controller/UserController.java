@@ -56,19 +56,22 @@ public class UserController {
     public UserGetDTO login(@RequestBody UserPostDTO userPostDTO) {
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        if (userService.checkUsername(userInput)) {
-            if (userService.acceptLogin(userInput.getUsername(), userInput.getPassword())) {
-                if(userService.isAlreadyLoggedIn(userInput.getUsername())){
+        if (Boolean.TRUE.equals(userService.checkUsername(userInput))) {
+            if (Boolean.TRUE.equals(userService.acceptLogin(userInput.getUsername(), userInput.getPassword()))) {
+                if (Boolean.TRUE.equals(userService.isAlreadyLoggedIn(userInput.getUsername()))) {
                     throw new ResponseStatusException(HttpStatus.NO_CONTENT);
-                } else {
+                }
+                else {
                     User updatedUser = userService.login(userInput);
                     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
                 }
 
-            } else {
+            }
+            else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");
             }
-        } else {
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credentials are wrong");
         }
     }

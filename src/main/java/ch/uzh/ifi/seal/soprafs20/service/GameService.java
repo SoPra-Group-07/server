@@ -48,7 +48,7 @@ public class GameService {
     }
 
     public Game createNewGame(Game gameInput) {
-        if (gameRepository.findByGameName(gameInput.getGameName()) != null){
+        if (gameRepository.findByGameName(gameInput.getGameName()) != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
         }
         Game game = new Game();
@@ -71,7 +71,7 @@ public class GameService {
         Player adminPlayer = createPlayerByUserIdAndGame(gameInput.getAdminPlayerId(), game);
         addPlayerToGame(adminPlayer, game);
 
-        if (game.getHasBot()){
+        if (game.getHasBot()) {
             Player bot = createBot(game);
             bot = playerRepository.save(bot);
             playerRepository.flush();

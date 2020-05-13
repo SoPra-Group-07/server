@@ -1,4 +1,5 @@
-/*package ch.uzh.ifi.seal.soprafs20.service;
+/*
+package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
@@ -78,7 +79,4 @@ class GameServiceIntegrationTest {
 
 
 }
-
-
-
-*/
+ */

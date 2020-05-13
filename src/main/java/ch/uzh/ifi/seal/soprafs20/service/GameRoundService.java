@@ -40,7 +40,8 @@ public class GameRoundService {
     @Autowired
     public GameRoundService(@Qualifier("gameRoundRepository") GameRoundRepository gameRoundRepository,
                             @Qualifier("cardRepository") CardRepository cardRepository, @Qualifier("gameRepository") GameRepository gameRepository,
-                            @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository, @Qualifier("userRepository") UserRepository userRepository, PlayerStatisticService playerStatisticService) throws NoSuchAlgorithmException {
+                            @Qualifier("clueRepository") ClueRepository clueRepository, @Qualifier("guessRepository") GuessRepository guessRepository,
+                            @Qualifier("userRepository") UserRepository userRepository, PlayerStatisticService playerStatisticService) throws NoSuchAlgorithmException {
         this.gameRoundRepository = gameRoundRepository;
         this.cardRepository = cardRepository;
         this.gameRepository = gameRepository;
@@ -113,7 +114,7 @@ public class GameRoundService {
         return gameRoundRepository.findByGameRoundId(roundId);
     }
 
-    public void chooseMisteryWord(GameRound gameRound, int wordNumber) throws IOException, InterruptedException {
+    public GameRound chooseMysteryWord(GameRound gameRound, int wordNumber) throws IOException, InterruptedException {
         if (wordNumber==1) {
             gameRound.setMysteryWord(gameRound.getCard().getWord1());
         }else if (wordNumber==2) {
@@ -127,7 +128,7 @@ public class GameRoundService {
         }
         else { throw new ResponseStatusException(HttpStatus.CONFLICT, "Choose a number between 1-5");}
 
-        createCluesAndGuesses(gameRound);
+        return gameRound;
     }
 
 
@@ -163,15 +164,11 @@ public class GameRoundService {
                 gameRound.setGuess(guess);
                 guessRepository.save(guess);
                 guessRepository.flush();
-
-
-
             }
-
         }
     }
 
-    public void submitClue(GameRound gameRound, String clue, Long playerId){
+    public Clue submitClue(GameRound gameRound, String clue, Long playerId){
         if (gameRound.getGuessingPlayerId().equals(playerId)){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "a guessing player can not submit a clue!");
         }
@@ -182,8 +179,9 @@ public class GameRoundService {
             clue1.setWord("noClue");
         }
         else{
-        clue1.setWord(clue);
-        clue1.setDidSubmit(true);}
+            clue1.setWord(clue);
+            clue1.setDidSubmit(true);
+        }
 
         clue1.setEndTime(ZonedDateTime.now().toInstant().toEpochMilli());
         clue1.setDuration((clue1.getEndTime()-clue1.getStartTime())/1000);
@@ -193,10 +191,10 @@ public class GameRoundService {
             Guess guess = guessRepository.findByGameRoundId(clue1.getGameRoundId());
             guess.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
         }
-
+        return clue1;
     }
 
-    public void submitGuess(GameRound gameRound, String guess, Long playerId){
+    public GameRound submitGuess(GameRound gameRound, String guess, Long playerId){
         if (!gameRound.getGuessingPlayerId().equals(playerId)){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "a clueing player can not submit a guess!");
         }
@@ -213,6 +211,7 @@ public class GameRoundService {
         checkGuess(gameRound, guess1);
         Game game = gameRepository.findByGameId(gameRound.getGameId());
         playerStatisticService.computeGameRoundStatistic(gameRound);
+        gameRound.setGuess(guess1);
 
         if(guess1.getDidSubmit() && !guess1.getCorrectGuess()){
             game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
@@ -222,7 +221,7 @@ public class GameRoundService {
         if (game.getActualGameRound() >= game.getTotalGameRounds()){
             finishGame(game);
             }
-
+            return gameRound;
         }
 
     public void checkGuess(GameRound gameRound, Guess guess){
@@ -266,7 +265,7 @@ public class GameRoundService {
 
             for(Clue clue1: submission){
                 if ((clue.getStemmedClue().equals(clue1.getStemmedClue()) && !clue.getSubmissionId().equals(clue1.getSubmissionId()))
-                        || clue.getStemmedClue().equals(stemmer.stem(gameRound.getMysteryWord()).toString().toLowerCase())){
+                        || clue.getStemmedClue().equalsIgnoreCase(stemmer.stem(gameRound.getMysteryWord()).toString())){
 
                     clue.setDuplicate(true);
                     clue1.setDuplicate(true); }
