@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @WebAppConfiguration
 @SpringBootTest
-public class UserServiceIntegrationTest {
+public class IntegrationTest {
 
     @Qualifier("gameRepository")
     @Autowired
