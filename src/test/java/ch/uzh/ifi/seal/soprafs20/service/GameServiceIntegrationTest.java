@@ -1,4 +1,4 @@
-/*
+
 package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +43,7 @@ class GameServiceIntegrationTest {
     @Test
     public void createGame_validInputs_success() {
         // given -> gameName not used yet
-        assertNull(gameRepository.findByGameName("testGameName"));
+        assertNull(gameRepository.findByGameName(Mockito.anyString()));
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
@@ -79,4 +80,3 @@ class GameServiceIntegrationTest {
 
 
 }
- */

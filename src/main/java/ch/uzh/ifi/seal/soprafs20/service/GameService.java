@@ -47,38 +47,48 @@ public class GameService {
         return this.gameRepository.findAllByGameStatus(gameStatus);
     }
 
+
     public Game createNewGame(Game gameInput) {
-        if (gameRepository.findByGameName(gameInput.getGameName()) != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
+        try {
+            if (gameRepository.findByGameName(gameInput.getGameName()) != null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
+            }
+            Game game = new Game();
+            game.setGameName(gameInput.getGameName());
+            game.setAdminPlayerId(gameInput.getAdminPlayerId());
+            game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
+            game.setHasBot(gameInput.getHasBot());
+            game.setGameStatus(GameStatus.CREATED);
+            game.setActualGameRoundIndex(0);
+            game.setCardIds(getRandomUniqueCardIds());
+            game.setRandomStartPosition(new Random().nextInt(7));
+            game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
+            if (gameInput.getIsDemoGame()) {
+                game.setTotalGameRounds(2);
+            }
+            else {
+                game.setTotalGameRounds(13);
+            }
+
+            game = gameRepository.save(game);
+            gameRepository.flush();
+
+            Player adminPlayer = createPlayerByUserIdAndGame(gameInput.getAdminPlayerId(), game);
+            addPlayerToGame(adminPlayer, game);
+
+            if (game.getHasBot()) {
+                Player bot = createBot(game);
+                bot = playerRepository.save(bot);
+                playerRepository.flush();
+                addPlayerToGame(bot, game);
+            }
+            game.setNumberOfPlayers(game.getPlayers().size());
+            return game;
         }
-        Game game = new Game();
-        game.setGameName(gameInput.getGameName());
-        game.setAdminPlayerId(gameInput.getAdminPlayerId());
-        game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
-        game.setHasBot(gameInput.getHasBot());
-        game.setGameStatus(GameStatus.CREATED);
-        game.setActualGameRoundIndex(0);
-        game.setCardIds(getRandomUniqueCardIds());
-        game.setRandomStartPosition(new Random().nextInt(7));
-        game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
-        if (gameInput.getIsDemoGame())
-        { game.setTotalGameRounds(2); }
-        else { game.setTotalGameRounds(13);}
-
-        game = gameRepository.save(game);
-        gameRepository.flush();
-
-        Player adminPlayer = createPlayerByUserIdAndGame(gameInput.getAdminPlayerId(), game);
-        addPlayerToGame(adminPlayer, game);
-
-        if (game.getHasBot()) {
-            Player bot = createBot(game);
-            bot = playerRepository.save(bot);
-            playerRepository.flush();
-            addPlayerToGame(bot, game);
+        catch (Exception e) {
+            e.printStackTrace();
         }
-        game.setNumberOfPlayers(game.getPlayers().size());
-        return game;
+        return null;
     }
 
     private void addPlayerToGame(Player playerToAdd, Game game){
@@ -114,6 +124,7 @@ public class GameService {
         playerRepository.flush();
         return player;
     }
+
 
     private Player createBot(Game game) {
         List<String> fancyNames = new ArrayList<>(Arrays.asList("Jenny","Roy","Aquaman","JanTheNeck","Bernie","Hansi","Lars","Elaine","Alex","Renato","Chat","Christiane","Patrick","Andy","Thomas","Egon","Burkhard","Michael","Alberto","Ralph"));
