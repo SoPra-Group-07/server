@@ -4,7 +4,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
+/*import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class GameServiceIntegrationTest {
     @Test
     public void createGame_validInputs_success() {
         // given -> gameName not used yet
-        //assertNull(gameRepository.findByGameName(Mockito.anyString()));
+        assertNull(gameRepository.findByGameName(Mockito.anyString()));
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
@@ -79,4 +79,4 @@ class GameServiceIntegrationTest {
 
 
 
-}
+}*/
