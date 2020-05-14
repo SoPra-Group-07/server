@@ -43,7 +43,7 @@ class GameServiceIntegrationTest {
     @Test
     public void createGame_validInputs_success() {
         // given -> gameName not used yet
-        assertNull(gameRepository.findByGameName(Mockito.anyString()));
+        //assertNull(gameRepository.findByGameName(Mockito.anyString()));
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
