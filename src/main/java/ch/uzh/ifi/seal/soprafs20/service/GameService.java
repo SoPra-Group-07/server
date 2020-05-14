@@ -49,20 +49,18 @@ public class GameService {
 
 
     public Game createNewGame(Game gameInput) {
-        try {
+
             if (gameRepository.findByGameName(gameInput.getGameName()) != null) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "GameName is already taken!");
             }
             Game game = new Game();
             game.setGameName(gameInput.getGameName());
             game.setAdminPlayerId(gameInput.getAdminPlayerId());
-            game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
             game.setHasBot(gameInput.getHasBot());
             game.setGameStatus(GameStatus.CREATED);
             game.setActualGameRoundIndex(0);
             game.setCardIds(getRandomUniqueCardIds());
             game.setRandomStartPosition(new Random().nextInt(7));
-            game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
             if (gameInput.getIsDemoGame()) {
                 game.setTotalGameRounds(2);
             }
@@ -85,11 +83,8 @@ public class GameService {
             game.setNumberOfPlayers(game.getPlayers().size());
             return game;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
+
 
     private void addPlayerToGame(Player playerToAdd, Game game){
 
