@@ -8,20 +8,16 @@ import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for the UserResource REST resource.
- * @see UserService
+ * Test class for the GameResource REST resource.
+ * @see GameService
  */
 @WebAppConfiguration
 @SpringBootTest
@@ -54,7 +50,6 @@ public class GameServiceIntegrationTest {
 
     @Test
     public void createGame_validInputs_success() {
-        // given -> gameName not used yet
 
         User user = new User();
         user.setUsername("testUser");
@@ -63,8 +58,6 @@ public class GameServiceIntegrationTest {
         User user1 = userRepository.save(user);
         userRepository.flush();
 
-        //assertNull(gameRepository.findByGameName(Mockito.anyString()));
-        //Mockito.when(userRepository.findByUserId(Mockito.anyLong())).thenReturn(user);
 
         Game testGame = new Game();
         testGame.setGameName("testGameName");

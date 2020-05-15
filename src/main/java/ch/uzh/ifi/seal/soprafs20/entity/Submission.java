@@ -48,10 +48,6 @@ public abstract class Submission implements Serializable {
         this.playerName = playerName;
     }
 
-    public boolean isDidSubmit() {
-        return didSubmit;
-    }
-
     public boolean getDidSubmit() {
         return didSubmit;
     }

@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @WebAppConfiguration
 @SpringBootTest
-public class IntegrationTest {
+public class UserServiceIntegrationTest {
 
     @Qualifier("gameRepository")
     @Autowired
@@ -131,43 +131,6 @@ public class IntegrationTest {
     }
 
 
-    @Test
-    public void createGame_validInputs_success() {
-        // given -> gameName not used yet
-
-        User user = new User();
-        user.setUsername("testUser");
-        user.setPassword("testPassword");
-        user.setStatus(UserStatus.ONLINE);
-        User user1 = userRepository.save(user);
-        userRepository.flush();
-
-        //assertNull(gameRepository.findByGameName(Mockito.anyString()));
-        //Mockito.when(userRepository.findByUserId(Mockito.anyLong())).thenReturn(user);
-
-        Game testGame = new Game();
-        testGame.setGameName("testGameName");
-        testGame.setAdminPlayerId(user1.getUserId());
-        testGame.setHasBot(true);
-
-        Game createdGame = gameService.createNewGame(testGame);
-
-        // then
-        assertNotNull(gameRepository.findByGameId(createdGame.getGameId()));
-        assertNotNull(createdGame.getGameId());
-        assertEquals(testGame.getGameName(), createdGame.getGameName());
-        assertEquals(testGame.getHasBot(), createdGame.getHasBot());
-        assertEquals(GameStatus.CREATED, createdGame.getGameStatus());
-        assertEquals(0, createdGame.getActualGameRoundIndex());
-        assertEquals(13, createdGame.getCardIds().size());
-        assertEquals(2, createdGame.getPlayers().size());
-        assertEquals(2, createdGame.getNumberOfPlayers());
-        assertTrue(createdGame.getPlayers().get(0) instanceof PhysicalPlayer);
-        assertTrue(createdGame.getPlayers().get(1) instanceof MaliciousBot
-                || createdGame.getPlayers().get(1) instanceof FriendlyBot);
-
-
-    }
 
 
 }
