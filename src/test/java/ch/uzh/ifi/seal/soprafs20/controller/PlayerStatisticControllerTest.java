@@ -202,6 +202,20 @@ public class PlayerStatisticControllerTest {
                 .andExpect(jsonPath("$[0].duration", is((int) gameRound.getPlayerStatistic().get(0).getDuration())));
     }
 
+    @Test
+    public void whenGetGameRoundStatisticByRoundId_gameRoundNotExists_thenReturnEmptyList() throws Exception {
+        given(gameRoundService.getGameRoundByRoundId(2L)).willReturn(null);
+
+        MockHttpServletRequestBuilder getRequest = get("/gameRounds/2/gameRoundStatistics");
+
+        // then
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].gameRoundId", is(0)));
+    }
+
+
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input can be processed
      * Input will look like this: {"name": "Test User", "username": "testUsername"}
