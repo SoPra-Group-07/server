@@ -131,4 +131,4 @@ A special thank goes to our TA, Jenny Schmid.
 
 ## License
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+See the [LICENSE](LICENSE) file for license rights and limitations (Apache License 2.0).
