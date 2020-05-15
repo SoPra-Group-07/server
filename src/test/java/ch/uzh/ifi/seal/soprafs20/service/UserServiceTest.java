@@ -248,9 +248,9 @@ public class UserServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.createUser(null), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
     }
+    */
 
 
-*/
 
     /**
      * tests that the method createUser() throws an Responsestatusexcepition if one tries to

@@ -1,10 +1,14 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
+import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.entity.*;
+import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +27,28 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class UserServiceIntegrationTest {
 
+    @Qualifier("gameRepository")
+    @Autowired
+    private GameRepository gameRepository;
+
     @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
+
+    @Qualifier("playerRepository")
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    @Autowired
+    private GameService gameService;
 
     @Autowired
     private UserService userService;
 
     @BeforeEach
     public void setup() {
+        playerRepository.deleteAll();
+        gameRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -98,18 +115,22 @@ public class UserServiceIntegrationTest {
 
 
     @Test
-    public void UserDoesNotExist_soYouCannotEdit_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
+    public void UserDoesNotExist_soYouCannotEdit_throwsException() {
+
+        //----------------------------------------------> Status code 404 test - "User not found"
         assertNull(userRepository.findByUsername("testUsername"));            //                                                when you want to edit the user
                                                                               //                                                but it does not exist
-        User testUser = null;
+      //  User testUser = null;
 
         // check that an error is thrown
         String exceptionMessage = "User not found";
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(testUser), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(null), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
     }
+
+
 
 
 }

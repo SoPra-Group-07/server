@@ -55,7 +55,7 @@ public class PlayerStatisticService {
         gameRound.setPlayerStatistic(playerStatistics);
     }
 
-    private PlayerStatistic calculateClueingPlayerPoints(Clue clue, boolean rightGuess, PlayerStatistic playerStatistic) {
+    public PlayerStatistic calculateClueingPlayerPoints(Clue clue, boolean rightGuess, PlayerStatistic playerStatistic) {
         float totalPoints = 0;
 
         if (rightGuess) {
@@ -84,7 +84,7 @@ public class PlayerStatisticService {
             else if (clue.getDuration() <= 30) {
                 totalPoints += 0.2;
                 playerStatistic.setDuration(clue.getDuration());
-                playerStatistic.setDurationPoints(0.1);
+                playerStatistic.setDurationPoints(0.2);
             }
             else if (clue.getDuration() <= 45) {
                 totalPoints += 0.1;
@@ -100,7 +100,7 @@ public class PlayerStatisticService {
         return playerStatistic;
     }
 
-    private PlayerStatistic calculateGuessingPlayerPoints(Guess guess, PlayerStatistic playerStatistic){
+    public PlayerStatistic calculateGuessingPlayerPoints(Guess guess, PlayerStatistic playerStatistic){
         float totalPoints = 0;
         if (!guess.getDidSubmit()){
             playerStatistic.setRightGuess(false);
@@ -133,7 +133,6 @@ public class PlayerStatisticService {
         playerStatistic.setGuess(guess.getWord());
 
         return playerStatistic;
-
     }
 
     public void updatePlayer(PlayerStatistic playerStatistic){

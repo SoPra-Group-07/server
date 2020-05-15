@@ -54,16 +54,17 @@ public class GameService {
         Game game = new Game();
         game.setGameName(gameInput.getGameName());
         game.setAdminPlayerId(gameInput.getAdminPlayerId());
-        game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
         game.setHasBot(gameInput.getHasBot());
         game.setGameStatus(GameStatus.CREATED);
         game.setActualGameRoundIndex(0);
         game.setCardIds(getRandomUniqueCardIds());
         game.setRandomStartPosition(new Random().nextInt(7));
-        game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
-        if (gameInput.getIsDemoGame())
-        { game.setTotalGameRounds(3); }
-        else { game.setTotalGameRounds(13);}
+        if (gameInput.getIsDemoGame()) {
+            game.setTotalGameRounds(3);
+        }
+        else {
+            game.setTotalGameRounds(13);
+        }
 
         game = gameRepository.save(game);
         gameRepository.flush();

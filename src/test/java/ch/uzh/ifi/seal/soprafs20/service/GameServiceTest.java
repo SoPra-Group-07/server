@@ -129,10 +129,11 @@ public class GameServiceTest {
         assertEquals(testGame.getHasBot(), createdGame.getHasBot());
         assertEquals(testGame.getPlayers(), createdGame.getPlayers());
     }
-
+/*
     /**
      * tests that createNewGame(Game game) throws a response status exception if the gameName is already taken
      */
+/*
     @Test
     public void Test_createGame_withAlreadyTaken_gameName() {
         // when -> object is being save in the gameRepository -> return the dummy testUser
@@ -143,7 +144,7 @@ public class GameServiceTest {
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
-
+*/
     /**
      * test that joinGame(gameId, userId) joins the user to the desired game
      */
