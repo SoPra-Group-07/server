@@ -23,7 +23,6 @@ public class PlayerStatisticController {
 
 
     PlayerStatisticController(GameRoundService gameRoundService){
-
         this.gameRoundService = gameRoundService;
     }
 

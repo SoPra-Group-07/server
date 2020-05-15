@@ -62,7 +62,7 @@ public class GameService {
         game.setRandomStartPosition(new Random().nextInt(7));
         game.setAdminPlayerName(userRepository.findByUserId(gameInput.getAdminPlayerId()).getUsername());
         if (gameInput.getIsDemoGame())
-        { game.setTotalGameRounds(2); }
+        { game.setTotalGameRounds(3); }
         else { game.setTotalGameRounds(13);}
 
         game = gameRepository.save(game);
