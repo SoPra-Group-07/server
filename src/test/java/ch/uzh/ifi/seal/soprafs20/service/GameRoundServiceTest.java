@@ -297,9 +297,12 @@ public class GameRoundServiceTest {
         given(guessRepository.findByPlayerIdAndGameRoundId(2L , 1L)).willReturn(guess);
         given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
         given(gameRepository.findByGameId(1L)).willReturn(testGame);
-        doNothing().when(playerStatisticService).computeGameRoundStatistic(gameRound);
         given(userRepository.findByUserId(1)).willReturn(testUser);
         given(userRepository.findByUserId(2)).willReturn(testUser1);
+
+        List<PlayerStatistic> playerStatistics = new ArrayList<>();
+        given(playerStatisticService.computeGameRoundStatistic(gameRound)).willReturn(playerStatistics);
+
 
         long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
         gameRound.setGuessingPlayerId(guessingPlayerId);

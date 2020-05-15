@@ -25,7 +25,7 @@ public class PlayerStatisticService {
         this.playerRepository = playerRepository;
     }
 
-    public void computeGameRoundStatistic(GameRound gameRound){
+    public List<PlayerStatistic> computeGameRoundStatistic(GameRound gameRound){
         List<PlayerStatistic> playerStatistics = new ArrayList<>();
 
         Guess guess = gameRound.getGuess();
@@ -49,10 +49,9 @@ public class PlayerStatisticService {
             playerStatistics.add(playerStatistic3);
             updatePlayer(playerStatistic3);
         }
-
-
-
         gameRound.setPlayerStatistic(playerStatistics);
+
+        return playerStatistics;
     }
 
     public PlayerStatistic calculateClueingPlayerPoints(Clue clue, boolean rightGuess, PlayerStatistic playerStatistic) {

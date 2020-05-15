@@ -8,6 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -15,6 +19,8 @@ public class PlayerStatisticServiceTest {
 
     @Mock
     PlayerRepository playerRepository;
+    @Mock
+    PlayerStatisticRepository playerStatisticRepository;
     @InjectMocks
     PlayerStatisticService playerStatisticService;
     @InjectMocks
@@ -22,7 +28,11 @@ public class PlayerStatisticServiceTest {
     @InjectMocks
     private PhysicalPlayer testPlayer1;
     @InjectMocks
+    private PhysicalPlayer testPlayer2;
+    @InjectMocks
     private Clue testClue;
+    @InjectMocks
+    private Clue testClue1;
     @InjectMocks
     private Guess testGuess;
     @InjectMocks
@@ -40,6 +50,16 @@ public class PlayerStatisticServiceTest {
         testPlayer1.setPlayerId(3L);
         testPlayer1.setUserId(2L);
         testPlayer1.setPlayerName("anotherPlayer");
+        testPlayer2.setPlayerId(4L);
+        testPlayer2.setUserId(3L);
+        testPlayer2.setPlayerName("anotherOtherPlayer");
+
+        testClue1.setPlayerName("anotherOtherPlayer");
+        testClue1.setDuplicate(false);
+        testClue1.setDidSubmit(false);
+        testClue1.setDuration(60);
+        testClue1.setWord("noClue");
+        testClue1.setPlayerId(4L);
 
     }
 
@@ -48,7 +68,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1 for right guess +0.3 for duration and no deductions = 1.3.
      */
     @Test
-    public void testCalculateClueingPlayerPoints(){
+    public void testCalculateCluingPlayerPoints(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(false);
@@ -80,7 +100,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1 for right guess +0.2 for duration and -0.5 for a duplicate clue = 0.7.
      */
     @Test
-    public void testCalculateClueingPlayerPoints2(){
+    public void testCalculateCluingPlayerPoints2(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(true);
@@ -111,7 +131,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1 for right guess +0.1 for duration and -0.5 for a duplicate clue = 0.7.
      */
     @Test
-    public void testCalculateClueingPlayerPoints4(){
+    public void testCalculateCluingPlayerPoints4(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(true);
@@ -142,7 +162,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here 0 for right guess 0 for duration and -0.6 for not submitting a clue.
      */
     @Test
-    public void testCalculateClueingPlayerPoints3(){
+    public void testCalculateCluingPlayerPoints3(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(false);
@@ -321,6 +341,70 @@ public class PlayerStatisticServiceTest {
         assertEquals(playerStatistic1.getRightGuessPoints()+
                 playerStatistic1.getDurationPoints(),playerStatistic1.getTotalPoints());
         assertEquals(0, playerStatistic1.getTotalPoints());
+    }
+
+    /***
+     * tests that computeGameRoundStatistic() returns a list of playerStatistic objects for every player,
+     * starting with the guessingPlayer at index 0, followed by all cluingPlayers
+     * Therefore it asserts, that the list has size 3
+     * Additionally, checks that the values of the playerStatistic are correct
+     */
+    @Test
+    public void computeGameRoundStatisticTest(){
+        //given
+        Mockito.when(playerRepository.findByPlayerId(2L)).thenReturn(testPlayer);
+        Mockito.when(playerRepository.findByPlayerId(3L)).thenReturn(testPlayer1);
+        Mockito.when(playerRepository.findByPlayerId(4L)).thenReturn(testPlayer2);
+        Mockito.when(playerStatisticRepository.save(playerStatistic1)).thenReturn(playerStatistic);
+
+
+        GameRound gameRound = new GameRound();
+        gameRound.setGameRoundId(1L);
+
+        testGuess.setPlayerName("anotherPlayer");
+        testGuess.setDidSubmit(true);
+        testGuess.setCorrectGuess(true);
+        testGuess.setDuration(30);
+        testGuess.setWord("hey");
+        testGuess.setPlayerId(2L);
+        gameRound.setGuess(testGuess);
+
+        testClue.setPlayerName("testPlayer1");
+        testClue.setDuplicate(false);
+        testClue.setDidSubmit(true);
+        testClue.setDuration(8);
+        testClue.setWord("hey");
+        testClue.setPlayerId(2L);
+
+        testClue.setPlayerName("anotherPlayer");
+        testClue.setDuplicate(false);
+        testClue.setDidSubmit(true);
+        testClue.setDuration(8);
+        testClue.setWord("hey");
+        testClue.setPlayerId(3L);
+
+        List<Clue> submissions = new ArrayList<>();
+        submissions.add(testClue);
+        submissions.add(testClue1);
+        gameRound.setSubmissions(submissions);
+
+        List<PlayerStatistic> playerStatistics = playerStatisticService.computeGameRoundStatistic(gameRound);
+
+        assertEquals(3, playerStatistics.size());
+
+        assertEquals(gameRound.getGameRoundId(), playerStatistics.get(0).getGameRoundId());
+        assertEquals(testPlayer.getPlayerId(), playerStatistics.get(0).getPlayerId());
+        assertEquals(testPlayer.getPlayerName(), playerStatistics.get(0).getPlayerName());
+        assertEquals(1.7, playerStatistics.get(0).getTotalPoints());
+        assertTrue(playerStatistics.get(0).getWasGuessingPlayer());
+        assertEquals(30.0, playerStatistics.get(0).getDuration());
+        assertEquals(testGuess.getWord(), playerStatistics.get(0).getGuess());
+        assertFalse(playerStatistics.get(0).getDidNotClue());
+        assertFalse(playerStatistics.get(0).getDuplicateClue());
+        assertEquals(0.0, playerStatistics.get(0).getDuplicateCluePoints());
+        assertEquals(0.0, playerStatistics.get(0).getNotCluePoints());
+        assertEquals(1.5, playerStatistics.get(0).getRightGuessPoints());
+        assertTrue(playerStatistics.get(0).getRightGuess());
     }
 }
 
