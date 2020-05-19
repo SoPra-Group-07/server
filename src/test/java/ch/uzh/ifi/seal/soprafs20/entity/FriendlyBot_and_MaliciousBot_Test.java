@@ -50,23 +50,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
 
 
     }
-    /**
-     * tests that a synonym and an antonym is found for Elvis
-     */
-    @Test
-    public void find_syn_and_ant_for_Elvis() throws IOException {
-        String friendlyWord = testFriendlyBot.giveClue("Elvis");
-        assertNotEquals("elvis", friendlyWord);
-        assertFalse(friendlyWord.contains(" "));
 
-
-        String maliciousWord = testMaliciousBot.giveClue("Elvis");
-        assertNotEquals("elvis", maliciousWord);
-        assertFalse(maliciousWord.contains(" "));
-
-
-
-    }
 
     /**
      * tests that a synonym and an antonym is found for Churchill
