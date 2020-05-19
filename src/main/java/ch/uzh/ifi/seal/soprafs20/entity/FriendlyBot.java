@@ -21,12 +21,12 @@ public class FriendlyBot extends Player {
     public String giveClue(String word) throws IOException {
         String clue = getWordByUrl(getSynonymeUrl(word.toLowerCase()), word.toLowerCase());
         String trigger = "";
-        if (clue.equalsIgnoreCase((word.toLowerCase())) || clue.contains(word)){
+        if (clue.equalsIgnoreCase((word.toLowerCase())) || clue.contains(word) || word.contains(clue)){
             trigger= getWordByUrl(getTriggerUrl(word.toLowerCase()), word.toLowerCase());
             if (trigger.equalsIgnoreCase(word) || trigger.contains(word) || word.contains(trigger)){return word;}
+            else{return trigger;}
         }
-        else{return trigger;}
-        return clue;
+        else{return clue;}
     }
 
 

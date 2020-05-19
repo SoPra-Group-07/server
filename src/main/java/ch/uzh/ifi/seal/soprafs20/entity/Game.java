@@ -53,6 +53,9 @@ public class Game implements Serializable {
     private boolean hasBot;
 
     @Column
+    private boolean friendlyBot;
+
+    @Column
     private Long adminPlayerId;
 
     @Column
@@ -70,7 +73,13 @@ public class Game implements Serializable {
     @Column
     private boolean isDemoGame;
 
+    public boolean getFriendlyBot() {
+        return friendlyBot;
+    }
 
+    public void setFriendlyBot(boolean friendlybot) {
+        this.friendlyBot = friendlybot;
+    }
 
     public boolean getIsDemoGame() {
         return isDemoGame;

@@ -61,6 +61,7 @@ public class GameService {
         game.setRandomStartPosition(new Random().nextInt(7));
         if (gameInput.getIsDemoGame()) {
             game.setTotalGameRounds(3);
+            game.setFriendlyBot(true);
         }
         else {
             game.setTotalGameRounds(13);
@@ -119,12 +120,14 @@ public class GameService {
     private Player createBot(Game game) {
         List<String> fancyNames = new ArrayList<>(Arrays.asList("Jenny","Roy","Aquaman","JanTheNeck","Bernie","Hansi","Lars","Elaine","Alex","Renato","Chat","Christiane","Patrick","Andy","Thomas","Egon","Burkhard","Michael","Alberto","Ralph"));
         int idx = this.random.nextInt(fancyNames.size()-1);
+
         boolean friendly = random.nextBoolean();
+        if (game.getFriendlyBot()){friendly = true;}
         if (friendly) {
             Player bot = new FriendlyBot();
             bot.setGameId(game.getGameId());
             bot.setPlayerName(fancyNames.get(idx));
-
+            game.setFriendlyBot(true);
             bot = playerRepository.save(bot);
             playerRepository.flush();
             return bot;
@@ -134,7 +137,7 @@ public class GameService {
             Player bot = new MaliciousBot();
             bot.setPlayerName(fancyNames.get(idx));
             bot.setGameId(game.getGameId());
-
+            game.setFriendlyBot(false);
             bot = playerRepository.save(bot);
             playerRepository.flush();
             return bot;
