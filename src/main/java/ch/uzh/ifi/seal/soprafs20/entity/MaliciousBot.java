@@ -25,11 +25,17 @@ public class MaliciousBot extends Player implements Serializable {
     @Override
     public String giveClue(String word) throws IOException {
         String ant = getWordByUrl(getAntonymUrl(word.toLowerCase()), word.toLowerCase());
-        if (ant.equalsIgnoreCase(word)){
-        String adj = getWordByUrl(getAdjectiveUrl(word.toLowerCase()), word.toLowerCase());
-        return getWordByUrl(getAntonymUrl(adj), adj);
+        if (ant.equalsIgnoreCase(word) || ant.contains(word) || word.contains(ant)) {
+            String adj = getWordByUrl(getAdjectiveUrl(word.toLowerCase()), word.toLowerCase());
+            String adjAnt = getWordByUrl(getAntonymUrl(adj), adj);
+            if (adjAnt.equalsIgnoreCase(word) || adjAnt.contains(word) || word.contains(adjAnt)) {
+                return word;
+            }
+            else {
+                return adjAnt;
+            }
         }
-        return ant;
+        else{ return ant;}
     }
 
     public static String getAdjectiveUrl(String word) throws IOException {

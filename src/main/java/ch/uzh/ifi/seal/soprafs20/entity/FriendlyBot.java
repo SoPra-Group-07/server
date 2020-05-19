@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
 /**
  *Internal FriendlyBot Representation
  *This class composes the internal representation of the friendlyBot and defines how the friendlyBot is stored in the database.
@@ -21,9 +20,12 @@ public class FriendlyBot extends Player {
     @Override
     public String giveClue(String word) throws IOException {
         String clue = getWordByUrl(getSynonymeUrl(word.toLowerCase()), word.toLowerCase());
-        if (clue.equalsIgnoreCase(word.toLowerCase())){
-            return getWordByUrl(getTriggerUrl(word.toLowerCase()), word.toLowerCase());
+        String trigger = "";
+        if (clue.equalsIgnoreCase((word.toLowerCase())) || clue.contains(word)){
+            trigger= getWordByUrl(getTriggerUrl(word.toLowerCase()), word.toLowerCase());
+            if (trigger.equalsIgnoreCase(word) || trigger.contains(word) || word.contains(trigger)){return word;}
         }
+        else{return trigger;}
         return clue;
     }
 
