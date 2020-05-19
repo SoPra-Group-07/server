@@ -48,8 +48,17 @@ JPA
 ![JPA](src/images/JPA.png)
 
 ## High-level components
+The application consists of six main components: User, Player, Game, GameRound, PlayerStatistic and Application.
+The user entity is the internal representation of an user and is used to store information about each
+user such as username and password. A user can create a game or join a game, when he does that, then a
+player is created for him, which is another entity, which represents the information that is stored during
+a game about the user (e.g. actual points). A player belongs to one game, which is another important entity of the
+application. The game consists of thirteen (or three in demo game) gameRounds and stores the players and controls the beginning and end
+of a game. The gameRound then contains important information about the clues/guesses that have been given, the chosen mystery
+word and the players actual role. Further each gameRound contains three to seven playerStatistics, one for each player. 
+In these playerStatistics, information about the submissions of players is stored (e.g. submissionTime, submissionPoints and so on).
+[Application](src\main\java\ch\uzh\ifi\seal\soprafs20\Application.java) is the main class of this application and contains the main method.
 
-## Launch & Deployment
 ### Setup this Template with your IDE of choice
 
 Download your IDE of choice: (e.g., [Eclipse](http://www.eclipse.org/downloads/), [IntelliJ](https://www.jetbrains.com/idea/download/)) and make sure Java 13 is installed on your system.
@@ -91,6 +100,7 @@ More Information about [Gradle Wrapper](https://docs.gradle.org/current/userguid
 
 #### Development Mode
 
+
 You can start the backend in development mode, this will automatically trigger a new build and reload the application
 once the content of a file has been changed and you save the file.
 
@@ -105,6 +115,13 @@ and in the other one:
 If you want to avoid running all tests with every change, use the following command instead:
 
 `./gradlew build --continuous -xtest`
+
+### Run the application
+You can run the application by right clicking on the Application class and choosing "run".
+
+### Run the tests
+You can run the test by right clicking on the test folder and choose "Run Tests in..."
+
 
 ## Roadmap
 If you have ideas to improve our application, feel invited to join us. 
