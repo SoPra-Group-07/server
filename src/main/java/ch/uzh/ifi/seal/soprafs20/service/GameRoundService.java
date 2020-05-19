@@ -213,7 +213,6 @@ public class GameRoundService {
         gameRound.setGuess(guess1);
 
         if(guess1.getDidSubmit() && !guess1.getCorrectGuess()){
-            game.setActualGameRoundIndex(game.getActualGameRoundIndex() + 1);
             game.setTotalGameRounds(game.getTotalGameRounds() - 1);
             game.setRandomStartPosition(game.getRandomStartPosition() - 1); }
 
