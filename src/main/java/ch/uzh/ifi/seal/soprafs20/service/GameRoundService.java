@@ -260,13 +260,16 @@ public class GameRoundService {
         for (Clue clue: submission){
 
             for(Clue clue1: submission){
-                if ((clue.getStemmedClue().equals(clue1.getStemmedClue()) && !clue.getSubmissionId().equals(clue1.getSubmissionId()))
-                        || clue.getStemmedClue().equalsIgnoreCase(stemmer.stem(gameRound.getMysteryWord()).toString())){
-
+                if ((clue.getStemmedClue().equals(clue1.getStemmedClue()) && !clue.getSubmissionId().equals(clue1.getSubmissionId()))){
                     clue.setDuplicate(true);
                     clue1.setDuplicate(true); }
 
             }
+
+            if (clue.getStemmedClue().equalsIgnoreCase(stemmer.stem(gameRound.getMysteryWord().toLowerCase()).toString())){
+                clue.setDuplicate(true);
+            }
+
 
         }
 
