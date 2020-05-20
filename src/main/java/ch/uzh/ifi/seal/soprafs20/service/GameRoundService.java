@@ -213,8 +213,7 @@ public class GameRoundService {
         gameRound.setGuess(guess1);
 
         if(guess1.getDidSubmit() && !guess1.getCorrectGuess()){
-            game.setTotalGameRounds(game.getTotalGameRounds() - 1);
-            game.setRandomStartPosition(game.getRandomStartPosition() - 1); }
+            game.setTotalGameRounds(game.getTotalGameRounds() - 1); }
 
         if (game.getActualGameRound() >= game.getTotalGameRounds()){
             finishGame(game);
@@ -255,7 +254,6 @@ public class GameRoundService {
 
 
         for (Clue clue: submission){
-           // if (game.getHasBot()){
             String stemmedClue = stemmer.stem(clue.getWord()).toString().toLowerCase();
             clue.setStemmedClue(stemmedClue); }
 
