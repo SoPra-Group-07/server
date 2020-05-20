@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,4 +84,38 @@ public class GameServiceIntegrationTest {
 
 
     }
+
+    @Test
+    public void createGame_alreadyExistingGameName_throws_RSE() {
+
+        User user = new User();
+        user.setUsername("testUser");
+        user.setPassword("testPassword");
+        user.setStatus(UserStatus.ONLINE);
+        User user1 = userRepository.save(user);
+        userRepository.flush();
+
+
+        Game testGame = new Game();
+        testGame.setGameName("testGameName");
+        testGame.setAdminPlayerId(user1.getUserId());
+        testGame.setHasBot(true);
+        gameRepository.save(testGame);
+        gameRepository.flush();
+
+
+        Game testGame1 = new Game();
+        testGame1.setGameName("testGameName");
+        testGame1.setAdminPlayerId(user1.getUserId());
+        testGame1.setHasBot(true);
+
+
+        String exceptionMessage = "GameName is already taken!";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.createNewGame(testGame1), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+
+    }
+
+
 }
