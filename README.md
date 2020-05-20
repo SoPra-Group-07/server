@@ -57,7 +57,7 @@ application. The game consists of thirteen (or three in demo game) gameRounds an
 of a game. The gameRound then contains important information about the clues/guesses that have been given, the chosen mystery
 word and the players actual role. Further each gameRound contains three to seven playerStatistics, one for each player. 
 In these playerStatistics, information about the submissions of players is stored (e.g. submissionTime, submissionPoints and so on).
-[Application](src\main\java\ch\uzh\ifi\seal\soprafs20\Application.java) is the main class of this application and contains the main method.
+[Application](https://github.com/SoPra-Group-07/server/blob/master/src/main/java/ch/uzh/ifi/seal/soprafs20/Application.java) is the main class of this application and contains the main method.
 
 ### Setup this Template with your IDE of choice
 
