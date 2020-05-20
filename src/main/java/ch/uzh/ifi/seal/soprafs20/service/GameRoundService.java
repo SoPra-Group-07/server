@@ -224,8 +224,8 @@ public class GameRoundService {
 
     public void checkGuess(GameRound gameRound, Guess guess){
         Stemmer stemmer = new PorterStemmer();
-        String stemmedGuess = stemmer.stem(guess.getWord()).toString().toLowerCase();
-        String stemmedMysteryWord = stemmer.stem(gameRound.getMysteryWord()).toString().toLowerCase();
+        String stemmedGuess = stemmer.stem(guess.getWord().toLowerCase()).toString();
+        String stemmedMysteryWord = stemmer.stem(gameRound.getMysteryWord().toLowerCase()).toString();
 
         if (stemmedGuess.equals(stemmedMysteryWord)){
             guess.setCorrectGuess(true); }

@@ -24,11 +24,12 @@ public class MaliciousBot extends Player implements Serializable {
 
     @Override
     public String giveClue(String word) throws IOException {
-        String ant = getWordByUrl(getAntonymUrl(word.toLowerCase()), word.toLowerCase());
+        String word_lower = word.toLowerCase();
+        String ant = getWordByUrl(getAntonymUrl(word_lower), word_lower);
         if (ant.equalsIgnoreCase(word) || ant.contains(word) || word.contains(ant)) {
-            String adj = getWordByUrl(getAdjectiveUrl(word.toLowerCase()), word.toLowerCase());
+            String adj = getWordByUrl(getAdjectiveUrl(word_lower), word_lower);
             String adjAnt = getWordByUrl(getAntonymUrl(adj), adj);
-            if (adjAnt.equalsIgnoreCase(word) || adjAnt.contains(word) || word.contains(adjAnt)) {
+            if (adjAnt.equalsIgnoreCase(word) || adjAnt.contains(word_lower) || word_lower.contains(adjAnt)) {
                 return word;
             }
             else {
@@ -78,7 +79,7 @@ public class MaliciousBot extends Player implements Serializable {
                     mapper.getTypeFactory().constructCollectionType(ArrayList.class, aptReq.class));
 
             if (!words.isEmpty()) {
-                return words.get(0).getWord().replaceAll("\\s","");
+                return words.get(0).getWord().replaceAll("\\s","").toLowerCase();
             }
             else {
 

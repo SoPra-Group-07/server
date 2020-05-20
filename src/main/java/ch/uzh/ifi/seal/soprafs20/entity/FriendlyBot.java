@@ -19,11 +19,12 @@ public class FriendlyBot extends Player {
 
     @Override
     public String giveClue(String word) throws IOException {
-        String clue = getWordByUrl(getSynonymeUrl(word.toLowerCase()), word.toLowerCase());
+        String word_lower = word.toLowerCase();
+        String clue = getWordByUrl(getSynonymeUrl(word_lower), word_lower);
         String trigger = "";
-        if (clue.equalsIgnoreCase((word.toLowerCase())) || clue.contains(word) || word.contains(clue)){
-            trigger= getWordByUrl(getTriggerUrl(word.toLowerCase()), word.toLowerCase());
-            if (trigger.equalsIgnoreCase(word) || trigger.contains(word) || word.contains(trigger)){return word;}
+        if (clue.equalsIgnoreCase((word_lower)) || clue.contains(word_lower) || word_lower.contains(clue)){
+            trigger= getWordByUrl(getTriggerUrl(word_lower),word_lower);
+            if (trigger.equalsIgnoreCase(word) || trigger.contains(word_lower) || word_lower.contains(trigger)){return word;}
             else{return trigger;}
         }
         else{return clue;}
@@ -68,11 +69,11 @@ public class FriendlyBot extends Player {
 
             if (!words.isEmpty()) {
 
-                return words.get(0).getWord().replaceAll("\\s","");
+                return words.get(0).getWord().replaceAll("\\s","").toLowerCase();
             }
             else {
 
-                return word;
+                return word.toLowerCase();
             }
         }
         catch (IOException e) { e.getMessage();}
