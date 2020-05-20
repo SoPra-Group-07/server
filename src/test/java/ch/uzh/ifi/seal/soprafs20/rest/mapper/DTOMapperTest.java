@@ -1,10 +1,13 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Clue;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundClueDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,5 +68,29 @@ public class DTOMapperTest {
         assertEquals(userEditDTO.getId(), user.getUserId());
     }
 
+    @Test
+    public void testConversionFrom_GameRoundClueDTO_to_Clue(){
+
+        GameRoundClueDTO gameRoundClueDTO = new GameRoundClueDTO();
+        gameRoundClueDTO.setClue("myClue");
+        gameRoundClueDTO.setGameRoundId(1L);
+        gameRoundClueDTO.setPlayerId(2L);
+
+        Clue clue = DTOMapper.INSTANCE.convertGameRoundClueDTOtoEntity(gameRoundClueDTO);
+        assertEquals(clue.getGameRoundId(), gameRoundClueDTO.getGameRoundId());
+        assertEquals(clue.getWord(), gameRoundClueDTO.getClue());
+        assertEquals(clue.getPlayerId(), gameRoundClueDTO.getPlayerId());
+
+    }
+    @Test
+    public void testConversionFrom_userTokenDTO_to_UserGetDTO(){
+        UserTokenDTO userTokenDTO = new UserTokenDTO();
+        userTokenDTO.setToken("myToken123444");
+
+        User user = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+
+        assertEquals(user.getToken(), userTokenDTO.getToken());
+
+    }
 
 }
