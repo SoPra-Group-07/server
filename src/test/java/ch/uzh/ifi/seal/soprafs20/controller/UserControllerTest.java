@@ -254,6 +254,7 @@ public class UserControllerTest {
         given(userService.checkUsername(Mockito.any())).willReturn(true);
         given(userService.acceptLogin(Mockito.any(),Mockito.any())).willReturn(true);
         given(userService.isAlreadyLoggedIn(Mockito.any())).willReturn(true);
+        given(userService.getUserByUsername(user.getUsername())).willReturn(user);
 
 
         // when/then -> do the request + validate the result
@@ -263,7 +264,15 @@ public class UserControllerTest {
 
         // then
         mockMvc.perform(putRequest)
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(user.getUserId().intValue())))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.password", is(user.getPassword())))           //E.g., '$.password' is an expression to select the wanted information from a Json object
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
+                .andExpect(jsonPath("$.birth", is("00-00-0000")))
+                .andExpect(jsonPath("$.date", is(user.getCreationDate().toString())))
+                .andExpect(jsonPath("$.token", is(user.getToken())));
 
     }
 
