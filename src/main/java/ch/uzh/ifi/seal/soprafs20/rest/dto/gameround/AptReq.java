@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto.gameround;
 
-public class aptReq {
+public class AptReq {
     private String word;
     private int score;
 

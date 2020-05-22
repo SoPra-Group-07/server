@@ -118,7 +118,7 @@ class UserServiceTest {
         Mockito.when(userRepository.findByUsername(testUser1.getUsername())).thenReturn(testUser1);
         userService.login(testUser);
 
-        assertEquals(testUser.getStatus(), UserStatus.ONLINE);
+        assertEquals(UserStatus.ONLINE,testUser.getStatus());
         assertEquals(UserStatus.OFFLINE, testUser1.getStatus());
     }
 
@@ -134,7 +134,7 @@ class UserServiceTest {
         Mockito.when(userRepository.findByToken(testUser.getToken())).thenReturn(testUser);
         userService.logout(testUser);
 
-        assertEquals(testUser.getStatus(), UserStatus.OFFLINE);
+        assertEquals(UserStatus.OFFLINE,testUser.getStatus());
 
     }
 

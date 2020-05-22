@@ -312,10 +312,13 @@ class GameServiceTest {
 
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
         Mockito.when(playerRepository.findByUserIdAndGameId(testUser.getUserId(), testGame.getGameId())).thenReturn(testPlayer);
+        Long gameId = testGame.getGameId();
+        Long userId = testUser.getUserId();
+
 
 
         String exceptionMessage = "you can not leave this game since it is already running or finished.";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.leaveGame(testGame.getGameId(), testUser.getUserId()), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.leaveGame(gameId,userId), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }

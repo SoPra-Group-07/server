@@ -40,8 +40,7 @@ class GameServiceIntegrationTest {
     @Autowired
     private GameService gameService;
 
-    @Autowired
-    private UserService userService;
+
 
     @BeforeEach
     void setup() {

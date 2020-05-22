@@ -1,5 +1,5 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.aptReq;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.AptReq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.persistence.Entity;
 import java.io.BufferedReader;
@@ -63,9 +63,9 @@ public class FriendlyBot extends Player {
 
         try {
             // converting JSON array to ArrayList of words
-            ArrayList<aptReq> words = mapper.readValue(
+            ArrayList<AptReq> words = mapper.readValue(
                     response.toString(),
-                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, aptReq.class));
+                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, AptReq.class));
 
             if (!words.isEmpty()) {
 
