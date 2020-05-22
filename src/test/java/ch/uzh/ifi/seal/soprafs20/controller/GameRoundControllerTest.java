@@ -3,11 +3,10 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
-import ch.uzh.ifi.seal.soprafs20.repository.ClueRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GuessRepository;
 
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundGuessDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -3,11 +3,11 @@ package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Clue;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundClueDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundClueDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserEditDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserGetDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserTokenDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

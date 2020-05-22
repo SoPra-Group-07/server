@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound;
+package ch.uzh.ifi.seal.soprafs20.rest.dto.gameround;
 
 public class GameRoundPutDTO {
     private Long gameRoundId;

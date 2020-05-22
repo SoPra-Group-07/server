@@ -2,16 +2,16 @@ package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.game.*;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundClueDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard.LeaderboardDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.PlayerStatistic.PlayerStatisticDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserGetDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundClueDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundGuessDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundPutDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.leaderboard.LeaderboardDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.playerstatistic.PlayerStatisticDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserEditDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserGetDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 

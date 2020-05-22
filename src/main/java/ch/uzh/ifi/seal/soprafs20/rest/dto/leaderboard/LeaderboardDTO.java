@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.rest.dto.Leaderboard;
+package ch.uzh.ifi.seal.soprafs20.rest.dto.leaderboard;
 
 public class LeaderboardDTO {
     private String username;

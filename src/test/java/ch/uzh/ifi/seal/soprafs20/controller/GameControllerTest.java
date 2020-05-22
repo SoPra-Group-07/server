@@ -5,7 +5,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
 import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.game.*;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

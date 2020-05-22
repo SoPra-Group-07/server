@@ -1,5 +1,5 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.aptReq;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.aptReq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.persistence.Entity;
 import java.io.BufferedReader;
