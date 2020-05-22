@@ -321,7 +321,4 @@ class GameRoundServiceTest {
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
 
-
-
-
 }

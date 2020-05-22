@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the UserController works.
  */
 @WebMvcTest(LeaderboardController.class)
-public class LeaderboardControllerTest {
+class LeaderboardControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,7 +37,7 @@ public class LeaderboardControllerTest {
     private LeaderboardService leaderboardService;
 
     @Test
-    public void givenUsers_whenGetLeaderboard_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
+    void givenUsers_whenGetLeaderboard_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
         // given
         User user1 = new User();
         user1.setPassword("testPassword");

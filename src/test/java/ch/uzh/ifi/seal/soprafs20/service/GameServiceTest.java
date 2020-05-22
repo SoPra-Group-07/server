@@ -24,7 +24,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class GameServiceTest {
+class GameServiceTest {
 
     @Mock
     GameRepository gameRepository;
@@ -58,7 +58,7 @@ public class GameServiceTest {
     private GameRound gameRound;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         // given
@@ -112,7 +112,7 @@ public class GameServiceTest {
      * tests that createNewGame() creates a game with the given parameters
      */
     @Test
-    public void Test_createGame() {
+    void Test_createGame() {
         // when -> object is being save in the gameRepository -> return the dummy testUser
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
         Mockito.when(playerRepository.save(Mockito.any())).thenReturn(testPlayer);
@@ -129,13 +129,13 @@ public class GameServiceTest {
         assertEquals(testGame.getHasBot(), createdGame.getHasBot());
         assertEquals(testGame.getPlayers(), createdGame.getPlayers());
     }
-/*
+
     /**
      * tests that createNewGame(Game game) throws a response status exception if the gameName is already taken
      */
-/*
+
     @Test
-    public void Test_createGame_withAlreadyTaken_gameName() {
+    void Test_createGame_withAlreadyTaken_gameName() {
         // when -> object is being save in the gameRepository -> return the dummy testUser
         Mockito.when(gameRepository.findByGameName(testGame.getGameName())).thenReturn(testGame);
 
@@ -144,12 +144,12 @@ public class GameServiceTest {
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
-*/
+
     /**
      * test that joinGame(gameId, userId) joins the user to the desired game
      */
     @Test
-    public void test_joinGame(){
+    void test_joinGame(){
         testUser1.setStatus(UserStatus.ONLINE);
         testUser.setStatus(UserStatus.ONLINE);
 
@@ -170,7 +170,7 @@ public class GameServiceTest {
      * test that joinGame(gameId, userId) throws an response status exception if game is already full
      */
     @Test
-    public void test_joinGame_when_Game_full(){
+    void test_joinGame_when_Game_full(){
         testUser1.setStatus(UserStatus.ONLINE);
         testUser.setStatus(UserStatus.ONLINE);
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
@@ -197,7 +197,7 @@ public class GameServiceTest {
      * test that joinGame(gameId, userId) throws an response status exception if this player is already in the game
      */
     @Test
-    public void test_joinGame_when_player_already_in_game(){
+    void test_joinGame_when_player_already_in_game(){
         testUser1.setStatus(UserStatus.ONLINE);
         testUser.setStatus(UserStatus.ONLINE);
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
@@ -213,7 +213,7 @@ public class GameServiceTest {
 
 
     @Test
-    public void test_getGameByGameStatus(){
+    void test_getGameByGameStatus(){
         List<Game> game = new ArrayList<>();
         game.add(testGame);
         Mockito.when(gameRepository.findAllByGameStatus(GameStatus.CREATED)).thenReturn(game);
@@ -226,7 +226,7 @@ public class GameServiceTest {
      * test that leaveGame(long gameId, Long userId) removes the player from the desired game
      */
     @Test
-    public void test_leaveGame(){
+    void test_leaveGame(){
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
         Mockito.when(playerRepository.findByUserIdAndGameId(testUser.getUserId(), testGame.getGameId())).thenReturn(testPlayer);
         gameService.leaveGame(testGame.getGameId(), testUser.getUserId());
@@ -239,7 +239,7 @@ public class GameServiceTest {
      * test that leaveGame(long gameId, Long userId) throws a response status exception when player that not exist wants to leave a game
      */
     @Test
-    public void test_leaveGame_whenPlayerNotInRepo(){
+    void test_leaveGame_whenPlayerNotInRepo(){
         User testUser3 = new User();
         testUser3.setUserId(3L);
         testUser3.setPassword("newUser");
@@ -263,7 +263,7 @@ public class GameServiceTest {
      * test that leaveGame(long gameId, Long userId) throws a response status exception when game that wants to be left does not exist in gameRepo
      */
     @Test
-    public void test_leaveGame_whenGameNotInGameRepo(){
+    void test_leaveGame_whenGameNotInGameRepo(){
         User testUser3 = new User();
         testUser3.setUserId(3L);
         testUser3.setPassword("newUser");
@@ -281,7 +281,7 @@ public class GameServiceTest {
      * test that leaveGame(long gameId, Long userId) throws a response status exception when a player wants to leave a game he is not in
      */
     @Test
-    public void test_leaveGame_whenPlayerNotInGame(){
+    void test_leaveGame_whenPlayerNotInGame(){
         User testUser3 = new User();
         testUser3.setUserId(3L);
         testUser3.setPassword("newUser");
@@ -306,7 +306,7 @@ public class GameServiceTest {
      * test that leaveGame(long gameId, Long userId) throws a response status exception when a player wants to leave a game that is running
      */
     @Test
-    public void test_leaveGame_whenGameIsRunning(){
+    void test_leaveGame_whenGameIsRunning(){
         testGame.setGameStatus(GameStatus.RUNNING);
 
 
@@ -324,7 +324,7 @@ public class GameServiceTest {
      * test that startGame(long gameId) throws a response status exception when a player wants to start a game that is already running
      */
     @Test
-    public void test_startGame_whenGameIsAlready_Running(){
+    void test_startGame_whenGameIsAlready_Running(){
         testGame.setGameStatus(GameStatus.RUNNING);
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
 
@@ -333,34 +333,5 @@ public class GameServiceTest {
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
-
-
-
-
-
-
-
-
-//Todo: this is more likely a test for GameRoundService
-    /*
-    @Test
-    public void test_startGame(){
-        testUser1.setStatus(UserStatus.ONLINE);
-        testUser.setStatus(UserStatus.ONLINE);
-        Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
-        Mockito.when(userRepository.findByUserId(testUser1.getId())).thenReturn(testUser1);
-        players.add(testPlayer1);
-        testGame.setPlayers(players);
-        testGame.setCardIds(gameService.getRandomUniqueCardIds());
-
-        Mockito.when(cardRepository.findByCardId(Mockito.anyLong())).thenReturn(testCard);
-
-        GameRound gameRound = gameService.startGame(testGame.getGameId());
-
-        System.out.println(gameRound);
-    }
-
-
-     */
 
 }

@@ -1,18 +1,11 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
-import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
+
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
-import ch.uzh.ifi.seal.soprafs20.repository.ClueRepository;
-import ch.uzh.ifi.seal.soprafs20.repository.GuessRepository;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
-import ch.uzh.ifi.seal.soprafs20.service.GameService;
-import ch.uzh.ifi.seal.soprafs20.service.PlayerStatisticService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.mockito.MockitoAnnotations;
-
 import java.util.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
@@ -36,13 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the PlayerStatisticController works.
  */
 @WebMvcTest(PlayerStatisticController.class)
-public class PlayerStatisticControllerTest {
+class PlayerStatisticControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private PlayerStatisticService playerStatisticService;
     @MockBean
     private GameRoundService gameRoundService;
 
@@ -72,12 +62,11 @@ public class PlayerStatisticControllerTest {
     List<Clue> submissions = new ArrayList<>();
     @InjectMocks
     private Clue clue1;
-    @InjectMocks
-    List<GameRound> gameRounds = new ArrayList<>();
+
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
         testPlayer.setPlayerId(1L);
         testPlayer.setUserId(1L);
@@ -175,7 +164,7 @@ public class PlayerStatisticControllerTest {
     }
 
     @Test
-    public void givenGameRound_whenGetGameRoundStatisticByRoundId_thenReturnGameRoundStatisticDTO() throws Exception {
+    void givenGameRound_whenGetGameRoundStatisticByRoundId_thenReturnGameRoundStatisticDTO() throws Exception {
         given(gameRoundService.getGameRoundByRoundId(1L)).willReturn(gameRound);
 
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/1/gameRoundStatistics");
@@ -203,7 +192,7 @@ public class PlayerStatisticControllerTest {
     }
 
     @Test
-    public void whenGetGameRoundStatisticByRoundId_gameRoundNotExists_thenReturnEmptyList() throws Exception {
+    void whenGetGameRoundStatisticByRoundId_gameRoundNotExists_thenReturnEmptyList() throws Exception {
         given(gameRoundService.getGameRoundByRoundId(2L)).willReturn(null);
 
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/2/gameRoundStatistics");

@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
 import ch.uzh.ifi.seal.soprafs20.entity.*;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.*;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.game.*;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundClueDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
@@ -14,8 +14,6 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-
-import javax.persistence.MappedSuperclass;
 
 /**
  * DTOMapper

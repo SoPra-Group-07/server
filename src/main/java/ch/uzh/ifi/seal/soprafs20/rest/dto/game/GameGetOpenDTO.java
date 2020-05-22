@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.rest.dto.Game;
+package ch.uzh.ifi.seal.soprafs20.rest.dto.game;
 
 public class GameGetOpenDTO {
     private Long gameId;

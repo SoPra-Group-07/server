@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
-import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
@@ -8,11 +7,9 @@ import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @WebAppConfiguration
 @SpringBootTest
-public class UserServiceIntegrationTest {
+class UserServiceIntegrationTest {
 
     @Qualifier("gameRepository")
     @Autowired
@@ -40,20 +37,17 @@ public class UserServiceIntegrationTest {
     private PlayerRepository playerRepository;
 
     @Autowired
-    private GameService gameService;
-
-    @Autowired
     private UserService userService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         playerRepository.deleteAll();
         gameRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @Test
-    public void createUser_validInputs_success() {                        //----------------->User registers with success
+    void createUser_validInputs_success() {                        //----------------->User registers with success
         // given
         assertNull(userRepository.findByUsername("testUsername"));
 
@@ -73,7 +67,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void createUser_duplicateUsername_throwsException() {          //----------------------------------------------> Status code 409 test - "Username already exists!"
+    void createUser_duplicateUsername_throwsException() {          //----------------------------------------------> Status code 409 test - "Username already exists!"
         assertNull(userRepository.findByUsername("testUsername"));        //                                                when you want to register with an already existing username
 
         User testUser = new User();
@@ -81,14 +75,12 @@ public class UserServiceIntegrationTest {
         testUser.setUsername("testUsername");
         User createdUser = userService.createUser(testUser);
 
-        // attempt to create second user with same username
         User testUser2 = new User();
 
-        // change the name but forget about the username
         testUser2.setPassword("123abc");
         testUser2.setUsername("testUsername");
 
-        // check that an error is thrown
+
         String exceptionMessage = "Username already exists!";
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2), exceptionMessage);
@@ -99,12 +91,11 @@ public class UserServiceIntegrationTest {
 
 
     @Test
-    public void UserDoesNotExist_soYouCannotViewProfile_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
+    void UserDoesNotExist_soYouCannotViewProfile_throwsException() {          //----------------------------------------------> Status code 404 test - "User not found"
         assertNull(userRepository.findByUsername("testUsername"));                   //                                                When you want to view the users profile
                                                                                      //                                                but it does not exist.
         User testUser = null;
 
-        // check that an error is thrown
         String exceptionMessage = "User not found";
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(testUser), exceptionMessage);
@@ -115,14 +106,11 @@ public class UserServiceIntegrationTest {
 
 
     @Test
-    public void UserDoesNotExist_soYouCannotEdit_throwsException() {
+    void UserDoesNotExist_soYouCannotEdit_throwsException() {
 
-        //----------------------------------------------> Status code 404 test - "User not found"
         assertNull(userRepository.findByUsername("testUsername"));            //                                                when you want to edit the user
                                                                               //                                                but it does not exist
-      //  User testUser = null;
 
-        // check that an error is thrown
         String exceptionMessage = "User not found";
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.userEqualsNull(null), exceptionMessage);

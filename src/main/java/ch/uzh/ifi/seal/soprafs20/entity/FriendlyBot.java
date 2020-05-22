@@ -19,29 +19,29 @@ public class FriendlyBot extends Player {
 
     @Override
     public String giveClue(String word) throws IOException {
-        String word_lower = word.toLowerCase();
-        String clue = getWordByUrl(getSynonymeUrl(word_lower), word_lower);
+        String wordLower = word.toLowerCase();
+        String clue = getWordByUrl(getSynonymeUrl(wordLower), wordLower);
         String trigger = "";
-        if (clue.equalsIgnoreCase((word_lower)) || clue.contains(word_lower) || word_lower.contains(clue)){
-            trigger= getWordByUrl(getTriggerUrl(word_lower),word_lower);
-            if (trigger.equalsIgnoreCase(word) || trigger.contains(word_lower) || word_lower.contains(trigger)){return word;}
+        if (clue.equalsIgnoreCase((wordLower)) || clue.contains(wordLower) || wordLower.contains(clue)){
+            trigger= getWordByUrl(getTriggerUrl(wordLower),wordLower);
+            if (trigger.equalsIgnoreCase(word) || trigger.contains(wordLower) || wordLower.contains(trigger)){return word;}
             else{return trigger;}
         }
         else{return clue;}
     }
 
 
-    public static String getSynonymeUrl(String word) throws IOException {
+    private static String getSynonymeUrl(String word) {
 
         return "https://api.datamuse.com/words?rel_syn=" + word;}
 
-    public static String getTriggerUrl(String word) throws IOException {
+    private static String getTriggerUrl(String word){
 
         return "https://api.datamuse.com/words?rel_trg=" + word;
     }
 
 
-    public static String getWordByUrl(String url, String word) throws IOException {
+    private static String getWordByUrl(String url, String word) throws IOException {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
