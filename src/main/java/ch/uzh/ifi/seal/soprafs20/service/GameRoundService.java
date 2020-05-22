@@ -218,7 +218,8 @@ public class GameRoundService {
         if (game.getActualGameRound() >= game.getTotalGameRounds()){
             finishGame(game);
             }
-            return gameRound;
+
+        return gameRound;
         }
 
     public void checkGuess(GameRound gameRound, Guess guess){

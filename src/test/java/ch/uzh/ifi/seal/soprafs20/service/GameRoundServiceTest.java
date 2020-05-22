@@ -20,10 +20,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 
 
-public class GameRoundServiceTest {
+class GameRoundServiceTest {
 
     @Mock
     GameRoundRepository gameRoundRepository;
@@ -71,7 +70,7 @@ public class GameRoundServiceTest {
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         // given
@@ -128,7 +127,7 @@ public class GameRoundServiceTest {
      * tests that createNewGameRound(Game game) creates a gameRound of the current game
      */
     @Test
-    public void createNewGameRoundTest() {
+    void createNewGameRoundTest() {
         // when -> object is being save in the gameRoundRepository -> return the dummy gameRound
         Mockito.when(gameRoundRepository.save(Mockito.any())).thenReturn(gameRound);
         Mockito.when(cardRepository.findByCardId(Mockito.anyLong())).thenReturn(testCard);
@@ -147,7 +146,7 @@ public class GameRoundServiceTest {
      * test that startNewGameRound(Game game) starts the actual gameRound of the desired game
      */
     @Test
-    public void startNewGameRoundTest(){
+    void startNewGameRoundTest(){
         testUser1.setStatus(UserStatus.ONLINE);
         testUser.setStatus(UserStatus.ONLINE);
 
@@ -172,7 +171,7 @@ public class GameRoundServiceTest {
      * also it is asserted, that the guessingPlayer can not be a Malicious of FriendlyBot and has to be a PhysicalPlayer
      */
     @Test
-    public void computeGuessingPlayerIdTest(){
+    void computeGuessingPlayerIdTest(){
         long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
 
         Player guessingPlayer = new PhysicalPlayer();
@@ -194,7 +193,7 @@ public class GameRoundServiceTest {
      *  a simple helper method test of getGameRoundByRoundId
      */
     @Test
-    public void getGameRoundByRoundIdTest(){
+    void getGameRoundByRoundIdTest(){
         given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(1L);
         assertEquals(gameRoundByRoundId, gameRound);
@@ -204,7 +203,7 @@ public class GameRoundServiceTest {
      *  tests that the correct mysteryWord is determined depending on the wordNumber provided by the Client
      */
     @Test
-    public void chooseMysteryWordTest() throws IOException, InterruptedException {
+    void chooseMysteryWordTest() throws IOException, InterruptedException {
         GameRound gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,1);
         assertEquals("a", gameRoundWithMysteryWord.getMysteryWord());
 
@@ -233,7 +232,7 @@ public class GameRoundServiceTest {
      * @throws InterruptedException
      */
     @Test
-    public void createCluesAndGuessesTest() throws IOException, InterruptedException {
+    void createCluesAndGuessesTest() throws IOException, InterruptedException {
         given(gameRepository.findByGameId(gameRound.getGameId())).willReturn(testGame);
         given(guessRepository.save(Mockito.any())).willReturn(guess);
         given(clueRepository.save(Mockito.any())).willReturn(clue);
@@ -264,7 +263,7 @@ public class GameRoundServiceTest {
      * a clue
      */
     @Test
-    public void submitClue(){
+    void submitClue(){
         given(clueRepository.findByPlayerIdAndGameRoundId(3L , 1L)).willReturn(clue);
         given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
         given(gameRepository.findByGameId(1L)).willReturn(testGame);
@@ -293,7 +292,7 @@ public class GameRoundServiceTest {
      * tracked and the duration automatically computed, the word obviously is being stored in the guess object
      */
     @Test
-    public void submitGuess(){
+    void submitGuess(){
         given(guessRepository.findByPlayerIdAndGameRoundId(2L , 1L)).willReturn(guess);
         given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
         given(gameRepository.findByGameId(1L)).willReturn(testGame);
