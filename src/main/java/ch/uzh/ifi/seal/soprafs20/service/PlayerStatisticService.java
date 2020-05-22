@@ -136,7 +136,7 @@ public class PlayerStatisticService {
 
     public void updatePlayer(PlayerStatistic playerStatistic){
         Player player = playerRepository.findByPlayerId(playerStatistic.getPlayerId());
-        player.setCurrentScore(player.getCurrentScore() + playerStatistic.getPoints());
+        player.setCurrentScore(player.getCurrentScore() + playerStatistic.getTotalPoints());
         if (playerStatistic.getWasGuessingPlayer()){
             if (playerStatistic.getRightGuess()){
                 player.setNumberOfCorrectGuesses(player.getNumberOfCorrectGuesses() + 1);
