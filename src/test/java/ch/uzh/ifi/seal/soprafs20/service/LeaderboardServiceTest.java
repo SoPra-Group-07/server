@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
-
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Leaderboard;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
@@ -11,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class LeaderboardServiceTest {
+class LeaderboardServiceTest {
 
     @Mock
     UserRepository userRepository;
@@ -39,13 +37,13 @@ public class LeaderboardServiceTest {
     LeaderboardService leaderboardService;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         MockitoAnnotations.initMocks(this);
 
         leaderboard = Leaderboard.getInstance();
         leaderboardService = new LeaderboardService(userRepository);
 
-        // given
+
         user1.setPassword("testPassword");
         user1.setUsername("User1");
         user1.setStatus(UserStatus.OFFLINE);
@@ -90,7 +88,6 @@ public class LeaderboardServiceTest {
         allUsers.add(user3);
         allUsers.add(user4);
 
-        // when -> any object is being save in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.findAll()).thenReturn(allUsers);
     }
 
@@ -100,7 +97,7 @@ public class LeaderboardServiceTest {
      * Leaderboard class in DESCENDING order
      *
      */
-    public void testSortByHighscore(){
+    void testSortByHighscore(){
         leaderboardService.fillUsers();
         leaderboardService.sortByHighScore();
 
@@ -121,7 +118,7 @@ public class LeaderboardServiceTest {
      * this makes sure the method fillUsers only adds Users with attribute
      * numberOfGamesPlayed > 0 to the users ArrayList in the Leaderboard class
      */
-    public void TestfillUsers(){
+    void TestfillUsers(){
         leaderboardService.fillUsers();
 
         List<User> users = leaderboard.getUsers();
@@ -133,7 +130,7 @@ public class LeaderboardServiceTest {
     /***
      *  Test getUsers()
      */
-    public void testGetUsers() {
+    void testGetUsers() {
         List<User> allUsers = new ArrayList<>();
         allUsers.add(user1);
         allUsers.add(user2);

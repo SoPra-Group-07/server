@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @WebAppConfiguration
 @SpringBootTest
-public class GameServiceIntegrationTest {
+class GameServiceIntegrationTest {
 
     @Qualifier("gameRepository")
     @Autowired
@@ -40,18 +40,17 @@ public class GameServiceIntegrationTest {
     @Autowired
     private GameService gameService;
 
-    @Autowired
-    private UserService userService;
+
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         playerRepository.deleteAll();
         gameRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @Test
-    public void createGame_validInputs_success() {
+    void createGame_validInputs_success() {
 
         User user = new User();
         user.setUsername("testUser");
@@ -86,7 +85,7 @@ public class GameServiceIntegrationTest {
     }
 
     @Test
-    public void createGame_alreadyExistingGameName_throws_RSE() {
+    void createGame_alreadyExistingGameName_throws_RSE() {
 
         User user = new User();
         user.setUsername("testUser");

@@ -113,7 +113,7 @@ public class GameRoundService {
         return gameRoundRepository.findByGameRoundId(roundId);
     }
 
-    public GameRound chooseMysteryWord(GameRound gameRound, int wordNumber) throws IOException, InterruptedException {
+    public GameRound chooseMysteryWord(GameRound gameRound, int wordNumber)  {
         if (wordNumber==1) {
             gameRound.setMysteryWord(gameRound.getCard().getWord1());
         }else if (wordNumber==2) {
@@ -131,10 +131,9 @@ public class GameRoundService {
     }
 
 
-    public void createCluesAndGuesses(GameRound gameRound) throws IOException, InterruptedException {
+    public void createCluesAndGuesses(GameRound gameRound) throws IOException {
         Game game = gameRepository.findByGameId(gameRound.getGameId());
         for (Player player: game.getPlayers()){
-            // check clue or guess
             if (!player.getPlayerId().equals(gameRound.getGuessingPlayerId())) {
                 Clue clue = new Clue();
                 clue.setStartTime(ZonedDateTime.now().toInstant().toEpochMilli());
@@ -217,7 +216,8 @@ public class GameRoundService {
         if (game.getActualGameRound() >= game.getTotalGameRounds()){
             finishGame(game);
             }
-            return gameRound;
+
+        return gameRound;
         }
 
     public void checkGuess(GameRound gameRound, Guess guess){

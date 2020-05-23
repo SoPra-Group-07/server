@@ -3,10 +3,10 @@ import ch.uzh.ifi.seal.soprafs20.entity.Clue;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.GameRound;
 import ch.uzh.ifi.seal.soprafs20.entity.Guess;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundClueDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundClueDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundGuessDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
@@ -49,7 +49,7 @@ public class GameRoundController {
     @PutMapping("/gameRounds")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundDTO chooseMysteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException, InterruptedException {
+    public GameRoundDTO chooseMysteryWord(@RequestBody GameRoundPutDTO gameRoundPutDTO) throws IOException {
 
             GameRound gameRound = DTOMapper.INSTANCE.convertGameRoundPutDTOtoEntity(gameRoundPutDTO);
             GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(gameRound.getGameRoundId());

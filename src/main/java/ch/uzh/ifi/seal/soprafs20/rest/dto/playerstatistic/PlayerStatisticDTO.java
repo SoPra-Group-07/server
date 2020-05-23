@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.rest.dto.PlayerStatistic;
+package ch.uzh.ifi.seal.soprafs20.rest.dto.playerstatistic;
 
 
 public class PlayerStatisticDTO {

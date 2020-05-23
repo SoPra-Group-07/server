@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FriendlyBot_and_MaliciousBot_Test {
+class FriendlyBot_and_MaliciousBot_Test {
 
 
 
@@ -24,7 +24,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
 
@@ -38,7 +38,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
      * tests that a synonym and an antonym is found for Mouse
      */
     @Test
-    public void find_syn_and_ant_for_Mouse() throws IOException {
+    void find_syn_and_ant_for_Mouse() throws IOException {
     String friendlyWord = testFriendlyBot.giveClue("Mouse");
     assertNotEquals("mouse", friendlyWord);
     assertFalse(friendlyWord.contains(" "));
@@ -56,7 +56,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
      * tests that a synonym and an antonym is found for Churchill
      */
     @Test
-    public void find_syn_and_ant_for_Churchill() throws IOException {
+    void find_syn_and_ant_for_Churchill() throws IOException {
         String friendlyWord = testFriendlyBot.giveClue("Churchill");
         assertNotEquals("churchill", friendlyWord);
         assertFalse(friendlyWord.contains(" "));
@@ -74,7 +74,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
      * tests that a synonym and an antonym is found for Dish
      */
     @Test
-    public void find_syn_and_ant_for_Dish() throws IOException {
+    void find_syn_and_ant_for_Dish() throws IOException {
         String friendlyWord = testFriendlyBot.giveClue("Dish");
         assertNotEquals("dish", friendlyWord);
         assertFalse(friendlyWord.contains(" "));
@@ -91,7 +91,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
      * tests that a synonym and an antonym is found for Diamond
      */
     @Test
-    public void find_syn_and_ant_for_Diamond() throws IOException{
+    void find_syn_and_ant_for_Diamond() throws IOException{
         String friendlyWord = testFriendlyBot.giveClue("Diamond");
         assertNotEquals("diamond", friendlyWord);
         assertFalse(friendlyWord.contains(" "));
@@ -110,7 +110,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
      * tests that a synonym and an antonym is found for Diamond
      */
     @Test
-    public void find_syn_and_ant_for_Elvis() throws IOException{
+    void find_syn_and_ant_for_Elvis() throws IOException{
         String friendlyWord = testFriendlyBot.giveClue("Elvis");
         assertNotEquals("elvis", friendlyWord);
         assertFalse(friendlyWord.contains(" "));
@@ -128,7 +128,7 @@ public class FriendlyBot_and_MaliciousBot_Test {
      * tests that a physicalplayer returns the mysteryword if giveClue() is called
      */
     @Test
-    public void test_physicalPlayer_giveClue() throws IOException{
+    void test_physicalPlayer_giveClue() throws IOException{
         String mysteryWord = testPhysicalPlayer.giveClue("Diamond");
         assertEquals("Diamond", mysteryWord);
 

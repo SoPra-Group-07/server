@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
-public class UserRepositoryIntegrationTest {
+class UserRepositoryIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -21,7 +21,7 @@ public class UserRepositoryIntegrationTest {
     
 
     @Test
-    public void findByPassword_success() {
+    void findByPassword_success() {
         // given
         User user = new User();
         user.setPassword("abc123");
@@ -48,7 +48,7 @@ public class UserRepositoryIntegrationTest {
 
 
     @Test
-    public void findByUsername_success() {
+    void findByUsername_success() {
         // given
         User user = new User();
         user.setPassword("abc123");
@@ -74,7 +74,7 @@ public class UserRepositoryIntegrationTest {
     }
 
     @Test
-    public void findByToken_success() {
+    void findByToken_success() {
         // given
         User user = new User();
         user.setPassword("abc123");

@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.aptReq;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.AptReq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.persistence.Entity;
 import java.io.BufferedReader;
@@ -24,12 +24,12 @@ public class MaliciousBot extends Player implements Serializable {
 
     @Override
     public String giveClue(String word) throws IOException {
-        String word_lower = word.toLowerCase();
-        String ant = getWordByUrl(getAntonymUrl(word_lower), word_lower);
+        String wordLower = word.toLowerCase();
+        String ant = getWordByUrl(getAntonymUrl(wordLower), wordLower);
         if (ant.equalsIgnoreCase(word) || ant.contains(word) || word.contains(ant)) {
-            String adj = getWordByUrl(getAdjectiveUrl(word_lower), word_lower);
+            String adj = getWordByUrl(getAdjectiveUrl(wordLower), wordLower);
             String adjAnt = getWordByUrl(getAntonymUrl(adj), adj);
-            if (adjAnt.equalsIgnoreCase(word) || adjAnt.contains(word_lower) || word_lower.contains(adjAnt)) {
+            if (adjAnt.equalsIgnoreCase(word) || adjAnt.contains(wordLower) || wordLower.contains(adjAnt)) {
                 return word;
             }
             else {
@@ -39,20 +39,20 @@ public class MaliciousBot extends Player implements Serializable {
         else{ return ant;}
     }
 
-    public static String getAdjectiveUrl(String word) throws IOException {
+    private static String getAdjectiveUrl(String word) {
 
         return "https://api.datamuse.com/words?rel_jjb=" + word;
     }
 
 
-    public static String getAntonymUrl(String word) throws IOException {
+    private static String getAntonymUrl(String word) {
 
         return "https://api.datamuse.com/words?rel_ant=" + word;
     }
 
 
 
-    public static String getWordByUrl(String url, String word) throws IOException {
+    private static String getWordByUrl(String url, String word) throws IOException {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -74,9 +74,9 @@ public class MaliciousBot extends Player implements Serializable {
 
         try {
             // converting JSON array to ArrayList of words
-            ArrayList<aptReq> words = mapper.readValue(
+            ArrayList<AptReq> words = mapper.readValue(
                     response.toString(),
-                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, aptReq.class));
+                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, AptReq.class));
 
             if (!words.isEmpty()) {
                 return words.get(0).getWord().replaceAll("\\s","").toLowerCase();

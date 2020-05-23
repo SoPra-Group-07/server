@@ -67,12 +67,7 @@ public class GameRound implements Serializable {
 
     @Column
     private int totalGameRounds;
-
-
-    public boolean isEveryoneSubmitted() {
-        return everyoneSubmitted;
-    }
-
+    
     public int getActualGameRound() {
         return actualGameRound;
     }

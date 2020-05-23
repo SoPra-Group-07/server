@@ -4,12 +4,11 @@ import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
 import ch.uzh.ifi.seal.soprafs20.repository.PlayerRepository;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.Game.*;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.game.*;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,10 +21,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import javax.validation.constraints.AssertFalse;
 import java.util.*;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -36,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the GameController works.
  */
 @WebMvcTest(GameController.class)
-public class GameControllerTest {
+class GameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -62,7 +59,7 @@ public class GameControllerTest {
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         testPlayer.setPlayerId(1L);
@@ -102,7 +99,7 @@ public class GameControllerTest {
         game.setRandomStartPosition(2);
     }
     @Test
-    public void givenGames_whenGetGames_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
+    void givenGames_whenGetGames_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
         // given
         List<Game> allGames = Collections.singletonList(game);
 
@@ -121,7 +118,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenGames_whenGetGames_CREATED_thenReturnJsonArray() throws Exception {
+    void givenGames_whenGetGames_CREATED_thenReturnJsonArray() throws Exception {
         // given
         List<Game> createdGames = Collections.singletonList(game);
 
@@ -146,7 +143,7 @@ public class GameControllerTest {
 
 
     @Test
-    public void givenGame_whenCreateGame_thenReturn_GameDTO() throws Exception {
+    void givenGame_whenCreateGame_thenReturn_GameDTO() throws Exception {
 
         given(gameService.createNewGame(Mockito.any())).willReturn(game);
 
@@ -172,7 +169,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenGame_whenJoinGame_thenReturn_GameDTO() throws Exception{
+    void givenGame_whenJoinGame_thenReturn_GameDTO() throws Exception{
 
         game.getPlayers().add(testPlayer2);
         game.setNumberOfPlayers(4);
@@ -201,7 +198,7 @@ public class GameControllerTest {
 
 
     @Test
-    public void givenGame_whenGetLobby_thenReturn_LobbyDTO() throws Exception {
+    void givenGame_whenGetLobby_thenReturn_LobbyDTO() throws Exception {
         given(gameService.getGameByGameId(1L)).willReturn(game);
 
         MockHttpServletRequestBuilder getRequest = get("/games/1/lobby").contentType(MediaType.APPLICATION_JSON);
@@ -218,7 +215,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenGameRound_whenPUTGame_thenStartGameAndReturn_GameRoundDTO() throws Exception {
+    void givenGameRound_whenPUTGame_thenStartGameAndReturn_GameRoundDTO() throws Exception {
         Card card = new Card();
         card.setCardId(5L);
         card.setWord1("I");
@@ -257,7 +254,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenGame_when_getPlayersFromGameByGameId_thenReturn_players() throws Exception {
+    void givenGame_when_getPlayersFromGameByGameId_thenReturn_players() throws Exception {
 
         given(gameService.getGameByGameId(1L)).willReturn(game);
         MockHttpServletRequestBuilder getRequest = get("/games/1/players").contentType(MediaType.APPLICATION_JSON);
@@ -277,7 +274,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenNotFinishedGame_whenGetIsGameFinished_ReturnFalse() throws Exception {
+    void givenNotFinishedGame_whenGetIsGameFinished_ReturnFalse() throws Exception {
         given(gameService.getGameByGameId(1L)).willReturn(game);
         MockHttpServletRequestBuilder getRequest = get("/games/1").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -286,7 +283,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenFinishedGame_whenGetIsGameFinished_ReturnFalse() throws Exception {
+    void givenFinishedGame_whenGetIsGameFinished_ReturnFalse() throws Exception {
         game.setGameStatus(GameStatus.FINISHED);
         given(gameService.getGameByGameId(1L)).willReturn(game);
         MockHttpServletRequestBuilder getRequest = get("/games/1").contentType(MediaType.APPLICATION_JSON);
@@ -296,7 +293,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenGame_whenPutLeaveGame_return_nothingButOk() throws Exception {
+    void givenGame_whenPutLeaveGame_return_nothingButOk() throws Exception {
         given(gameService.getGameByGameId(1L)).willReturn(game);
         given(playerRepository.findByPlayerId(3L)).willReturn(testPlayer2);
 
@@ -310,7 +307,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void givenGame_whenGetGameStatistics_thenReturn_GameStatisticDTO() throws Exception{
+    void givenGame_whenGetGameStatistics_thenReturn_GameStatisticDTO() throws Exception{
      given(gameService.getPlayersByGameId(game.getGameId())).willReturn(game.getPlayers());
      MockHttpServletRequestBuilder getRequest = get("/games/1/gameStatistics").contentType(MediaType.APPLICATION_JSON);
      mockMvc.perform(getRequest).andExpect(status().isOk())

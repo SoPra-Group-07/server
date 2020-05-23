@@ -3,8 +3,8 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserEditDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.User.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserEditDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.user.UserPostDTO;
 import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the UserController works.
  */
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,7 +40,7 @@ public class UserControllerTest {
     private UserService userService;
 
     @Test
-    public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
+    void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {        //  --------------------------------------------------->   GET "/users" test
         // given
         User user = new User();
         user.setPassword("testPassword");
@@ -74,7 +73,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void createUser_validInput_userCreated() throws Exception {             //  --------------------------------------------------->    POST "/users" test
+    void createUser_validInput_userCreated() throws Exception {             //  --------------------------------------------------->    POST "/users" test
         // given
         User user = new User();
         user.setUserId(1L);
@@ -111,7 +110,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void loginUser_validInput_userLoggedIn() throws Exception {             //  --------------------------------------------------->   PUT "/login" test
+    void loginUser_validInput_userLoggedIn() throws Exception {             //  --------------------------------------------------->   PUT "/login" test
         // given
         User user = new User();
         user.setUserId(1L);
@@ -152,7 +151,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void userProfiles_whenGetProfile_returnUserProfile() throws Exception {             //  --------------------------------------------------->    GET "/users/{userId}" test
+    void userProfiles_whenGetProfile_returnUserProfile() throws Exception {             //  --------------------------------------------------->    GET "/users/{userId}" test
         // given
         User user = new User();
         user.setUserId(0L);
@@ -184,7 +183,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void editUser_validInput_userEdited() throws Exception {             //  --------------------------------------------------->   PUT "/users/{userId}" test
+    void editUser_validInput_userEdited() throws Exception {             //  --------------------------------------------------->   PUT "/users/{userId}" test
         // given
         //user
         User user = new User();
@@ -235,8 +234,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void userIsAlreadyLoggedIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 204 test - "No Content"
-        // given
+    void userIsAlreadyLoggedIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 204 test - "No Content"
         User user = new User();
         user.setUserId(1L);
         user.setPassword("testPassword");
@@ -257,12 +255,11 @@ public class UserControllerTest {
         given(userService.getUserByUsername(user.getUsername())).willReturn(user);
 
 
-        // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));
 
-        // then
+
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(user.getUserId().intValue())))
@@ -277,7 +274,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void usernameDoesNotExistWhileLoggingIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 401 test - "Unauthorized"
+    void usernameDoesNotExistWhileLoggingIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 401 test - "Unauthorized"
         // given
         User user = new User();
         user.setUserId(1L);
@@ -296,12 +293,11 @@ public class UserControllerTest {
         given(userService.checkUsername(Mockito.any())).willReturn(false);
 
 
-        // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));
 
-        // then
+        //
         mockMvc.perform(putRequest)
                 .andExpect(status().isUnauthorized());
 
@@ -309,7 +305,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void PasswordIsWrongWhileLoggingIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 401 test - "Unauthorized"
+    void PasswordIsWrongWhileLoggingIn_Test() throws Exception {             //  --------------------------------------------------->   Status code 401 test - "Unauthorized"
         // given
         User user = new User();
         user.setUserId(1L);
@@ -329,7 +325,6 @@ public class UserControllerTest {
         given(userService.acceptLogin(Mockito.any(),Mockito.any())).willReturn(false);
 
 
-        // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));

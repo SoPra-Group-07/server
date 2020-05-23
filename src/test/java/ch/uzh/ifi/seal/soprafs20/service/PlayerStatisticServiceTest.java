@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class PlayerStatisticServiceTest {
+class PlayerStatisticServiceTest {
 
     @Mock
     PlayerRepository playerRepository;
@@ -41,7 +41,7 @@ public class PlayerStatisticServiceTest {
     PlayerStatistic playerStatistic1;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         testPlayer.setPlayerId(2L);
@@ -68,7 +68,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1 for right guess +0.3 for duration and no deductions = 1.3.
      */
     @Test
-    public void testCalculateCluingPlayerPoints(){
+    void testCalculateCluingPlayerPoints(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(false);
@@ -100,7 +100,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1 for right guess +0.2 for duration and -0.5 for a duplicate clue = 0.7.
      */
     @Test
-    public void testCalculateCluingPlayerPoints2(){
+    void testCalculateCluingPlayerPoints2(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(true);
@@ -131,7 +131,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1 for right guess +0.1 for duration and -0.5 for a duplicate clue = 0.7.
      */
     @Test
-    public void testCalculateCluingPlayerPoints4(){
+    void testCalculateCluingPlayerPoints4(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(true);
@@ -162,7 +162,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here 0 for right guess 0 for duration and -0.6 for not submitting a clue.
      */
     @Test
-    public void testCalculateCluingPlayerPoints3(){
+    void testCalculateCluingPlayerPoints3(){
 
         testClue.setPlayerName("testPlayer");
         testClue.setDuplicate(false);
@@ -193,7 +193,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1.5 for right guess +0.3 for duration = 1.8.
      */
     @Test
-    public void testCalculateGuessingPlayerPoints(){
+    void testCalculateGuessingPlayerPoints(){
 
         testGuess.setPlayerName("anotherPlayer");
         testGuess.setDidSubmit(true);
@@ -224,7 +224,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1.5 for right guess +0.2 for duration = 1.7.
      */
     @Test
-    public void testCalculateGuessingPlayerPoints2(){
+    void testCalculateGuessingPlayerPoints2(){
 
         testGuess.setPlayerName("anotherPlayer");
         testGuess.setDidSubmit(true);
@@ -255,7 +255,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here +1.5 for right guess +0.1 for duration = 1.6.
      */
     @Test
-    public void testCalculateGuessingPlayerPoints1(){
+    void testCalculateGuessingPlayerPoints1(){
 
         testGuess.setPlayerName("anotherPlayer");
         testGuess.setDidSubmit(true);
@@ -286,7 +286,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here 0 for not submitting a guess.
      */
     @Test
-    public void testCalculateGuessingPlayerPoints3(){
+    void testCalculateGuessingPlayerPoints3(){
 
         testGuess.setPlayerName("anotherPlayer");
         testGuess.setDidSubmit(false);
@@ -317,7 +317,7 @@ public class PlayerStatisticServiceTest {
      * playerStatistic with the right amount of points. Here 0 for not submitting a wrong guess.
      */
     @Test
-    public void testCalculateGuessingPlayerPoints4(){
+    void testCalculateGuessingPlayerPoints4(){
 
         testGuess.setPlayerName("anotherPlayer");
         testGuess.setDidSubmit(true);
@@ -350,7 +350,7 @@ public class PlayerStatisticServiceTest {
      * Additionally, checks that the values of the playerStatistic are correct
      */
     @Test
-    public void computeGameRoundStatisticTest(){
+    void computeGameRoundStatisticTest(){
         //given
         Mockito.when(playerRepository.findByPlayerId(2L)).thenReturn(testPlayer);
         Mockito.when(playerRepository.findByPlayerId(3L)).thenReturn(testPlayer1);

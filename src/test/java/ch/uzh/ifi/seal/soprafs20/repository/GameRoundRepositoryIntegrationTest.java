@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
-public class GameRoundRepositoryIntegrationTest {
+class GameRoundRepositoryIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -21,7 +21,7 @@ public class GameRoundRepositoryIntegrationTest {
 
 
     @Test
-    public void findByGameRoundId_success() {
+    void findByGameRoundId_success() {
         // given
         GameRound gameRound = new GameRound();
         gameRound.setEveryoneSubmitted(true);

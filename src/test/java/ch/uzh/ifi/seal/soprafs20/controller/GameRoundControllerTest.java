@@ -3,13 +3,10 @@ package ch.uzh.ifi.seal.soprafs20.controller;
 import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
-import ch.uzh.ifi.seal.soprafs20.repository.ClueRepository;
-import ch.uzh.ifi.seal.soprafs20.repository.GameRoundRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GuessRepository;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundClueDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundGuessDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameRound.GameRoundPutDTO;
+
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundGuessDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.gameround.GameRoundPutDTO;
 import ch.uzh.ifi.seal.soprafs20.service.GameRoundService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,10 +20,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 import static org.hamcrest.Matchers.*;
@@ -40,13 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the GameRoundController works.
  */
 @WebMvcTest(GameRoundController.class)
-public class GameRoundControllerTest {
+class GameRoundControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ClueRepository clueRepository;
 
     @MockBean
     private GameRoundService gameRoundService;
@@ -86,7 +79,7 @@ public class GameRoundControllerTest {
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         testPlayer.setPlayerId(1L);
@@ -176,7 +169,7 @@ public class GameRoundControllerTest {
     }
 
     @Test
-    public void givenGame_whenCreateGameRound_thenReturnGameRoundDTO() throws Exception {
+    void givenGame_whenCreateGameRound_thenReturnGameRoundDTO() throws Exception {
         given(gameService.getGameByGameId(1L)).willReturn(game);
         given(gameRoundService.startNewGameRound(game)).willReturn(gameRound);
 
@@ -200,7 +193,7 @@ public class GameRoundControllerTest {
      * @throws Exception
      */
     @Test
-    public void givenGameRound_whenGetGameRoundByRoundId_thenReturnGameRoundDTO() throws Exception {        //  --------------------------------------------------->   GET "/users" test
+    void givenGameRound_whenGetGameRoundByRoundId_thenReturnGameRoundDTO() throws Exception {        //  --------------------------------------------------->   GET "/users" test
         // given
         given(gameRoundService.getGameRoundByRoundId(1L)).willReturn(gameRound);
 
@@ -224,7 +217,7 @@ public class GameRoundControllerTest {
      * asserts that the responseStatusCode is 200 and the mysteryWord is correctly determined
      */
     @Test
-    public void givenGameRound_whenChooseMysteryWord_thenSetMysteryWord() throws Exception {
+    void givenGameRound_whenChooseMysteryWord_thenSetMysteryWord() throws Exception {
         GameRound gameRoundWithWordSet = new GameRound();
         gameRoundWithWordSet.setMysteryWord("Bright");
         gameRoundWithWordSet.setGuessingPlayerId(3L);
@@ -262,7 +255,7 @@ public class GameRoundControllerTest {
      * asserts that the responseStatusCode is 200 and the guess is correctly added to the gameRound
      */
     @Test
-    public void givenGameRound_whenSubmitGuess_thenSetGuess() throws Exception {
+    void givenGameRound_whenSubmitGuess_thenSetGuess() throws Exception {
         GameRound gameRoundWithSubmittedGuess = new GameRound();
         gameRoundWithSubmittedGuess.setMysteryWord("");
         gameRoundWithSubmittedGuess.setGuessingPlayerId(3L);
@@ -303,7 +296,7 @@ public class GameRoundControllerTest {
      * asserts that the responseStatusCode is 200 and the correct gameRound is returned
      */
     @Test
-    public void getGameRoundId() throws Exception {
+    void getGameRoundId() throws Exception {
         // given
         given(gameRoundService.getGameRoundByGameId(1L)).willReturn(gameRounds);
 

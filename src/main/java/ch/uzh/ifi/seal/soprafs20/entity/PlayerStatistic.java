@@ -168,9 +168,6 @@ public class PlayerStatistic implements Serializable {
         this.gameRoundId = gameRoundId;
     }
 
-    public double getPoints() {
-        return totalPoints;
-    }
 
     public void setPoints(double points) {
         this.totalPoints = points;
@@ -185,6 +182,7 @@ public class PlayerStatistic implements Serializable {
     }
 
     public String getGuess() {
+
         return guess;
     }
 
