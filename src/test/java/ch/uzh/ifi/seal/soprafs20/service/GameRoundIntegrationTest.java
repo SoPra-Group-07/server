@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @WebAppConfiguration
 @SpringBootTest
-public class GameRoundIntegrationTest {
+class GameRoundIntegrationTest {
 
     @Qualifier("gameRoundRepository")
     @Autowired
@@ -46,7 +46,7 @@ public class GameRoundIntegrationTest {
     private GameService gameService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         gameRoundRepository.deleteAll();
         playerRepository.deleteAll();
         gameRepository.deleteAll();
@@ -54,7 +54,7 @@ public class GameRoundIntegrationTest {
     }
 
     @Test
-    public void createGameRound_validInputs_success() {
+    void createGameRound_validInputs_success() {
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
