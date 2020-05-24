@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
+import ch.uzh.ifi.seal.soprafs20.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.repository.CardRepository;
@@ -49,8 +50,6 @@ class GameRoundServiceTest {
     private User testUser1;
     @InjectMocks
     private Game testGame;
-    @InjectMocks
-    private Game testGame1;
     @InjectMocks
     private PhysicalPlayer testPlayer;
     @InjectMocks
@@ -143,10 +142,39 @@ class GameRoundServiceTest {
     }
 
     /**
+     * tests that you can not create new GameRounds if the game has finished
+     */
+    @Test
+    void createNewGameRound_noMoreGameRounds() {
+        testGame.setGameStatus(GameStatus.FINISHED);
+
+
+        String exceptionMessage = "Game has finished! No more gameRounds.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.createNewGameRound(testGame), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+
+        testGame.setGameStatus(GameStatus.RUNNING);
+    }
+
+    /**
+     * tests that you can not start new game rounds if the game has finished
+     */
+    @Test
+    void startNewGameRound_noMoreGameRounds() {
+        testGame.setActualGameRoundIndex(13);
+
+        String exceptionMessage = "Game has finished! No more gameRounds.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.startNewGameRound(testGame), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+    /**
      * test that startNewGameRound(Game game) starts the actual gameRound of the desired game
      */
     @Test
-    void startNewGameRoundTest(){
+    void startNewGameRoundTest() {
         testUser1.setStatus(UserStatus.ONLINE);
         testUser.setStatus(UserStatus.ONLINE);
 
@@ -171,12 +199,12 @@ class GameRoundServiceTest {
      * also it is asserted, that the guessingPlayer can not be a Malicious of FriendlyBot and has to be a PhysicalPlayer
      */
     @Test
-    void computeGuessingPlayerIdTest(){
+    void computeGuessingPlayerIdTest() {
         long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
 
         Player guessingPlayer = new PhysicalPlayer();
-        for (Player player: players){
-            if(player.getPlayerId() == guessingPlayerId){
+        for (Player player : players) {
+            if (player.getPlayerId() == guessingPlayerId) {
                 guessingPlayer = player;
             }
         }
@@ -193,7 +221,7 @@ class GameRoundServiceTest {
      *  a simple helper method test of getGameRoundByRoundId
      */
     @Test
-    void getGameRoundByRoundIdTest(){
+    void getGameRoundByRoundIdTest() {
         given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
         GameRound gameRoundByRoundId = gameRoundService.getGameRoundByRoundId(1L);
         assertEquals(gameRoundByRoundId, gameRound);
@@ -204,23 +232,23 @@ class GameRoundServiceTest {
      */
     @Test
     void chooseMysteryWordTest() throws IOException, InterruptedException {
-        GameRound gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,1);
+        GameRound gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound, 1);
         assertEquals("a", gameRoundWithMysteryWord.getMysteryWord());
 
-        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,2);
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound, 2);
         assertEquals("b", gameRoundWithMysteryWord.getMysteryWord());
 
-        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,3);
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound, 3);
         assertEquals("c", gameRoundWithMysteryWord.getMysteryWord());
 
-        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,4);
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound, 4);
         assertEquals("d", gameRoundWithMysteryWord.getMysteryWord());
 
-        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound,5);
+        gameRoundWithMysteryWord = gameRoundService.chooseMysteryWord(gameRound, 5);
         assertEquals("e", gameRoundWithMysteryWord.getMysteryWord());
 
         String exceptionMessage = "Choose a number between 1-5";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.chooseMysteryWord(gameRound,8), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.chooseMysteryWord(gameRound, 8), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
 
@@ -263,8 +291,8 @@ class GameRoundServiceTest {
      * a clue
      */
     @Test
-    void submitClue(){
-        given(clueRepository.findByPlayerIdAndGameRoundId(3L , 1L)).willReturn(clue);
+    void submitClue() {
+        given(clueRepository.findByPlayerIdAndGameRoundId(3L, 1L)).willReturn(clue);
         given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
         given(gameRepository.findByGameId(1L)).willReturn(testGame);
 
@@ -281,9 +309,29 @@ class GameRoundServiceTest {
 
 
         String exceptionMessage = "a guessing player can not submit a clue!";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.submitClue(gameRound,"illegalClue", 2L), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.submitClue(gameRound, "illegalClue", 2L), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+    /**
+     * tests that did submit is set to false if player does not submit a clue
+     */
+    @Test
+    void submitClue_noClue() {
+        given(clueRepository.findByPlayerIdAndGameRoundId(3L, 1L)).willReturn(clue);
+        given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
+        given(gameRepository.findByGameId(1L)).willReturn(testGame);
+
+        long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
+        gameRound.setGuessingPlayerId(guessingPlayerId);
+        Clue submittedClue = gameRoundService.submitClue(gameRound, "noClue", 3L);
+
+
+        assertFalse(submittedClue.getDidSubmit());
+        assertFalse(submittedClue.getIsDuplicate());
+        assertEquals("noClue", submittedClue.getWord());
+
     }
 
 
@@ -292,8 +340,8 @@ class GameRoundServiceTest {
      * tracked and the duration automatically computed, the word obviously is being stored in the guess object
      */
     @Test
-    void submitGuess(){
-        given(guessRepository.findByPlayerIdAndGameRoundId(2L , 1L)).willReturn(guess);
+    void submitGuess() {
+        given(guessRepository.findByPlayerIdAndGameRoundId(2L, 1L)).willReturn(guess);
         given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
         given(gameRepository.findByGameId(1L)).willReturn(testGame);
         given(userRepository.findByUserId(1)).willReturn(testUser);
@@ -316,9 +364,94 @@ class GameRoundServiceTest {
 
 
         String exceptionMessage = "a clueing player can not submit a guess!";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.submitGuess(gameRound,"illegalGuess", 3L), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.submitGuess(gameRound, "illegalGuess", 3L), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
+
+    /**
+     * tests that did submit is set to false when a player does not submit a guess
+     */
+    @Test
+    void submitGuess_noGuess() {
+        given(guessRepository.findByPlayerIdAndGameRoundId(2L, 1L)).willReturn(guess);
+        given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
+        given(gameRepository.findByGameId(1L)).willReturn(testGame);
+        given(userRepository.findByUserId(1)).willReturn(testUser);
+        given(userRepository.findByUserId(2)).willReturn(testUser1);
+
+        List<PlayerStatistic> playerStatistics = new ArrayList<>();
+        given(playerStatisticService.computeGameRoundStatistic(gameRound)).willReturn(playerStatistics);
+
+
+        long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
+        gameRound.setGuessingPlayerId(guessingPlayerId);
+        gameRound.setMysteryWord("mysteryWord");
+        gameRound = gameRoundService.submitGuess(gameRound, "noGuess", 2L);
+        Guess submittedGuess = gameRound.getGuess();
+
+        assertFalse(submittedGuess.getDidSubmit());
+        assertEquals("noGuess", submittedGuess.getWord());
+    }
+
+
+    /**
+     * tests that correct guess is set to false if the guess was not correct
+     */
+    @Test
+    void submitGuess_wrongGuess() {
+        given(guessRepository.findByPlayerIdAndGameRoundId(2L, 1L)).willReturn(guess);
+        given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
+        given(gameRepository.findByGameId(1L)).willReturn(testGame);
+        given(userRepository.findByUserId(1)).willReturn(testUser);
+        given(userRepository.findByUserId(2)).willReturn(testUser1);
+
+        List<PlayerStatistic> playerStatistics = new ArrayList<>();
+        given(playerStatisticService.computeGameRoundStatistic(gameRound)).willReturn(playerStatistics);
+
+
+        long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
+        gameRound.setGuessingPlayerId(guessingPlayerId);
+        gameRound.setMysteryWord("mysteryWord");
+        gameRound = gameRoundService.submitGuess(gameRound, "wrongGuess", 2L);
+        Guess submittedGuess = gameRound.getGuess();
+
+        assertTrue(submittedGuess.getDidSubmit());
+        assertEquals("wrongGuess", submittedGuess.getWord());
+        assertFalse(submittedGuess.getCorrectGuess());
+    }
+
+
+    /**
+     * tests that correct guess is set to true if the guess was correct
+     */
+    @Test
+    void submitGuess_rightGuess() {
+        given(guessRepository.findByPlayerIdAndGameRoundId(2L, 1L)).willReturn(guess);
+        given(gameRoundRepository.findByGameRoundId(1L)).willReturn(gameRound);
+        given(gameRepository.findByGameId(1L)).willReturn(testGame);
+        given(userRepository.findByUserId(1)).willReturn(testUser);
+        given(userRepository.findByUserId(2)).willReturn(testUser1);
+
+        List<PlayerStatistic> playerStatistics = new ArrayList<>();
+        given(playerStatisticService.computeGameRoundStatistic(gameRound)).willReturn(playerStatistics);
+
+
+        long guessingPlayerId = gameRoundService.computeGuessingPlayerIdTest(testGame);
+        gameRound.setGuessingPlayerId(guessingPlayerId);
+        gameRound.setMysteryWord("mysteryWord");
+        gameRound = gameRoundService.submitGuess(gameRound, "mysteryWord", 2L);
+        Guess submittedGuess = gameRound.getGuess();
+
+        assertTrue(submittedGuess.getDidSubmit());
+        assertEquals("mysteryWord", submittedGuess.getWord());
+        assertTrue(submittedGuess.getCorrectGuess());
+    }
+
+
+
+
+
+
 
 }
