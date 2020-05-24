@@ -185,10 +185,11 @@ class GameServiceTest {
         players.add(testPlayer);
         testGame.setPlayers(players);
 
-
+        Long gameId = testGame.getGameId();
+        Long userId1 = testUser1.getUserId();
 
         String exceptionMessage = "Game already full! Join another game.";
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(testGame.getGameId(), testUser1.getUserId()), exceptionMessage);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->gameService.joinGame(gameId, userId1), exceptionMessage);
         assertEquals(exceptionMessage, exception.getReason());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
     }
@@ -229,7 +230,9 @@ class GameServiceTest {
     void test_leaveGame(){
         Mockito.when(gameRepository.findByGameId(testGame.getGameId())).thenReturn(testGame);
         Mockito.when(playerRepository.findByUserIdAndGameId(testUser.getUserId(), testGame.getGameId())).thenReturn(testPlayer);
-        gameService.leaveGame(testGame.getGameId(), testUser.getUserId());
+        Long id = testGame.getGameId();
+        Long userId = testUser.getUserId();
+        gameService.leaveGame(id, userId);
 
         assertEquals(1, testGame.getPlayers().size());
         assertFalse(testGame.getPlayers().contains(testPlayer));
