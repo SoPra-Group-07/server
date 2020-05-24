@@ -158,6 +158,22 @@ class GameRoundServiceTest {
     }
 
     /**
+     * tests that you can not create new GameRounds if the game has finished
+     */
+    @Test
+    void createNewGameRound_noMoreGameRounds2() {
+        testGame.setActualGameRoundIndex(14);
+
+
+        String exceptionMessage = "Game has finished! No more gameRounds.";
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameRoundService.createNewGameRound(testGame), exceptionMessage);
+        assertEquals(exceptionMessage, exception.getReason());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+
+
+    }
+
+    /**
      * tests that you can not start new game rounds if the game has finished
      */
     @Test
@@ -446,6 +462,53 @@ class GameRoundServiceTest {
         assertTrue(submittedGuess.getDidSubmit());
         assertEquals("mysteryWord", submittedGuess.getWord());
         assertTrue(submittedGuess.getCorrectGuess());
+    }
+
+    /**
+     * test that duplicate and stemmed clues that are equal to the mystery word get marked as
+     * duplicate clue
+     */
+    @Test
+    void checkDuplicates(){
+
+        Clue clue = new Clue();
+        clue.setPlayerId(testPlayer.getPlayerId());
+        clue.setWord("duplicate");
+        clue.setSubmissionId(1L);
+
+
+        Clue clue1 = new Clue();
+        clue1.setWord("duplicate");
+        clue1.setSubmissionId(2L);
+
+        Clue clue2 = new Clue();
+        clue2.setWord("mysterywords");
+        clue2.setSubmissionId(3L);
+
+        Clue clue3 = new Clue();
+        clue3.setWord("mYsTerYword");
+        clue3.setSubmissionId(4L);
+
+        Clue clue4 = new Clue();
+        clue4.setWord("validClue");
+        clue4.setSubmissionId(5L);
+
+        List<Clue> submissions = new ArrayList<>();
+        submissions.add(clue);
+        submissions.add(clue1);
+        submissions.add(clue2);
+        submissions.add(clue3);
+
+        gameRound.setSubmissions(submissions);
+        gameRound.setMysteryWord("mysteryWord");
+
+        gameRoundService.checkDuplicates(gameRound);
+
+        assertTrue(clue.getIsDuplicate());
+        assertTrue(clue1.getIsDuplicate());
+        assertTrue(clue2.getIsDuplicate());
+        assertTrue(clue3.getIsDuplicate());
+
     }
 
 

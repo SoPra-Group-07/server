@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
@@ -131,10 +132,6 @@ class FriendlyBot_and_MaliciousBot_Test {
     void test_physicalPlayer_giveClue() throws IOException{
         String mysteryWord = testPhysicalPlayer.giveClue("Diamond");
         assertEquals("Diamond", mysteryWord);
-
-
-
-
 
 
     }
